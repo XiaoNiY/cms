@@ -1,0 +1,43 @@
+<nz-layout class="app-layout">
+    <nz-sider class="menu-sidebar" nzCollapsible nzWidth="256px" nzBreakpoint="md" [(nzCollapsed)]="isCollapsed"
+        [nzTrigger]="null">
+        <div class="sidebar-logo">
+            <a target="_blank">
+                <img src="https://ng.ant.design/assets/img/logo.svg" alt="logo">
+                <h1>NG-ZORRO</h1>
+            </a>
+        </div>
+
+        <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+            <li nz-submenu nzTitle="配置" nzIcon="setting">
+                <ul>
+                    <li nz-menu-item>
+                        <a [routerLink]="['../address']">地址</a>
+                    </li>
+                </ul>
+            </li>
+            <li nz-submenu nzTitle="系统" nzIcon="appstore">
+                <ul>
+                    <li nz-menu-item>
+                        <a [routerLink]="['../menu']">菜单</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <router-outlet></router-outlet>
+    </nz-sider>
+    <nz-layout>
+        <nz-header>
+            <div class="app-header">
+                <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+                    <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
+                </span>
+            </div>
+        </nz-header>
+        <nz-content>
+            <div class="inner-content">
+                <router-outlet></router-outlet>
+            </div>
+        </nz-content>
+    </nz-layout>
+</nz-layout>

@@ -1,0 +1,69 @@
+/* 全局样式 */
+// html{font-size:12px;font-family:"Microsoft Yahei","Helvetica Neue",Arial,sans-serif;overflow: scroll;}
+// html,body,h1,h2,h3,h4,h5,h6,div,dl,dt,dd,ul,ol,li,p,blockquote,pre,hr,figure,table,caption,th,td,form,fieldset,legend,input,button,textarea,menu{margin:0;padding:0}
+// header,footer,section,article,aside,nav,hgroup,address,figure,figcaption,menu,details{display:block}
+// table{border-collapse:collapse;border-spacing:0}
+// caption,th{text-align:left;font-weight:normal}
+// html,body,fieldset,img,iframe,abbr{border:0}
+// i,cite,var,address,dfn{font-style:normal}
+// [hidefocus],summary{outline:0}
+// li{list-style:none}
+// h1,h2,h3,h4,h5,h6,small{font-size:100%}
+// sup,sub{font-size:83%}
+// pre,code,kbd,samp{font-family:inherit}
+// q:before,q:after{content:none}
+// textarea{overflow:auto;resize:none}
+// label,summary{cursor:default}
+// a,button{cursor:pointer}
+// h1,h2,h3,h4,h5,h6,strong,b{font-weight:bold}
+// em{
+//     font-style: italic !important;
+// }
+// del,ins,u,s,a,a:hover{text-decoration:none}
+// body,textarea,input,button,select,keygen,legend{color:#333;outline:0}
+// body{
+//     overflow: hidden;
+//     background:#fff;
+// }
+// a,a:hover{color:#333}
+// body{line-height:1}
+
+
+// span,font,a{display:inline-block;outline:none}
+// .fl{float:left}
+// .fr{float:right}
+// .clear:after {content: ' ';display: block;clear: both;height: 0;visibility: hidden;}
+
+
+/* reset */
+html{ min-width: 1360px;overflow-x: auto;overflow-y: hidden; position: relative; font-size:12px; font-family:"Microsoft Yahei","Helvetica Neue",Arial,sans-serif;}
+html,body,h1,h2,h3,h4,h5,h6,div,dl,dt,dd,ul,ol,li,p,blockquote,pre,hr,figure,table,caption,th,td,form,fieldset,legend,input,button,textarea,menu{margin:0;padding:0;}
+header,footer,section,article,aside,nav,hgroup,address,figure,figcaption,menu,details{display:block;}
+table{border-collapse:collapse;border-spacing:0;}
+caption,th{text-align:left;font-weight:normal;}
+html,body,fieldset,img,iframe,abbr{border:0;}
+i,cite,em,var,address,dfn{font-style:normal;}
+[hidefocus],summary{outline:0;}
+li{list-style:none;}
+h1,h2,h3,h4,h5,h6,small{font-size:100%;}
+sup,sub{font-size:83%;}
+pre,code,kbd,samp{font-family:inherit;}
+q:before,q:after{content:none;}
+textarea{overflow:auto;resize:none;}
+label,summary{cursor:default;}
+a,button{cursor:pointer;}
+h1,h2,h3,h4,h5,h6,em,strong,b{font-weight:bold;}
+del,ins,u,s,a,a:hover{text-decoration:none;}
+body,textarea,input,button,select,keygen,legend{color:#333;outline:0;}
+body{
+    overflow: hidden;
+    background:#fff;
+}
+a,a:hover{color:#333;}
+// *{box-sizing:border-box}
+// *::-webkit-scrollbar{width:8px;height:5px;background-color:rgba(255,255,255,0)}
+// *::-webkit-scrollbar-track{background-color:rgba(255,255,255,0)}
+// *::-webkit-scrollbar-thumb{background-color:#ddd;border-radius:5px}
+// ::selection{background:#2978ff;color:#fff}
+// ::-moz-selection{background:#2978ff;color:#fff}
+// ::-webkit-selection{background:#2978ff;color:#fff}
