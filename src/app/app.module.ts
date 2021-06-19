@@ -16,6 +16,8 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { LoginComponent } from './main/login/login.component';
 import { HomeComponent } from './main/home/home.component';
 import { NgZorroAntdModule } from './NG-ZORRO/ng-zorro-antd.module';
+import { SystemRoutingModule } from './main/system/system-routing.module';
+import { ConfigRoutingModule } from './main/config/config-routing.module';
 
 registerLocaleData(zh);
 
@@ -36,6 +38,8 @@ registerLocaleData(zh);
     NzLayoutModule,
     NzMenuModule,
     NgZorroAntdModule,
+    SystemRoutingModule,
+    ConfigRoutingModule,
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
   bootstrap: [AppComponent]
