@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ConfigRoutingModule } from './config-routing.module';
 import { AddressComponent } from './address/address.component';
+import { NgZorroAntdModule } from 'src/app/NG-ZORRO/ng-zorro-antd.module';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { AddressComponent } from './address/address.component';
   ],
   imports: [
     CommonModule,
-    ConfigRoutingModule
+    ConfigRoutingModule,
+    NgZorroAntdModule,
   ]
 })
 export class ConfigModule { }

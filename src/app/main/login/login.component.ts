@@ -11,7 +11,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 export class LoginComponent implements OnInit {
   validateForm!: FormGroup;
 
-  messageId: string | undefined;
+  messageId: any = null;
   constructor(
     private fb: FormBuilder,
     private message: NzMessageService,
@@ -68,6 +68,6 @@ export class LoginComponent implements OnInit {
    */
   removeBasicMessage(): void {
     this.message.remove(this.messageId);
-    this.messageId = "";
+    this.messageId = null;
   }
 }

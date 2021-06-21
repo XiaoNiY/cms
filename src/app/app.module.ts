@@ -38,8 +38,8 @@ registerLocaleData(zh);
     NzLayoutModule,
     NzMenuModule,
     NgZorroAntdModule,
-    ConfigRoutingModule,
-    SystemRoutingModule,
+    // ConfigRoutingModule,
+    // SystemRoutingModule,
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
   bootstrap: [AppComponent]
