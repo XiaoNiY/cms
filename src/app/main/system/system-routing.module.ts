@@ -1,7 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { MenuComponent } from './menu/menu.component';
 
-const routes: Routes = [];
+const routes: Routes = [
+  { path: '', redirectTo: 'menu', pathMatch: 'full' },
+  {
+    path: 'menu', component: MenuComponent,
+    data: {
+      breadcrumb: '菜单管理'
+    }
+  }
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
