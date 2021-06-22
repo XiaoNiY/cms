@@ -7,13 +7,14 @@ import { NgZorroAntdModule } from 'src/app/NG-ZORRO/ng-zorro-antd.module';
 
 
 @NgModule({
-  declarations: [
-    AddressComponent
-  ],
   imports: [
     CommonModule,
     ConfigRoutingModule,
     NgZorroAntdModule,
-  ]
+  ],
+  declarations: [
+    AddressComponent
+  ],
+  exports: [AddressComponent]
 })
 export class ConfigModule { }

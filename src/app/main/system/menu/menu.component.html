@@ -1,1 +1,38 @@
-<p>menu works!</p>
+<div class="menu">
+  <div class="bt-box">
+    <button nz-button nzType="primary">新增菜单</button>
+  </div>
+</div>
+
+<main>
+  <nz-table #basicTable [nzData]="listOfData?.info">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>菜单标识</th>
+        <th>菜单图标</th>
+        <th>菜单名称</th>
+        <th>请求地址</th>
+        <th>上级ID</th>
+        <th>可见</th>
+        <th>排序</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td>{{ data.id }}</td>
+        <td>{{ data.menuCode }}</td>
+        <td>{{ data.menuImg }}</td>
+        <td>{{ data.menuName }}</td>
+        <td>{{ data.menuUrl }}</td>
+        <td>{{ data.parentId }}</td>
+        <td>{{ data.pinyinCode }}</td>
+        <td>{{ data.sort }}</td>
+        <td>
+          <a>Delete</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</main>

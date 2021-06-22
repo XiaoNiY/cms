@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { LoginService } from './login.service';
 
 @Component({
   selector: 'app-login',
@@ -11,40 +12,57 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 export class LoginComponent implements OnInit {
   validateForm!: FormGroup;
 
-  messageId: any = null;
+  messageId: string = "";
   constructor(
     private fb: FormBuilder,
     private message: NzMessageService,
-    private router: Router
+    private router: Router,
+    private loginService: LoginService
   ) { }
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
-      accountNumber: null,
-      passWord: null,
+      account: null,
+      password: null,
       // 系统
-      system: null,
+      // system: null,
       // 浏览器
-      browser: null,
+      // browser: null,
     });
 
   }
 
   submitForm() {
-    if (!this.validateForm.value.accountNumber) {
+    if (this.messageId != "") {
+      return
+    }
+
+    if (!this.validateForm.value.account) {
       return this.createMessage('warning', '请输入账号');
     }
-    if (!this.validateForm.value.passWord) {
+    if (!this.validateForm.value.password) {
       return this.createMessage('warning', '请输入密码');
     }
 
-    if (this.validateForm.value.accountNumber == 'xn' && this.validateForm.value.passWord == '123456') {
-      this.createMessage('success', '登录成功');
-      this.router.navigate(['home']);
-    } else {
-      this.createMessage('error', '账号或密码错误，请重新输入');
-      return;
-    }
+    this.createBasicMessage();
+    this.loginService.login(this.validateForm.value).subscribe((res: any) => {
+      this.removeBasicMessage();
+      if (res.status == 200) {
+        this.router.navigate(['home']);
+        return this.createMessage('success', res.msg);
+      }
+
+      this.createMessage('error', res.msg);
+            //  if (res.code == 200) {
+      //   this.createMessage('success', '登录成功');
+      //   this.router.navigate(['home']);
+      // } else {
+      //   this.createMessage('error', res.msg);
+      // }
+    }, err => {
+      this.removeBasicMessage();
+      this.createMessage('error', err.msg);
+    })
   }
 
   /**
@@ -68,6 +86,7 @@ export class LoginComponent implements OnInit {
    */
   removeBasicMessage(): void {
     this.message.remove(this.messageId);
-    this.messageId = null;
+    this.messageId = "";
   }
 }
+
