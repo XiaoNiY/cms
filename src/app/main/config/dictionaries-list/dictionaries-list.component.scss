@@ -1,18 +1,13 @@
-.address {
+.dictionariesList {
   .bt {
     float: left;
   }
 
-  .bt-search {
-    float: right;
+  .bt-list {
+    float: left;
+    margin-left: 8px;
   }
 
-  .search-box {
-    float: right;
-    nz-input-group {
-      width: 300px;
-    }
-  }
   &::after {
     display: block;
     visibility: hidden;

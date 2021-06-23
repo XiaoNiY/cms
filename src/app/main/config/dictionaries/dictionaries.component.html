@@ -1,0 +1,138 @@
+<div class="dictionaries">
+  <div class="bt">
+    <button nz-button nzType="primary" (click)="showAddressModal()">新增字典</button>
+  </div>
+
+  <!-- 搜索 -->
+  <div class="search-box">
+    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+      <input type="text" nz-input placeholder="请输入名称或编码" />
+    </nz-input-group>
+    <ng-template #suffixIconButton>
+      <button nz-button nzType="primary" nzSearch (click)="query()"><i nz-icon nzType="search"></i></button>
+    </ng-template>
+  </div>
+</div>
+
+<main>
+  <nz-table [nzData]="listOfData" [nzFrontPagination]="false" [nzShowPagination]="false">
+    <thead>
+      <tr>
+        <th nzAlign="center">ID</th>
+        <th nzAlign="center">性别</th>
+        <th nzAlign="center">编码</th>
+        <th nzAlign="center">上级ID</th>
+        <th nzAlign="center">值</th>
+        <th nzAlign="center">状态</th>
+        <th nzAlign="center">权限</th>
+        <th nzAlign="center">字段1</th>
+        <th nzAlign="center">字段2</th>
+        <th nzAlign="center">字段3</th>
+        <th nzAlign="center">备注</th>
+        <th nzAlign="center">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of listOfData; let i = index;">
+        <td nzAlign="center">{{ i + 1 }}</td>
+        <td nzAlign="center">{{ data.sex }}</td>
+        <td nzAlign="center">{{ data.dictKey }}</td>
+        <td nzAlign="center">{{ data.parentKey }}</td>
+        <td nzAlign="center">{{ data.content }}</td>
+        <td nzAlign="center">{{ data.status }}</td>
+        <td nzAlign="center">{{ data.optionType }}</td>
+        <td nzAlign="center">{{ data.field1 }}</td>
+        <td nzAlign="center">{{ data.field2 }}</td>
+        <td nzAlign="center">{{ data.field3 }}</td>
+        <td nzAlign="center">{{ data.remark }}</td>
+        <td nzAlign="center" [width]="'200px'">
+          <a nz-button nzType="link">编辑</a>
+          <a nz-button nzType="link" [routerLink]="['../dictionariesList']">列表</a>
+          <a nz-button nzType="link">删除</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+  <div class="pagination-box">
+    <div class="pagination-template">
+      <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+      <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]" nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="1"
+        [nzTotal]="1" [nzShowTotal]="totalTemplate" [nzPageSize]="1" (nzPageIndexChange)="onPageIndexChange($event)"
+        (nzPageSizeChange)="onPageSizeChange($event)">
+      </nz-pagination>
+    </div>
+  </div>
+</main>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="字段设置" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+  <form>
+    <nz-form-item>
+      <nz-form-label [nzXs]="2" [nzSm]="4">名称</nz-form-label>
+      <nz-form-control [nzFlex]="200">
+        <input nz-input type="text">
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzXs]="2" [nzSm]="4">编码</nz-form-label>
+      <nz-form-control [nzFlex]="200">
+        <input nz-input type="text">
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzXs]="2" [nzSm]="4">值</nz-form-label>
+      <nz-form-control [nzFlex]="200">
+        <input nz-input type="text">
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzXs]="2" [nzSm]="4">字段1</nz-form-label>
+      <nz-form-control [nzFlex]="200">
+        <input nz-input type="text">
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzXs]="2" [nzSm]="4">字段2</nz-form-label>
+      <nz-form-control [nzFlex]="200">
+        <input nz-input type="text">
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzXs]="2" [nzSm]="4">字段3</nz-form-label>
+      <nz-form-control [nzFlex]="200">
+        <input nz-input type="text">
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzXs]="2" [nzSm]="4">权限</nz-form-label>
+      <nz-form-control [nzFlex]="200">
+        <nz-radio-group>
+          <label nz-radio nzValue="1">允许删改</label>
+          <label nz-radio nzValue="0">不允许删改</label>
+        </nz-radio-group>
+        <i nz-icon nzType="info-circle" nzTheme="outline" nzTooltipTitle="如果不允许删改的话，则字典和对应的列表都无法删除修改"
+          nzTooltipPlacement="right" nz-button nz-tooltip></i>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzXs]="2" [nzSm]="4">状态</nz-form-label>
+      <nz-form-control [nzFlex]="200">
+        <nz-radio-group>
+          <label nz-radio>启用</label>
+          <label nz-radio>禁用</label>
+        </nz-radio-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzXs]="2" [nzSm]="4">备注</nz-form-label>
+      <nz-form-control>
+        <textarea rows="4" nz-input [maxLength]="100"></textarea>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <button nz-button nzType="primary">确定</button>
+      &nbsp;
+      <button nz-button nzType="default">取消</button>
+    </nz-form-item>
+  </form>
+</nz-modal>

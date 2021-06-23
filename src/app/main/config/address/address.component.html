@@ -1,9 +1,107 @@
 <div class="address">
   <div class="bt">
-    <button nz-button nzType="primary">新增地址</button>
+    <button nz-button nzType="primary" (click)="showAddressModal()">新增地址</button>
   </div>
 
-  <div class="search">
-    <button nz-button nzType="primary">查询</button>
+  <!-- 搜索 -->
+  <div class="search-box">
+    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+      <input type="text" nz-input placeholder="请输入地址简称" />
+    </nz-input-group>
+    <ng-template #suffixIconButton>
+      <button nz-button nzType="primary" nzSearch (click)="query()"><i nz-icon nzType="search"></i></button>
+    </ng-template>
   </div>
 </div>
+
+<main>
+  <nz-table [nzData]="listOfData" [nzFrontPagination]="false" [nzShowPagination]="false">
+    <thead>
+      <tr>
+        <th nzAlign="center">ID</th>
+        <th nzAlign="center">简称</th>
+        <th nzAlign="center">联系人</th>
+        <th nzAlign="center">联系方式</th>
+        <th nzAlign="center">地区</th>
+        <th nzAlign="center">详细地址</th>
+        <th nzAlign="center">状态</th>
+        <th nzAlign="center">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of listOfData; let i = index;">
+        <td nzAlign="center">{{ i+ 1 }}</td>
+        <td nzAlign="center">{{ data.abbreviation }}</td>
+        <td nzAlign="center">{{ data.contacts }}</td>
+        <td nzAlign="center">{{ data.phoneNumber }}</td>
+        <td nzAlign="center">{{ data.area }}</td>
+        <td nzAlign="center">{{ data.address }}</td>
+        <td nzAlign="center">{{ data.status }}</td>
+        <td nzAlign="center">
+          <a nz-button nzType="link">删除</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+  <div class="pagination-box">
+    <div class="pagination-template">
+        <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+        <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]"nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="1"
+            [nzTotal]="1" [nzShowTotal]="totalTemplate" [nzPageSize]="1"
+            (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)">
+        </nz-pagination>
+    </div>
+</div>
+</main>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="地址信息" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+  <form>
+    <nz-form-item>
+      <nz-form-label [nzXs]="2" [nzSm]="4">简称</nz-form-label>
+      <nz-form-control [nzFlex]="200">
+        <input nz-input type="text" placeholder="请输入简称">
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzXs]="2" [nzSm]="4">联系人</nz-form-label>
+      <nz-form-control [nzFlex]="200">
+        <input nz-input type="text" placeholder="请输入联系人">
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzXs]="2" [nzSm]="4">联系方式</nz-form-label>
+      <nz-form-control [nzFlex]="200">
+        <input nz-input type="text" placeholder="请输入联系方式">
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzXs]="2" [nzSm]="4">地区</nz-form-label>
+      <nz-form-control [nzFlex]="200">
+        <nz-select>
+          <nz-option nzValue="" nzLabel="宝安区"></nz-option>
+          <nz-option nzValue="" nzLabel="南山区"></nz-option>
+          <nz-option nzValue="" nzLabel="岳麓区"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzXs]="2" [nzSm]="4">详细地址</nz-form-label>
+      <nz-form-control [nzFlex]="200">
+        <input nz-input type="text" placeholder="请输入详细地址">
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzXs]="2" [nzSm]="4">状态</nz-form-label>
+      <nz-form-control [nzFlex]="200">
+        <label nz-radio>启用</label>
+        <label nz-radio>禁用</label>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <button nz-button nzType="primary">确定</button>
+      &nbsp;
+      <button nz-button nzType="default">取消</button>
+    </nz-form-item>
+  </form>
+</nz-modal>

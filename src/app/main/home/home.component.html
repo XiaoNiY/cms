@@ -12,18 +12,22 @@
       <li nz-submenu nzTitle="配置" nzIcon="setting">
         <ul>
           <li nz-menu-item>
-            <a [routerLink]="['./config/address']">地址</a>
+            <a [routerLink]="['./config/address']">地址管理</a>
+          </li>
+          <li nz-menu-item>
+            <a [routerLink]="['./config/dictionaries']">字典管理</a>
           </li>
         </ul>
       </li>
       <li nz-submenu nzTitle="系统" nzIcon="appstore">
         <ul>
           <li nz-menu-item>
-            <a [routerLink]="['./system/menu']">菜单</a>
+            <a [routerLink]="['./system/menu']">菜单管理</a>
           </li>
         </ul>
       </li>
     </ul>
+    <!-- <router-outlet></router-outlet> -->
   </nz-sider>
   <nz-layout>
     <nz-header>
