@@ -49,13 +49,14 @@ export class LoginComponent implements OnInit {
       this.removeBasicMessage();
       if (res.status == 200) {
         this.router.navigate(['home']);
-        return this.createMessage('success', res.message);
+        return this.createMessage('success', '登录成功');
       }
 
-      this.createMessage('error', res.message);
+      return this.createMessage('error', res.msg);
+
     }, err => {
       this.removeBasicMessage();
-      this.createMessage('error', err.message);
+      this.createMessage('error', err.msg);
     })
   }
 

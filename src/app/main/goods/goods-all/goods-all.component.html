@@ -71,8 +71,7 @@
         </td>
       </tr> -->
       <tr *ngFor="let data of rowSelectionTable.data">
-        <td nzAlign="center" [nzChecked]="this.checked" (nzCheckedChange)="onItemChecked()">
-        </td>
+        <td [nzChecked]="this.checked" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
         <!-- id -->
         <td nzAlign="center">{{data.id}}</td>
         <!-- 商品 -->

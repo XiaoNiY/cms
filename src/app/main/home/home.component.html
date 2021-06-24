@@ -9,23 +9,23 @@
     </div>
 
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-      <li nz-submenu nzTitle="商品" nzIcon="">
+      <li nz-submenu nzTitle="商品" nzIcon="shopping" nzTheme="outline">
         <ul>
           <li nz-menu-item>
-            <a  [routerLink]="['./goods/goodsAll']">所有商品</a>
+            <a [routerLink]="['./goods/goodsAll']">所有商品</a>
           </li>
           <li nz-menu-item>
-            <a>新增商品</a>
+            <a [routerLink]="['./goods/goodsAdd']">新增商品</a>
           </li>
           <li nz-menu-item>
             <a>商品规格组</a>
           </li>
           <li nz-menu-item>
-            <a>推荐商品配置</a>
+            <a [routerLink]="['./goods/goodsRecommend']">推荐商品配置</a>
           </li>
         </ul>
       </li>
-      <li nz-submenu nzTitle="订单" nzIcon="">
+      <li nz-submenu nzTitle="订单" nzIcon="snippets" nzTheme="outline">
         <ul>
           <li nz-menu-item>
             <a>配件订单</a>
@@ -38,7 +38,7 @@
           </li>
         </ul>
       </li>
-      <li nz-submenu nzTitle="客户" nzIcon="">
+      <li nz-submenu nzTitle="客户" nzIcon="user" nzTheme="outline">
         <ul>
           <li nz-menu-item>
             <a>商户管理</a>
@@ -66,7 +66,7 @@
           </li>
         </ul>
       </li>
-      <li nz-submenu nzTitle="营销" nzIcon="">
+      <li nz-submenu nzTitle="营销" nzIcon="meh" nzTheme="outline">
         <ul>
           <li nz-menu-item>
             <a>优惠券管理</a>
@@ -85,14 +85,14 @@
           </li>
         </ul>
       </li>
-      <li nz-submenu nzTitle="售后" nzIcon="">
+      <li nz-submenu nzTitle="售后" nzIcon="phone" nzTheme="outline">
         <ul>
           <li nz-menu-item>
             <a>售后单管理</a>
           </li>
         </ul>
       </li>
-      <li nz-submenu nzTitle="仓储" nzIcon="">
+      <li nz-submenu nzTitle="仓储" nzIcon="group" nzTheme="outline">
         <ul>
           <li nz-menu-item>
             <a>供应商管理</a>
@@ -117,7 +117,7 @@
           </li>
         </ul>
       </li>
-      <li nz-submenu nzTitle="统计" nzIcon="">
+      <li nz-submenu nzTitle="统计" nzIcon="bar-chart" nzTheme="outline">
         <ul>
           <li nz-menu-item>
             <a>商品看板</a>
@@ -142,7 +142,7 @@
           </li>
         </ul>
       </li>
-      <li nz-submenu nzTitle="配置" nzIcon="setting">
+      <li nz-submenu nzTitle="配置" nzIcon="setting" nzTheme="outline">
         <ul>
           <li nz-menu-item>
             <a [routerLink]="['./config/address']">地址管理</a>
@@ -164,7 +164,7 @@
           </li>
         </ul>
       </li>
-      <li nz-submenu nzTitle="系统" nzIcon="appstore">
+      <li nz-submenu nzTitle="系统" nzIcon="appstore" nzTheme="outline">
         <ul>
           <li nz-menu-item>
             <a [routerLink]="['./system/menu']">菜单管理</a>

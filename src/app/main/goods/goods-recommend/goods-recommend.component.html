@@ -1,0 +1,112 @@
+<div class="goodsRecommend">
+  <div class="bt-box">
+    <button nz-button nzType="primary" (click)="showModal()">选择更多商品</button>
+  </div>
+
+  <div class="bt-save">
+    <button nz-button nzType="primary">保存</button>
+  </div>
+</div>
+
+<main>
+  <nz-table #middleTable [nzData]="listOfData" [nzShowPagination]="false">
+    <thead>
+      <tr>
+        <th [nzAlign]="'center'">序号</th>
+        <th [nzAlign]="'center'">商品编号</th>
+        <th [nzAlign]="'center'">商品分类</th>
+        <th [nzAlign]="'center'">商品名称</th>
+        <th [nzAlign]="'center'">商品短名称</th>
+        <th [nzAlign]="'center'">商品图片</th>
+        <th [nzAlign]="'center'">适用用户</th>
+        <th [nzAlign]="'center'">商品库存</th>
+        <th [nzAlign]="'center'">标签颜色</th>
+        <th [nzAlign]="'center'">推荐便签</th>
+        <th [nzAlign]="'center'">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of middleTable.data">
+        <td [nzAlign]="'center'">{{ data.id }}</td>
+        <td [nzAlign]="'center'">{{ data.code }}</td>
+        <td [nzAlign]="'center'">{{ data.goodsType }}</td>
+        <td [nzAlign]="'center'">{{ data.name }}</td>
+        <td [nzAlign]="'center'">{{ data.shortName }}</td>
+        <td [nzAlign]="'center'">{{ data.icon }}</td>
+        <td [nzAlign]="'center'">{{ data.userType }}</td>
+        <td [nzAlign]="'center'">{{ data.stockNum }}</td>
+        <td [nzAlign]="'center'">{{ data.labelColor }}</td>
+        <td [nzAlign]="'center'">{{ data.labelText }}</td>
+        <td [nzAlign]="'center'">
+          <a nz-button nzType="link" nzDanger nz-popconfirm nzPopconfirmTitle="确认删除？">删除</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</main>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="选择商品" [nzFooter]="null" [nzStyle]="{width: '1000px'}"
+  (nzOnCancel)="handleCancel()">
+  <div class="isVisible">
+    <div class="bt-search">
+      <button nz-button nzType="primary">查询</button>
+    </div>
+
+    <div class="search-box">
+      <div class="label">
+        <nz-form-label>商品</nz-form-label>
+        <input nz-input type="text" placeholder="请输入商品编号、名称">
+      </div>
+      <div class="label">
+        <nz-form-label>分类</nz-form-label>
+        <nz-select nzPlaceHolder="请选择">
+          <nz-option nzValue="" nzLabel="1"></nz-option>
+          <nz-option nzValue="" nzLabel="2"></nz-option>
+        </nz-select>
+      </div>
+      <div class="label">
+        <nz-form-label>品牌</nz-form-label>
+        <nz-select nzPlaceHolder="请选择">
+          <nz-option nzValue="" nzLabel="1"></nz-option>
+          <nz-option nzValue="" nzLabel="2"></nz-option>
+        </nz-select>
+      </div>
+    </div>
+  </div>
+
+  <nz-table #middleTable1 [nzData]="listOfData1" [nzShowPagination]="false">
+    <thead>
+      <tr>
+        <th [nzAlign]="'center'">商品编号</th>
+        <th [nzAlign]="'center'">商品名称</th>
+        <th [nzAlign]="'center'">适用用户</th>
+        <th [nzAlign]="'center'">商品分类</th>
+        <th [nzAlign]="'center'">商品品牌</th>
+        <th [nzAlign]="'center'">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of middleTable1.data">
+        <td nzAlign="center">{{ data.code }}</td>
+        <td nzAlign="left">{{ data.name ? data.name : '-' }}</td>
+        <td nzAlign="center">{{ data.typeName ? data.typeName : '-' }}</td>
+        <td nzAlign="center">{{ data.brandName ? data.brandName : '-' }}</td>
+        <td nzAlign="center">{{ data.userType == 0 ? '通用' : data.userType == 1 ? 'C端' : data.userType == 2 ?
+          'B端': '-' }}</td>
+        <td [nzAlign]="'center'">
+          <a nz-button nzType="link">选择</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+  <div class="pagination-box">
+    <div class="pagination-template">
+      <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+      <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]" nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="1"
+        [nzTotal]="2" [nzShowTotal]="totalTemplate" [nzPageSize]="3" (nzPageIndexChange)="onPageIndexChange($event)"
+        (nzPageSizeChange)="onPageSizeChange($event)">
+      </nz-pagination>
+    </div>
+  </div>
+</nz-modal>

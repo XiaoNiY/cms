@@ -12,7 +12,7 @@ export class LoginService {
   /**
    * 登录
    */
-  public LOGIN_URL = this.serviceUrl + "/login/in";
+  public LOGIN_URL =  this.serviceUrl + "/login/in";
 
 
   constructor(public httpClient: HttpClient) { }
