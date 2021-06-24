@@ -6,6 +6,7 @@ import { AddressComponent } from './address/address.component';
 import { NgZorroAntdModule } from 'src/app/NG-ZORRO/ng-zorro-antd.module';
 import { DictionariesComponent } from './dictionaries/dictionaries.component';
 import { DictionariesListComponent } from './dictionaries-list/dictionaries-list.component';
+import { GoodsBrandComponent } from './goods-brand/goods-brand.component';
 
 
 @NgModule({
@@ -18,11 +19,13 @@ import { DictionariesListComponent } from './dictionaries-list/dictionaries-list
     AddressComponent,
     DictionariesComponent,
     DictionariesListComponent,
+    GoodsBrandComponent,
   ],
   exports: [
     AddressComponent,
     DictionariesComponent,
-    DictionariesListComponent
+    DictionariesListComponent,
+    GoodsBrandComponent,
   ]
 })
 export class ConfigModule { }

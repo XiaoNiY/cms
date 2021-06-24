@@ -1,0 +1,32 @@
+{
+  "/test": {
+    "remark": "测试环境",
+    "target": "https://test-q.i5.cn",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true,
+    "pathRewrite": {
+      "/test": ""
+    }
+  },
+  "/i5": {
+    "remark": "生成环境",
+    "target": "https://q.i5.cn",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true,
+    "pathRewrite": {
+      "/i5": ""
+    }
+  },
+  "/loca": {
+    "remark": "后端主机ip",
+    "target": "http://47.105.179.3:8762",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true,
+    "pathRewrite": {
+      "/loca": ""
+    }
+  }
+}

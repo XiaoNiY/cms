@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class LoginService {
 
-  private serviceUrl = "http://47.105.179.3:8080";
+  private serviceUrl = "http://47.105.179.3:8762";
 
   /**
    * 登录

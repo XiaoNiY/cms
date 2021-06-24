@@ -1,26 +1,38 @@
-.address {
-  .bt {
+.goodsAll{
+  .bt-box{
     float: left;
   }
-
-  .bt-search {
+  .search-box{
     float: right;
-  }
-
-  .search-box {
-    float: right;
+    >div{
+      margin-left: 20px;
+      float: left;    
+      display: flex;
+    }
     nz-input-group {
       width: 300px;
     }
+    nz-select {
+      width: 200px;
+    }
   }
-  &::after {
-    display: block;
-    visibility: hidden;
-    clear: both;
-    height: 0;
-    overflow: hidden;
-    content: ".";
+  .bt-list{
+    float: right;
+    a{
+      width: 26px;
+      height: 26px;
+      line-height: 26px;
+      display: block;
+      text-align: center;
+      float: left;
+      margin-top: 3px;
+      &:hover{
+        background: #ebeef2;
+      }
+    }
+    &:after {content: ' ';display: block;clear: both;height: 0;visibility: hidden;}
   }
+  &:after {content: ' ';display: block;clear: both;height: 0;visibility: hidden;}
 }
 
 main {
@@ -58,12 +70,6 @@ nz-table {
     border-bottom: 1px solid #ddd;
     font-size: 14px;
     position: relative;
-    // &:nth-child(1){
-    //   width: 46px;
-    // }
-    // &:nth-child(2){
-    //   width: 310px;
-    // }
   }
   td {
     height: 56px;

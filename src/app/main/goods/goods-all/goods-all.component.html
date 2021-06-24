@@ -1,0 +1,140 @@
+<div class="goodsAll">
+  <div class="bt-box">
+    <button nz-button nzType="primary" [routerLink]="['../goodsTabs',0]">新增商品</button>
+  </div>
+  <!-- 其他功能按钮 -->
+  <div class="bt-list">
+    <a class="refresh" nzTooltipTitle="刷新" nzTooltipPlacement="top" nz-tooltip><i nz-icon nzType="sync"
+        nzTheme="outline"></i></a>
+  </div>
+  <!-- 搜索 -->
+  <div class="search-box">
+
+    <!-- 商品 -->
+    <div class="label-box">
+      <nz-form-label>商品</nz-form-label>
+      <input type="text" nz-input placeholder="请输入商品编号或名称" autocomplete="off" />
+    </div>
+
+    <!-- 商品类型 -->
+    <div class="label-box">
+      <nz-form-label>商品类型</nz-form-label>
+      <nz-select nzAllowClear nzPlaceHolder="请选择">
+        <nz-option nzLabel="全部" nzValue=""></nz-option>
+        <nz-option nzValue="" nzLabel="全部"></nz-option>
+      </nz-select>
+    </div>
+    <!-- 状态 -->
+    <div class="label-box">
+      <nz-form-label>状态</nz-form-label>
+      <nz-select nzAllowClear nzPlaceHolder="请选择">
+        <nz-option nzLabel="全部" nzValue="-1"></nz-option>
+        <nz-option nzLabel="无效" nzValue="0"></nz-option>
+        <nz-option nzLabel="有效" nzValue="1"></nz-option>
+        <nz-option nzLabel="下架" nzValue="2"></nz-option>
+      </nz-select>
+    </div>
+    <!-- 创建日期 -->
+    <div class="date-box">
+      <nz-form-label>创建日期</nz-form-label>
+      <nz-range-picker [nzFormat]="'yyyy-MM-dd'"></nz-range-picker>
+    </div>
+    <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
+  </div>
+</div>
+
+<main>
+  <nz-table #rowSelectionTable [nzData]="listOfData" [nzFrontPagination]="false" [nzShowPagination]="false">
+    <thead>
+      <tr>
+        <th [(nzChecked)]="checked" (nzCheckedChange)="onAllChecked($event)"></th>
+        <th nzAlign="center">id</th>
+        <th nzAlign="center">商品</th>
+        <th nzAlign="center">B端价格</th>
+        <th nzAlign="center">C端价格</th>
+        <th nzAlign="center">销量</th>
+        <th nzAlign="center">销售库存</th>
+        <th nzAlign="center">冻结库存</th>
+        <th nzAlign="center">关联组</th>
+        <th nzAlign="center">品牌</th>
+        <th nzAlign="center">类型</th>
+        <th nzAlign="center">创建时间</th>
+        <th nzAlign="center">状态</th>
+        <th nzAlign="center">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- <tr *ngIf="searchHint && listOfData?.records">
+        <td class="searchHint" nzAlign="center" colspan="13">
+          <span>搜索 “{{searcName}}”，找到&nbsp;{{ listOfData?.total }}&nbsp;条结果</span>
+          <a (click)="backList()">返回原列表</a>
+        </td>
+      </tr> -->
+      <tr *ngFor="let data of rowSelectionTable.data">
+        <td nzAlign="center" [nzChecked]="this.checked" (nzCheckedChange)="onItemChecked()">
+        </td>
+        <!-- id -->
+        <td nzAlign="center">{{data.id}}</td>
+        <!-- 商品 -->
+        <td nzAlign="center" table-name>
+          <!-- <div class="goodsName">
+            <img nz-image nzSrc="{{data.icon}}" [nzFallback]="fallback" />
+            <div class="goodsText">
+              <span title="{{data.name}}">{{data.name}}</span>
+              <p>{{data.code}}</p>
+            </div>
+          </div> -->
+          1111
+        </td>
+        <!-- B端价格 -->
+        <td nzAlign="center">￥{{data.shopPriceB}}</td>
+        <!-- C端价格 -->
+        <td nzAlign="center">￥{{data.shopPriceC}}</td>
+        <!-- 销量 -->
+        <td nzAlign="center">{{data.salesVolume}}</td>
+        <!-- 库存 -->
+        <td nzAlign="center">{{data.stockNum}}</td>
+        <td nzAlign="center">{{data.frozenStockNum}}</td>
+
+        <td nzAlign="center">{{data.skuGroupName ? data.skuGroupName  :'-'}}</td>
+        <!-- 品牌 -->
+        <td nzAlign="center">{{data.brandName}}</td>
+        <!-- 类型 -->
+        <td nzAlign="center">{{data.typeName}}</td>
+        <td nzAlign="center">{{data.createTime}}</td>
+        <td nzAlign="center" class="{{data.status == 0 ? 'font0'  : data.status == 1 ? 'font1'  : 'font2'}}">
+          {{data.status == 0 ? '无效'  : data.status == 1 ? '已上架'  : '已下架'}}
+        </td>
+        <td nzAlign="center">
+          111
+          <!-- <a nz-button nz-button-tdlink nzType="link" (click)="toEdit(data.id)">编辑</a>
+          <a nz-button nz-button-tdlink nzType="link" nz-popconfirm nzPopconfirmTitle="确认复制该商品吗?"
+            (nzOnConfirm)="copyGoods(data.id)" nzPopconfirmPlacement="top">复制</a>
+            <a nz-button nz-button-tdlink nzType="link" href="https://parts.i5.cn/index.html#/parts/goodsDetail?i5debugger=true&id={{data.id}}"
+            target="_blank">预览</a>
+          <a nz-button nz-button-tdlink nzType="link" [disabled]="data.status != 2 " (click)="clickSwitch(data.id,1)"
+            class="{{data.status == 2 ? 'font1'  :  ''}}">上架</a>
+
+          <a nz-button nz-button-tdlink nzType="link" [disabled]="data.status != 1 "
+            (click)="clickSwitch(data.id,2)"  class="{{data.status == 1 ? 'font2'  :  ''}}">下架</a>
+
+          <a nz-button nz-button-tdlink nzType="link" nzDanger nz-popconfirm nzPopconfirmTitle="确认删除吗?"
+            [nzIcon]="iconTpl" (nzOnConfirm)="confirm(data)" class="font2">删除</a> 
+          <ng-template #iconTpl>
+            <i nz-icon nzType="question-circle-o" style="color: red;"></i>
+          </ng-template>-->
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+  <div class="pagination-box">
+    <div class="pagination-template">
+        <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+        <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]"nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="1"
+            [nzTotal]="1" [nzShowTotal]="totalTemplate" [nzPageSize]="1"
+            (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)">
+        </nz-pagination>
+    </div>
+</div>
+</main>

@@ -12,7 +12,7 @@ const httpOptions = {
 })
 export class MenuService {
 
-  private serviceUrl = "http://47.105.179.3:8080";
+  private serviceUrl = "http://47.105.179.3:8762";
 
   public menu_list_RUL = this.serviceUrl + "/menu/list";
 

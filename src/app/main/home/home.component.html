@@ -9,6 +9,139 @@
     </div>
 
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+      <li nz-submenu nzTitle="商品" nzIcon="">
+        <ul>
+          <li nz-menu-item>
+            <a  [routerLink]="['./goods/goodsAll']">所有商品</a>
+          </li>
+          <li nz-menu-item>
+            <a>新增商品</a>
+          </li>
+          <li nz-menu-item>
+            <a>商品规格组</a>
+          </li>
+          <li nz-menu-item>
+            <a>推荐商品配置</a>
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="订单" nzIcon="">
+        <ul>
+          <li nz-menu-item>
+            <a>配件订单</a>
+          </li>
+          <li nz-menu-item>
+            <a>回收订单</a>
+          </li>
+          <li nz-menu-item>
+            <a>二手机订单</a>
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="客户" nzIcon="">
+        <ul>
+          <li nz-menu-item>
+            <a>商户管理</a>
+          </li>
+          <li nz-menu-item>
+            <a>门店管理</a>
+          </li>
+          <li nz-menu-item>
+            <a>客户消息</a>
+          </li>
+          <li nz-menu-item>
+            <a>会员权益</a>
+          </li>
+          <li nz-menu-item>
+            <a>会员等级</a>
+          </li>
+          <li nz-menu-item>
+            <a>客户浏览记录</a>
+          </li>
+          <li nz-menu-item>
+            <a>客户收藏记录</a>
+          </li>
+          <li nz-menu-item>
+            <a>客户搜索记录</a>
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="营销" nzIcon="">
+        <ul>
+          <li nz-menu-item>
+            <a>优惠券管理</a>
+          </li>
+          <li nz-menu-item>
+            <a>用户优惠券</a>
+          </li>
+          <li nz-menu-item>
+            <a>广告管理</a>
+          </li>
+          <li nz-menu-item>
+            <a>广告位管理</a>
+          </li>
+          <li nz-menu-item>
+            <a>邀请有礼</a>
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="售后" nzIcon="">
+        <ul>
+          <li nz-menu-item>
+            <a>售后单管理</a>
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="仓储" nzIcon="">
+        <ul>
+          <li nz-menu-item>
+            <a>供应商管理</a>
+          </li>
+          <li nz-menu-item>
+            <a>仓库管理</a>
+          </li>
+          <li nz-menu-item>
+            <a>仓库商品</a>
+          </li>
+          <li nz-menu-item>
+            <a>采购计划</a>
+          </li>
+          <li nz-menu-item>
+            <a>采购单</a>
+          </li>
+          <li nz-menu-item>
+            <a>入库单</a>
+          </li>
+          <li nz-menu-item>
+            <a>出库单</a>
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="统计" nzIcon="">
+        <ul>
+          <li nz-menu-item>
+            <a>商品看板</a>
+          </li>
+          <li nz-menu-item>
+            <a>订单看板</a>
+          </li>
+          <li nz-menu-item>
+            <a>售后看板</a>
+          </li>
+          <li nz-menu-item>
+            <a>客户看板</a>
+          </li>
+          <li nz-menu-item>
+            <a>营销看板</a>
+          </li>
+          <li nz-menu-item>
+            <a>仓库看板</a>
+          </li>
+          <li nz-menu-item>
+            <a>统计看板</a>
+          </li>
+        </ul>
+      </li>
       <li nz-submenu nzTitle="配置" nzIcon="setting">
         <ul>
           <li nz-menu-item>
@@ -17,12 +150,39 @@
           <li nz-menu-item>
             <a [routerLink]="['./config/dictionaries']">字典管理</a>
           </li>
+          <li nz-menu-item>
+            <a [routerLink]="['./config/goodsBrand']">商品品牌配置</a>
+          </li>
+          <li nz-menu-item>
+            <a>商品分类配置</a>
+          </li>
+          <li nz-menu-item>
+            <a>商品通用说明</a>
+          </li>
+          <li nz-menu-item>
+            <a>手机厂商配置</a>
+          </li>
         </ul>
       </li>
       <li nz-submenu nzTitle="系统" nzIcon="appstore">
         <ul>
           <li nz-menu-item>
             <a [routerLink]="['./system/menu']">菜单管理</a>
+          </li>
+          <li nz-menu-item>
+            <a>角色管理</a>
+          </li>
+          <li nz-menu-item>
+            <a>员工管理</a>
+          </li>
+          <li nz-menu-item>
+            <a>服务器控制</a>
+          </li>
+          <li nz-menu-item>
+            <a>操作日志</a>
+          </li>
+          <li nz-menu-item>
+            <a>登陆日志</a>
           </li>
         </ul>
       </li>
