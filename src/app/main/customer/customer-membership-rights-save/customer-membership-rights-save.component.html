@@ -1,0 +1,133 @@
+<main>
+    <form>
+        <nz-form-item>
+            <nz-form-label [nzSm]="2" [nzXs]="4" nzRequired>
+                权益名称
+            </nz-form-label>
+            <nz-form-control nzFlex="500px">
+                <input nz-input type="text">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="2" [nzXs]="4" nzRequired>
+                列表排序
+            </nz-form-label>
+            <nz-form-control nzFlex="500px">
+                <input nz-input type="text">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="2" [nzXs]="4" nzRequired>
+                icon-已拥有
+            </nz-form-label>
+            <div class="icon">
+                <nz-upload class="upload-list-inline" nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                    nzListType="picture-card">
+                    <div>
+                        <i nz-icon nzType="plus"></i>
+                    </div>
+                </nz-upload>
+                <!-- <img style="width: 100%" /> -->
+            </div>
+            <p>建议1:1的图片尺寸</p>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="2" [nzXs]="4" nzRequired>
+                icon-未拥有
+            </nz-form-label>
+            <div class="icon">
+                <nz-upload class="upload-list-inline" nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                    nzListType="picture-card">
+                    <div>
+                        <i nz-icon nzType="plus"></i>
+                    </div>
+                </nz-upload>
+                <!-- <img style="width: 100%" /> -->
+            </div>
+            <p>建议1:1的图片尺寸</p>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="2" [nzXs]="4">
+                图片
+            </nz-form-label>
+            <div class="icon">
+                <nz-upload class="upload-list-inline" nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                    nzListType="picture-card">
+                    <div>
+                        <i nz-icon nzType="plus"></i>
+                    </div>
+                </nz-upload>
+                <!-- <img style="width: 100%" /> -->
+            </div>
+            <p>建议3:1的图片尺寸</p>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="2" [nzXs]="4">
+                参数1
+            </nz-form-label>
+            <nz-form-control nzFlex="500px">
+                <input nz-input type="text">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="2" [nzXs]="4">
+                参数2
+            </nz-form-label>
+            <nz-form-control nzFlex="500px">
+                <input nz-input type="text">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="2" [nzXs]="4">
+                参数3
+            </nz-form-label>
+            <nz-form-control nzFlex="500px">
+                <input nz-input type="text">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <p class="look">
+                ※&nbsp;请注意，【vip2、vip3、vip4】使用了该权益，如果修改了参数的话，请对应进行配置
+            </p>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="2" [nzXs]="4" nzRequired>
+                权益说明
+            </nz-form-label>
+            <nz-form-control nzFlex="500px">
+                <nz-mention>
+                    <textarea rows="6" nz-input placeholder="富文本编辑器"></textarea>
+                </nz-mention>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="2" [nzXs]="4" nzRequired>
+                状态
+            </nz-form-label>
+            <nz-form-control nzFlex="500">
+                <nz-radio-group>
+                    <label nz-radio nzValue="启用">启用</label>
+                    <label nz-radio nzValue="禁用">禁用</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="2" [nzXs]="4">
+                备注
+            </nz-form-label>
+            <nz-form-control nzFlex="500px">
+                <nz-mention>
+                    <textarea rows="4" nz-input placeholder="仅内部人可见"></textarea>
+                </nz-mention>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+
+    <div class="submit-box">
+        <div class="bt-box">
+            <button nz-button nzType="primary">保存</button>
+            &nbsp;
+            <button nz-button nzType="default">返回</button>
+        </div>
+    </div>
+</main>

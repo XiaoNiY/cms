@@ -41,28 +41,28 @@
       <li nz-submenu nzTitle="客户" nzIcon="user" nzTheme="outline">
         <ul>
           <li nz-menu-item>
-            <a>商户管理</a>
+            <a [routerLink]="['./customer/merchant']">商户管理</a>
           </li>
           <li nz-menu-item>
-            <a>门店管理</a>
+            <a [routerLink]="['./customer/store']">门店管理</a>
           </li>
           <li nz-menu-item>
-            <a>客户消息</a>
+            <a [routerLink]="['./customer/news']">客户消息</a>
           </li>
           <li nz-menu-item>
-            <a>会员权益</a>
+            <a [routerLink]="['./customer/membershipRights']">会员权益</a>
           </li>
           <li nz-menu-item>
-            <a>会员等级</a>
+            <a [routerLink]="['./customer/membershipLevel']">会员等级</a>
           </li>
           <li nz-menu-item>
-            <a>客户浏览记录</a>
+            <a [routerLink]="['./customer/browse']">客户浏览记录</a>
           </li>
           <li nz-menu-item>
-            <a>客户收藏记录</a>
+            <a [routerLink]="['./customer/collection']">客户收藏记录</a>
           </li>
           <li nz-menu-item>
-            <a>客户搜索记录</a>
+            <a [routerLink]="['./customer/search']">客户搜索记录</a>
           </li>
         </ul>
       </li>

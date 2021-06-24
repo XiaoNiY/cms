@@ -1,0 +1,66 @@
+main {
+    margin: auto;
+    background: #fff;
+    form {
+        padding-top: 30px;
+        nz-form-item {
+            margin-bottom: 10px;
+            &:nth-child(8) {
+                margin-top: 40px;
+            }
+        }
+        nz-form-control {
+            padding-left: 10px;
+        }
+        nz-date-picker {
+            &:nth-child(2) {
+                margin-left: 10px;
+            }
+        }
+
+        nz-upload {
+            margin-top: 8px;
+            margin-left: 10px;
+        }
+
+        .icon {
+            display: flex;
+            nz-form-label {
+                margin-left: 10px;
+            }
+        }
+        p {
+            margin-top: 50px;
+            color: #999;
+        }
+
+        .checkbox-box {
+            width: 160px;
+            height: 100px;
+            display: block;
+            nz-checkbox {
+                &:nth-child(1) {
+                    margin-left: 8px;
+                }
+            }
+        }
+
+        .look {
+            margin-left: 150px;
+            color: red;
+        }
+    }
+    .submit-box {
+        height: 120px;
+        position: relative;
+        left: 120px;
+        .bt-box {
+            position: absolute;
+            left: 25px;
+            bottom: 40px;
+            button {
+                width: 100px;
+            }
+        }
+    }
+}

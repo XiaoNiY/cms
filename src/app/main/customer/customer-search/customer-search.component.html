@@ -1,0 +1,58 @@
+<div class="bt-search">
+    <!-- 查询 -->
+    <div class="bt-search">
+        <button nz-button nzType="primary">查询</button>
+    </div>
+    <div class="search-box">
+        <!-- 搜索时间 -->
+        <div class="date-box">
+            <nz-form-label>搜索时间</nz-form-label>
+            <nz-date-picker></nz-date-picker>
+        </div>
+
+        <!-- 内容 -->
+        <div class="input1-box">
+            <nz-form-label>内容</nz-form-label>
+            <input nz-input placeholder="请输入商品ID" nzSize="default" />
+        </div>
+        <!-- 用户 -->
+        <div class="input-box">
+            <nz-form-label>用户</nz-form-label>
+            <input nz-input placeholder="请输入ID/姓名/联系方式" nzSize="default" />
+        </div>
+    </div>
+</div>
+
+<main>
+    <nz-table #rowSelectionTable nzShowSizeChanger>
+        <thead>
+            <tr>
+                <th nzAlign="center">搜索时间</th>
+                <th nzAlign="center">用户ID</th>
+                <th nzAlign="center">用户名</th>
+                <th nzAlign="center">联系方式</th>
+                <th nzAlign="center">搜索内容</th>
+                <th nzAlign="center">终端</th>
+                <th nzAlign="center">删除时间</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td nzAlign="center">111</td>
+                <td nzAlign="center">222</td>
+                <td nzAlign="center">333</td>
+                <td nzAlign="center">444</td>
+                <td nzAlign="center">555</td>
+                <td nzAlign="center">666</td>
+                <td nzAlign="center">777</td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <div class="pagination-box">
+        <span>共 <strong>0</strong> 条</span>
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有 1 条 </ng-template>
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]"nzShowSizeChanger></nz-pagination>
+        </div>
+    </div>
+</main>

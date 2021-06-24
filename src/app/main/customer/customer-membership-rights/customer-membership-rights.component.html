@@ -1,0 +1,63 @@
+<div class="bt-search">
+    <div class="bt-box">
+        <button nz-button nzType="primary" [routerLink]="['../membershipRightsSave']">新建</button>
+    </div>
+    <!-- 查询 -->
+    <div class="bt-search">
+        <button nz-button nzType="primary">查询</button>
+    </div>
+    <div class="search-box">
+        <!-- 状态 -->
+        <div class="select-box">
+            <nz-form-label>状态</nz-form-label>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择">
+                <nz-option nzLabel="启用" nzValue="启用"></nz-option>
+                <nz-option nzLabel="禁用" nzValue="禁用"></nz-option>
+            </nz-select>
+        </div>
+
+        <!-- 名称 -->
+        <div class="input-box">
+            <nz-form-label>名称</nz-form-label>
+            <input nz-input placeholder="请输入" nzSize="default" />
+        </div>
+    </div>
+</div>
+
+<main>
+    <nz-table #rowSelectionTable nzShowSizeChanger>
+        <thead>
+            <tr>
+                <th nzAlign="center">ID</th>
+                <th nzAlign="center">状态</th>
+                <th nzAlign="center">名称</th>
+                <th nzAlign="center">icon</th>
+                <th nzAlign="center">图片</th>
+                <th nzAlign="center">使用说明</th>
+                <th nzAlign="center">参数1</th>
+                <th nzAlign="center">参数2</th>
+                <th nzAlign="center">参数3</th>
+                <th nzAlign="center">备注</th>
+                <th nzAlign="center">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td nzAlign="center">111</td>
+                <td nzAlign="center">222</td>
+                <td nzAlign="center">333</td>
+                <td nzAlign="center">444</td>
+                <td nzAlign="center">555</td>
+                <td nzAlign="center">666</td>
+                <td nzAlign="center">777</td>
+                <td nzAlign="center">888</td>
+                <td nzAlign="center">999</td>
+                <td nzAlign="center">000</td>
+                <td nzAlign="center">
+                    <a nz-button nz-button-tdlink nzType="link">编辑</a>
+                    <a nz-button nz-button-tdlink nzType="link">删除</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</main>

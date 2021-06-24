@@ -1,0 +1,62 @@
+<div class="bt-search">
+    <!-- 查询 -->
+    <div class="bt-search">
+        <button nz-button nzType="primary">查询</button>
+    </div>
+    <div class="search-box">
+        <!-- 浏览时间 -->
+        <div class="date-box">
+            <nz-form-label>浏览时间</nz-form-label>
+            <nz-date-picker></nz-date-picker>
+        </div>
+
+        <!-- 商品 -->
+        <div class="input1-box">
+            <nz-form-label>商品</nz-form-label>
+            <input nz-input placeholder="请输入商品ID" nzSize="default" />
+        </div>
+        <!-- 用户 -->
+        <div class="input-box">
+            <nz-form-label>用户</nz-form-label>
+            <input nz-input placeholder="请输入ID/姓名/联系方式" nzSize="default" />
+        </div>
+    </div>
+</div>
+
+<main>
+    <nz-table #rowSelectionTable nzShowSizeChanger>
+        <thead>
+            <tr>
+                <th nzAlign="center">浏览时间</th>
+                <th nzAlign="center">用户ID</th>
+                <th nzAlign="center">用户名</th>
+                <th nzAlign="center">联系方式</th>
+                <th nzAlign="center">商品ID</th>
+                <th nzAlign="center">商品名称</th>
+                <th nzAlign="center">停留时长(秒)</th>
+                <th nzAlign="center">删除时间</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td nzAlign="center">111</td>
+                <td nzAlign="center">222</td>
+                <td nzAlign="center">333</td>
+                <td nzAlign="center">444</td>
+                <td nzAlign="center">555</td>
+                <td nzAlign="center">666</td>
+                <td nzAlign="center">777</td>
+                <td nzAlign="center">888</td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <div class="pagination-box">
+      <div class="pagination-template">
+        <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+        <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]" nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="1"
+          [nzTotal]="1" [nzShowTotal]="totalTemplate" [nzPageSize]="1" (nzPageIndexChange)="onPageIndexChange($event)"
+          (nzPageSizeChange)="onPageSizeChange($event)">
+        </nz-pagination>
+      </div>
+    </div>
+</main>

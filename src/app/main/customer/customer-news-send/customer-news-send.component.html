@@ -1,0 +1,123 @@
+<main>
+  <form>
+    <nz-form-item>
+      <nz-form-label [nzSm]="2" [nzXs]="2">
+        内部标题
+      </nz-form-label>
+      <nz-form-control nzFlex="400px">
+        <input nz-input type="text" placeholder="请输入">
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="2" [nzXs]="2" nzRequired>
+        类型
+      </nz-form-label>
+      <nz-form-control nzFlex="400" nzErrorTip="必选">
+        <nz-radio-group>
+          <label nz-radio nzValue="交易物流">交易物流</label>
+          <label nz-radio nzValue="系统消息">系统消息</label>
+          <label nz-radio nzValue="活动提醒">活动提醒</label>
+        </nz-radio-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="2" [nzXs]="2" nzRequired>
+        所属平台
+      </nz-form-label>
+      <nz-form-control nzFlex="400px" nzErrorTip="必选">
+        <nz-radio-group>
+          <label nz-radio nzValue="无">无</label>
+          <label nz-radio nzValue="配件商城">配件商城</label>
+          <label nz-radio nzValue="二手回收">二手回收</label>
+          <label nz-radio nzValue="二手商城">二手商城</label>
+        </nz-radio-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="2" [nzXs]="2" nzRequired>
+        通知方式
+      </nz-form-label>
+      <nz-form-control nzFlex="500px" nzErrorTip="必选">
+        <!-- <nz-checkbox-wrapper class="checkbox-box"> -->
+        <label nz-checkbox nzValue="短信">短信</label>
+        <label nz-checkbox nzValue="站内信">站内信</label>
+        <label nz-checkbox nzValue="微信模板消息">微信模板消息</label>
+        <label nz-checkbox nzValue="APP消息推送">APP消息推送</label>
+        <!-- </nz-checkbox-wrapper> -->
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="2" [nzXs]="2">
+        标题
+      </nz-form-label>
+      <nz-form-control nzFlex="400px">
+        <input nz-input type="text" placeholder="请输入">
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="2" [nzXs]="2">
+        链接
+      </nz-form-label>
+      <nz-form-control nzFlex="400px">
+        <input nz-input type="text" placeholder="请输入">
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="2" [nzXs]="2">图片</nz-form-label>
+      <nz-form-control nzFlex="100px">
+        <label for="file" class="upFile">
+          <i nz-icon nzType="plus"></i>
+          <span>上传图片</span>
+          <input id="file" type="file" multiple="multiple" accept="image/*" (change)="handleFileInput($event,1)">
+        </label>
+
+        <!-- <div class="videoImg" *ngIf="validateForm.get('img')?.value">
+                    <img nz-image nzSrc="{{validateForm.get('img')?.value}}" [nzFallback]="fallback" />
+                    <a (click)="deleteVideoImg(1)">删除</a>
+                </div> -->
+      </nz-form-control>
+      <p style="padding-top: 50px;padding-left: 10px;color: #999;">建议x：y的图片尺寸</p>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="2" [nzXs]="2">
+        摘要
+      </nz-form-label>
+      <nz-form-control nzFlex="400px">
+        <nz-mention>
+          <textarea rows="2" nz-input placeholder="请输入"></textarea>
+        </nz-mention>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="2" [nzXs]="2">过期时间</nz-form-label>
+      <nz-form-control nz-col nzFlex="400px">
+        <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss"></nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="2" [nzXs]="2">
+        发放人群
+      </nz-form-label>
+      <nz-form-control nzFlex="400px">
+        <input nz-input type="text" placeholder="请输入用户ID，多个用英文逗号分隔">
+      </nz-form-control>
+      <nz-form-control>
+        或者&nbsp;
+        <button nz-button nzType="primary">选择用户</button>
+      </nz-form-control>
+    </nz-form-item>
+    <p style="padding-left: 170px;">目标人数<font>5474人</font>
+    </p>
+  </form>
+
+  <div class="submit-box">
+    <nz-divider></nz-divider>
+    <div class="bt-box">
+      <button nz-button nzType="primary">立即发送</button>
+      &nbsp;
+      <button nz-button nzType="primary">定时发送</button>
+      &nbsp;
+      <button nz-button nzType="default">返回</button>
+    </div>
+  </div>
+</main>

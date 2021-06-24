@@ -1,0 +1,91 @@
+<div class="store">
+  <!-- 其他功能按钮 -->
+  <div class="bt-list">
+    <a class="refresh" nzTooltipTitle="刷新" nzTooltipPlacement="top" nz-tooltip><i nz-icon nzType="sync"
+        nzTheme="outline"></i></a>
+  </div>
+  <!-- 搜索 -->
+  <div class="search-box">
+
+    <!-- 用户 -->
+    <div class="label-box">
+      <nz-form-label>用户</nz-form-label>
+      <input type="text" nz-input placeholder="请输入ID/姓名/联系方式" autocomplete="off" />
+    </div>
+    <!-- 门店名称 -->
+    <div class="label-box">
+      <nz-form-label>门店名称</nz-form-label>
+      <input type="text" nz-input placeholder="请输入" autocomplete="off" />
+    </div>
+    <!-- 门店状态 -->
+    <div class="label-box">
+      <nz-form-label>门店状态</nz-form-label>
+      <nz-select nzAllowClear nzPlaceHolder="请选择">
+        <nz-option nzLabel="全部" nzValue="-1"></nz-option>
+        <nz-option nzLabel="无效" nzValue="0"></nz-option>
+        <nz-option nzLabel="有效" nzValue="1"></nz-option>
+        <nz-option nzLabel="下架" nzValue="2"></nz-option>
+      </nz-select>
+    </div>
+
+    <!-- 提交时间 -->
+    <div class="date-box">
+      <nz-form-label>提交时间</nz-form-label>
+      <nz-range-picker [nzFormat]="'yyyy-MM-dd'"></nz-range-picker>
+    </div>
+    <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
+  </div>
+</div>
+
+<main>
+  <nz-table #rowSelectionTable [nzData]="listOfData" [nzFrontPagination]="false" [nzShowPagination]="false">
+    <thead>
+      <tr>
+        <th nzAlign="center">ID</th>
+        <th nzAlign="center">关联用户昵称</th>
+        <th nzAlign="center">门店名称</th>
+        <th nzAlign="center">门店状态</th>
+        <th nzAlign="center">所在区域</th>
+        <th nzAlign="center">最近提交时间</th>
+        <th nzAlign="center">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- <tr *ngIf="searchHint && listOfData?.records">
+        <td class="searchHint" nzAlign="center" colspan="13">
+          <span>搜索 “{{searchName}}”，找到&nbsp;{{ listOfData?.total }}&nbsp;条结果</span>
+          <a (click)="backList()">返回原列表</a>
+        </td>
+      </tr> -->
+      <tr *ngFor="let data of rowSelectionTable.data">
+        <!-- id -->
+        <td nzAlign="center">{{data.id}}</td>
+        <!-- 关联用户昵称 -->
+        <td nzAlign="left">
+          <div class="ellipsis">{{data.nickname ? data.nickname : '-'}}</div>
+        </td>
+        <!-- 门店名称 -->
+        <td nzAlign="center">{{data.storeName ? data.storeName : '-'}}</td>
+        <!-- 门店状态 -->
+        <td nzAlign="center">{{data.status}}</td>
+        <!-- 所在区域 -->
+        <td nzAlign="center">{{data.businessArea}}</td>
+        <!-- 最近提交时间 -->
+        <td nzAlign="center">{{data.createTime}}</td>
+        <td nzAlign="center">
+          <a nz-button nz-button-tdlink nzType="link">详情</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+  <div class="pagination-box">
+    <div class="pagination-template">
+      <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+      <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]" nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="1"
+        [nzTotal]="1" [nzShowTotal]="totalTemplate" [nzPageSize]="1" (nzPageIndexChange)="onPageIndexChange($event)"
+        (nzPageSizeChange)="onPageSizeChange($event)">
+      </nz-pagination>
+    </div>
+  </div>
+</main>
