@@ -29,7 +29,6 @@ export class LoginComponent implements OnInit {
       // 浏览器
       // browser: null,
     });
-
   }
 
   submitForm() {
