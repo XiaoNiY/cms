@@ -1,0 +1,81 @@
+.adPosition {
+    .bt-box {
+        float: left;
+    }
+    .bt-search {
+        float: right;
+    }
+
+    .search-box {
+        .select-box {
+            float: right;
+            nz-select {
+                width: 200px;
+                margin: 0 8px;
+            }
+        }
+        .date-box {
+            float: right;
+            nz-date-picker {
+                width: 200px;
+                margin: 0 8px 0 8px;
+            }
+        }
+        .input1-box {
+            float: right;
+            margin: 0 8px 0 0;
+            display: flex;
+            nz-input {
+                width: 200px;
+            }
+            nz-form-label {
+                width: 90px;
+                margin-right: 6px;
+            }
+        }
+        .input-box {
+            width: 200px;
+            // margin: 0 8px 0 8px;
+            display: flex;
+            float: right;
+            nz-form-label {
+                margin-left: -45px;
+            }
+        }
+    }
+    &:after {
+        content: " ";
+        display: block;
+        clear: both;
+        height: 0;
+        visibility: hidden;
+    }
+}
+
+main {
+    margin-top: 10px;
+    background: #fff;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2);
+    .pagination-box {
+        height: 56px;
+        line-height: 56px;
+        padding: 0 18px;
+        font-size: 12px;
+        span {
+            float: left;
+        }
+        .pagination-template {
+            float: right;
+        }
+        &:after {
+            content: " ";
+            display: block;
+            clear: both;
+            height: 0;
+            visibility: hidden;
+        }
+    }
+}
+nz-pagination {
+    margin-top: 12px;
+}

@@ -1,0 +1,173 @@
+<div class="warehouseGoods">
+    <div class="bt-box">
+        <button nz-button nzType="primary" [routerLink]="['../warehouseGoodsAdd', 0]">新增商品</button>
+        <button nz-button nzType="primary" (click)="synchro()">同步商品信息</button>
+        <button nz-button nzType="primary" (click)="synchroStore()">同步商品库存</button>
+    </div>
+    <div class="search-box">
+        <!-- 商品 -->
+        <div class="input-box">
+            <nz-form-label>商品</nz-form-label>
+            <input type="text" nz-input placeholder="请输入" nzSize="default" [(ngModel)]="queryForm.name">
+        </div>
+        <!-- 69码 -->
+        <div class="input2-box">
+            <nz-form-label>69码</nz-form-label>
+            <input type="text" nz-input placeholder="请输入" nzSize="default" [(ngModel)]="queryForm.code">
+        </div>
+        <!-- 属性值 -->
+        <div class="input1-box">
+            <nz-form-label>属性值</nz-form-label>
+            <input type="text" nz-input placeholder="请输入" nzSize="default" [(ngModel)]="queryForm.attr">
+        </div>
+        <!-- 品牌 -->
+        <div class="select1-box">
+            <nz-form-label>品牌</nz-form-label>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" [(ngModel)]="queryForm.brandId">
+                <nz-option nzLabel="全部" nzValue=""></nz-option>
+                <nz-option nzValue="{{ data.id }}" nzLabel="{{ data.name }}" *ngFor="let data of BrandList">
+                </nz-option>
+            </nz-select>
+        </div>
+        <!-- 分类 -->
+        <div class="select-box">
+            <nz-form-label>分类</nz-form-label>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" [(ngModel)]="queryForm.type">
+                <nz-option nzLabel="全部" nzValue=""></nz-option>
+                <nz-option nzValue="{{ data.id }}" nzLabel="{{ data.name }}" *ngFor="let data of GoodsTypeList">
+                </nz-option>
+            </nz-select>
+        </div>
+        <!-- 新建时间 -->
+        <div class="date-box">
+            <nz-form-label>新建时间</nz-form-label>
+            <!-- <nz-date-picker [(ngModel)]="queryForm.beginTime"></nz-date-picker> -->
+            <nz-range-picker [nzFormat]="'yyyy-MM-dd'" [(ngModel)]="queryForm.dateFormat"></nz-range-picker>
+        </div>
+        <div class="bt-search">
+            <button nz-button nzType="primary" (click)="query()">查询</button>
+        </div>
+        <div style="clear:both"></div>
+    </div>
+</div>
+
+
+<main>
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="listOfData?.records" [nzShowPagination]="false"
+        [nzPageSize]="listOfData?.size" [nzLoading]="tableLoading" nzSize="middle">
+        <thead>
+            <tr>
+                <th nzAlign="center">id</th>
+                <th nzAlign="center">图片</th>
+                <th nzAlign="center">商品名称</th>
+                <th nzAlign="center">编码</th>
+                <th nzAlign="center">商品属性</th>
+                <th nzAlign="center">预警值</th>
+                <th nzAlign="center">实际库存</th>
+                <th nzAlign="center">不良品库存</th>
+                <th nzAlign="center">排队数量</th>
+                <th nzAlign="center">69码</th>
+                <th nzAlign="center">供应商</th>
+                <th nzAlign="center">品牌</th>
+                <th nzAlign="center">分类</th>
+                <th nzAlign="center">进货周期</th>
+                <th nzAlign="center" title="商品信息的同步状态">同步状态</th>
+                <th nzAlign="center">状态</th>
+                <th nzAlign="center">操作</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="searchHint && listOfData?.records">
+                <td class="searchHint" nzAlign="center" colspan="13">
+                    <span>搜索 “{{searchName}}”，找到&nbsp;{{ listOfData?.total }}&nbsp;条结果</span>
+                    <a (click)="backList()">返回原列表</a>
+                </td>
+            </tr>
+            <tr *ngFor="let data of rowSelectionTable.data; let i=index">
+                <!-- id -->
+                <td nzAlign="center">{{data.id}}</td>
+                <!-- 图片 -->
+                <td nzAlign="center">
+                    <img nz-image nzSrc="{{data.img}}" [nzFallback]="fallback" />
+                </td>
+                <!-- 商品名称 -->
+                <td nzAlign="left">{{data.name}}</td>
+                <!-- 编码 -->
+                <td nzAlign="center">{{data.whCode}}</td>
+                <!-- 商品属性 -->
+                <td nzAlign="center">{{data.attr ? data.attr : '-'}}</td>
+                <!-- 预警值 -->
+                <td nzAlign="center">{{data.earlyWarning ? data.earlyWarning : '-'}}</td>
+                <!-- 实际库存 -->
+                <td nzAlign="center">{{data.stock }}</td>
+                <!-- 不良品库存 -->
+                <td nzAlign="center">{{data.badStock ? data.badStock : 0 }}</td>
+                <!-- 排队数量 -->
+                <td nzAlign="center" class="{{ data.stock == 0 && data.lineupNumber > 0 ?'font_red':''}}">
+                    {{data.lineupNumber ? data.lineupNumber : 0}}
+                </td>
+                <!-- 69码 -->
+                <td nzAlign="center">{{data.code}}</td>
+                <!-- 供应商 -->
+                <td nzAlign="center">{{data.supName ? data.supName : '-'}}</td>
+                <!-- 品牌 -->
+                <td nzAlign="center">{{data.brandName}}</td>
+                <!-- 分类 -->
+                <td nzAlign="center">{{data.typeName}}</td>
+                <!-- 进货周期 -->
+                <td nzAlign="center">{{data.purchaseDuration ? data.purchaseDuration+'天' : '-'}}</td>
+                <!-- 同步状态 -->
+                <td nzAlign="center"
+                    class="{{data.syncState == 0 ? 'font_Yellow' : data.syncState == 1 ? 'font_Green' : 'font_red'}}"
+                    title="商品信息的同步状态">
+                    {{data.syncState == 0 ? '未同步' : data.syncState == 1 ? '同步成功' : '同步失败'}}
+                </td>
+                <!-- 状态-->
+                <td nzAlign="center" class="{{data.state == 0 ? 'font_Gray' : data.state == 1 ? 'font_Yellow' : data.state == 2
+                ? 'font_Green' : 'font_red'}}">
+                    {{ data.stateText }}
+                    <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline" [nzTooltipTitle]="titleTemplate"
+                        nzTooltipPlacement="right" *ngIf=" data.state == 3"></i>
+                    <ng-template #titleTemplate>
+                        <p>审核时间：{{data.auditTime}}</p>
+                        <p>审核意见：{{data.auditDesc}}</p>
+                    </ng-template>
+                </td>
+                <td nzAlign="center">
+                    <a nz-button nz-button-tdlink nzType="link" [routerLink]="['../warehouseGoodsAdd', data.id]">编辑</a>
+                    <a nz-button nz-button-tdlink nzType="link" [routerLink]="['../warehouseGoodsAdd', data.id]"
+                        [disabled]="data.state != 1">审核</a>
+                    <a nz-button nz-button-tdlink nzType="link" nzDanger nz-popconfirm nzPopconfirmTitle="确认删除吗?"
+                        [nzIcon]="iconTpl" (nzOnConfirm)="confirm(data.id)">删除</a>
+                    <ng-template #iconTpl>
+                        <i nz-icon nzType="question-circle-o" style="color: red;"></i>
+                    </ng-template>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+
+
+    <div class="pagination-box">
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]" nzShowSizeChanger nzShowQuickJumper
+                [nzPageIndex]="listOfData?.current" [nzTotal]="listOfData?.total" [nzShowTotal]="totalTemplate"
+                [nzPageSize]="listOfData?.size" (nzPageIndexChange)="onPageIndexChange($event)"
+                (nzPageSizeChange)="onPageSizeChange($event)">
+            </nz-pagination>
+        </div>
+    </div>
+
+    <!-- <div class="pagination-box">
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]"nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="listOfData?.current"
+                [nzTotal]="listOfData?.total" [nzShowTotal]="totalTemplate" [nzPageSize]="listOfData?.pageSize"
+                [nzPageIndex]="listOfData?.page" (nzPageIndexChange)="onPageIndexChange($event)"
+                (nzPageSizeChange)="onPageSizeChange($event)">
+            </nz-pagination>
+        </div>
+    </div> -->
+</main>

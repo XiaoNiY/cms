@@ -1,0 +1,124 @@
+<div class="parts">
+  <div class="bt-search">
+    <button nz-button nzType="primary">查询</button>
+  </div>
+
+  <div class="search-box">
+    <div class="label-box">
+      <nz-form-label>订单编号</nz-form-label>
+      <input nz-input type="text" placeholder="请输入">
+    </div>
+    <div class="label-box">
+      <nz-form-label>商品</nz-form-label>
+      <input nz-input type="text" placeholder="请输入商品编号或名称">
+    </div>
+    <div class="label-box">
+      <nz-form-label>用户</nz-form-label>
+      <input nz-input type="text" placeholder="请输入用户名或手机号">
+    </div>
+    <div class="label-box">
+      <nz-form-label>用户类型</nz-form-label>
+      <nz-select>
+        <nz-option nzLabel="1"></nz-option>
+        <nz-option nzLabel="2"></nz-option>
+      </nz-select>
+    </div>
+    <div class="label-box">
+      <nz-form-label>订单渠道</nz-form-label>
+      <nz-select>
+        <nz-option nzLabel="1"></nz-option>
+        <nz-option nzLabel="2"></nz-option>
+      </nz-select>
+    </div>
+    <div class="label-box">
+      <nz-form-label>订单状态</nz-form-label>
+      <nz-select>
+        <nz-option nzLabel="1"></nz-option>
+        <nz-option nzLabel="2"></nz-option>
+      </nz-select>
+    </div>
+    <div class="data-box">
+      <nz-form-label>下单时间</nz-form-label>
+      <nz-range-picker></nz-range-picker>
+    </div>
+    <div class="data-box">
+      <nz-form-label>付款时间</nz-form-label>
+      <nz-range-picker></nz-range-picker>
+    </div>
+    <div class="data-box">
+      <nz-form-label>完成时间</nz-form-label>
+      <nz-range-picker></nz-range-picker>
+    </div>
+  </div>
+</div>
+
+<div class="bt-box">
+  <button nz-button nzType="primary">新增调节单</button>
+  &nbsp;
+  <button nz-button nzType="primary">批量审核</button>
+  &nbsp;
+  <button nz-button nzType="primary">导出订单主信息</button>
+  &nbsp;
+  <button nz-button nzType="primary">导出订单明细信息</button>
+</div>
+
+<main>
+  <nz-table #rowSelectionTable [nzData]="listOfData" [nzFrontPagination]="false" [nzShowPagination]="false">
+    <thead>
+      <tr>
+        <th [(nzChecked)]="checked" (nzCheckedChange)="onAllChecked($event)"></th>
+        <th nzAlign="center">商品</th>
+        <th nzAlign="center">价格/数量</th>
+        <th nzAlign="center">订单状态</th>
+        <th nzAlign="center">售后状态</th>
+        <th nzAlign="center">收货人</th>
+        <th nzAlign="center">应收金额</th>
+        <th nzAlign="center">实收金额</th>
+        <th nzAlign="center">物流信息</th>
+        <th nzAlign="center">状态</th>
+        <th nzAlign="center">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of rowSelectionTable.data">
+        <td [nzChecked]="this.checked" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+        <!-- 商品 -->
+        <td nzAlign="center" table-name>
+          1111
+        </td>
+        <!-- 价格/数量 -->
+        <td nzAlign="center">￥{{data.shopPriceB}}</td>
+        <!-- 订单状态 -->
+        <td nzAlign="center">￥{{data.shopPriceC}}</td>
+        <!-- 售后状态 -->
+        <td nzAlign="center">{{data.afterSalesState}}</td>
+        <!-- 收货人 -->
+        <td nzAlign="center">{{data.stockNum}}</td>
+        <!-- 应收金额 -->
+        <td nzAlign="center">{{data.totalPrice}}</td>
+        <!-- 实收金额 -->
+        <td nzAlign="center">{{data.realPrice}}</td>
+        <!-- 物流信息 -->
+        <td nzAlign="center">{{data.brandName}}</td>
+        <!-- 状态 -->
+        <td nzAlign="center" class="{{data.status == 0 ? 'font0'  : data.status == 1 ? 'font1'  : 'font2'}}">
+          {{data.status == 0 ? '无效'  : data.status == 1 ? '已上架'  : '已下架'}}
+        </td>
+        <td nzAlign="center" [width]="'200px'">
+          <a nz-button nzType="link">查看详情</a>
+          <a nz-button nzType="link">跟进</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+  <div class="pagination-box">
+    <div class="pagination-template">
+        <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+        <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]"nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="1"
+            [nzTotal]="1" [nzShowTotal]="totalTemplate" [nzPageSize]="1"
+            (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)">
+        </nz-pagination>
+    </div>
+</div>
+</main>

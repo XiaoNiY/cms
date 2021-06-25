@@ -1,0 +1,356 @@
+<main>
+    <b style="color: #b1b1b1;">PS:该商品处于“上架”状态，如果需要编辑请先下架</b>
+    <br>
+    <br>
+    <nz-form-label>&nbsp;&nbsp;&nbsp;&nbsp;多规格</nz-form-label> <label nz-checkbox [(ngModel)]="attrCheck"
+        (ngModelChange)="clickAttr()">是</label>
+    <br>
+
+    <div *ngIf="attrCheck">
+        <!-- SKU -->
+        <nz-form-label>属性分类</nz-form-label>
+        <nz-select id="typeId" nzPlaceHolder="请选择" (ngModelChange)="typeCall($event)" [(ngModel)]="selectAttr">
+            <nz-option nzValue="{{data.id}}" nzLabel="{{data.name}}" *ngFor="let data of goodsTypesArr; index as i">
+            </nz-option>
+        </nz-select>
+        <br>
+        <nz-form-label style="float: left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;规格</nz-form-label>
+        <div class="sku-list">
+            <div class="sku-item" *ngFor="let data of skuArr; index as i">
+                <span>{{data?.key}}: </span>
+                <nz-tag *ngFor="let tag of data?.val; let indexs as k" [nzMode]="'closeable'"
+                    (nzOnClose)="handleClose(i,tag,$event)">
+                    {{ tag }}
+                </nz-tag>
+
+                <input #inputElement nz-input nzSize="small" *ngIf="data.inputVisible" type="text"
+                    [(ngModel)]="inputAttrValue" style="width: 78px;" (blur)="handleInputConfirm(i)"
+                    (keydown.enter)="handleInputConfirm(i)" />
+
+                <nz-tag *ngIf="!data.inputVisible" class="editable-tag" nzNoAnimation (click)="openAttrModal(2,i)">
+                    <i nz-icon nzType="plus"></i>新建参数
+                </nz-tag>
+                <nz-tag class="editable-tag" nzNoAnimation nz-popconfirm nzPopconfirmTitle="操作将直接更新，确认删除吗?"
+                    [nzIcon]="iconTpl" (nzOnConfirm)="deleAttr(data)">
+                    <i nz-icon nzType="delete"></i> 删除规格
+                </nz-tag>
+                <ng-template #iconTpl>
+                    <i nz-icon nzType="question-circle-o" style="color: red;"></i>
+                </ng-template>
+                <br>
+            </div>
+            <button nz-button nzType="default" (click)="openAttrModal(1)">添加规格</button>&nbsp;&nbsp;
+            <button nz-button nzType="default" (click)="resetTbeles()">生成表格(手动)</button>
+            <!-- <br>
+            <br>
+            <b>PS:删除整个规格会重新绘制SKU列表</b>
+            <p></p>
+            <br> -->
+            <br>
+            <b>PS:规格 && 参数值不为空时，自动生成SKU列表(会重置数据)。</b>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <br>
+
+    <nz-table #groupingTable [nzData]="tableData" nzShowSizeChanger nzBordered [nzShowPagination]="false"
+        nzSize="middle">
+        <thead>
+            <tr>
+                <th colspan="{{tableTh?.length}}" *ngIf="attrCheck && tableTh.length != 0">规格</th>
+                <th colspan="{{attrCheck? '2' : '1'}}">基本信息</th>
+                <th colspan="2">库存</th>
+                <th colspan="5">B端设置</th>
+                <th colspan="4">C端设置</th>
+                <th *ngIf="attrCheck" rowspan="2">适用用户</th>
+                <th *ngIf="attrCheck" rowspan="2">状态</th>
+                <th rowspan="2">阶梯价格</th>
+                <th rowspan="2">操作</th>
+            </tr>
+            <tr>
+                <ng-container *ngIf="attrCheck">
+                    <th *ngFor="let data of tableTh; index as i">{{data.key}}</th>
+                </ng-container>
+                <th>仓库商品</th>
+                <th *ngIf="attrCheck">图片</th>
+                <th>库存</th>
+                <th>预警值</th>
+                <th>最小购买</th>
+                <th>最大购买</th>
+                <th>建议零售价</th>
+                <th>单个售价</th>
+                <th>单个划线价</th>
+                <th>最小购买</th>
+                <th>最大购买</th>
+                <th>单个售价</th>
+                <th>单个划线价</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of tableData; index as i">
+                <ng-container *ngIf="attrCheck">
+                    <ng-container *ngFor="let item of tableTh; index as k">
+                        <td *ngIf="propertiesArr[i][k][item.key] != undefined "
+                            attr.rowspan="{{propertiesArr[i][k].rowspan}}">
+                            {{propertiesArr[i][k][item.key]}}
+                        </td>
+                    </ng-container>
+                </ng-container>
+                <!-- 仓库商品 -->
+                <td>
+                    <nz-select [(ngModel)]="data.whGoodsId" nzShowSearch nzAllowClear nzPlaceHolder="请选择"
+                        [nzDisabled]="data.disabled">
+                        <nz-option nzLabel="{{item.name}}" nzValue="{{item.id}}"
+                            *ngFor="let item of whgoodsArr; index as i"></nz-option>
+                    </nz-select>
+                </td>
+                <!-- 图片 -->
+                <td *ngIf="attrCheck">
+                    <div class="sku-img clearfix">
+
+
+                        <a nz-button nz-button-tdlink nzType="link" disabled="{{data.disabled}}" *ngIf="!data.icon">
+                            <label for="file" class="upFile">
+                                <span>上传</span>
+                                <input id="file" type="file" multiple="multiple" accept="image/*"
+                                    (change)="handleFileInput($event,i)">
+                            </label>
+                        </a>
+
+                        <!-- <nz-upload class="upBt" *ngIf="!data.icon" nzAction="/common/upload/image"
+                            [nzShowUploadList]="false" (nzChange)="handleChange($event,i)" [nzDownload]="nzDownloads"
+                            [nzData]="getExtraData" [nzDisabled]="data.disabled">
+                            上传
+                        </nz-upload> -->
+
+                        <img *ngIf="data.icon" nz-image nzSrc="{{data.iconShow}}" [nzFallback]="fallback" alt="" />
+                        <a *ngIf="data.icon" (click)="removeSkuImg(i)">删除</a>
+                    </div>
+                </td>
+                <!-- 库存 -->
+                <td><input nz-input placeholder="请输入" [(ngModel)]="data.number" nzBorderless [disabled]="true" />
+                </td>
+                <!-- 预警值 -->
+                <td><input nz-input placeholder="请输入" [(ngModel)]="data.warnSkuNum" nzBorderless
+                        [disabled]="data.disabled" /></td>
+                <!-- B端设置 最小购买-->
+                <td><input nz-input placeholder="请输入" [(ngModel)]="data.buyMinB" nzBorderless
+                        [disabled]="data.disabled" />
+                </td>
+                <!-- B端设置 最大购买-->
+                <td><input nz-input placeholder="请输入" [(ngModel)]="data.buyMaxB" nzBorderless
+                        [disabled]="data.disabled" />
+                </td>
+                <!-- B端设置 建议零售价-->
+                <td><input nz-input placeholder="请输入" [(ngModel)]="data.retailPriceB" nzBorderless
+                        [disabled]="data.disabled" /></td>
+                <!-- B端设置 单个售价-->
+                <td><input nz-input placeholder="请输入" [(ngModel)]="data.shopPriceB" nzBorderless
+                        [disabled]="data.disabled" /></td>
+                <!-- B端设置 单个划线价-->
+                <td><input nz-input placeholder="请输入" [(ngModel)]="data.originalPriceB" nzBorderless
+                        [disabled]="data.disabled" /></td>
+                <!-- C端设置 最小购买-->
+                <td><input nz-input placeholder="请输入" [(ngModel)]="data.buyMinC" nzBorderless
+                        [disabled]="data.disabled" />
+                </td>
+                <!-- C端设置 最大购买-->
+                <td><input nz-input placeholder="请输入" [(ngModel)]="data.buyMaxC" nzBorderless
+                        [disabled]="data.disabled" />
+                </td>
+                <!-- C端设置 单个售价-->
+                <td><input nz-input placeholder="请输入" [(ngModel)]="data.shopPriceC" nzBorderless
+                        [disabled]="data.disabled" /></td>
+                <!-- C端设置 单个划线价-->
+                <td><input nz-input placeholder="请输入" [(ngModel)]="data.originalPriceC" nzBorderless
+                        [disabled]="data.disabled" /></td>
+                <!-- 适用用户 -->
+                <td *ngIf="attrCheck">
+                    <label nz-checkbox [(ngModel)]="data.selectUserTypeB" [disabled]="data.disabled">B端商户</label>
+                    <br>
+                    <label nz-checkbox [(ngModel)]="data.selectUserTypeC" [disabled]="data.disabled">C端用户</label>
+                </td>
+                <!-- 上下架 -->
+                <td *ngIf="attrCheck">
+                    <nz-switch [ngModel]="data.status == 1" nzCheckedChildren="上架" nzUnCheckedChildren="下架"
+                        [nzDisabled]="data.disabled" (click)="clickSwitch(data)">
+                    </nz-switch>
+                </td>
+                <!-- 阶梯价格 -->
+                <td><a nz-button nz-button-tdlink nzType="link" [disabled]="!data?.id"
+                        (click)="showModal(i)">{{data.ladderPriceSum}}个</a></td>
+                <!-- 编辑 -->
+                <td>
+                    <a nz-button nz-button-tdlink nzType="link" (click)="edit(i)"
+                        [nzLoading]="data.isLoadingEdit">{{data.disabled ? '编辑' : '保存'}}</a>
+                    <!-- <a nz-button nz-button-tdlink nzType="link" (click)="showModal(data.id)">阶梯价格</a> -->
+                    <a nz-button nz-button-tdlink nzType="link" (click)="openWhgoodsModal(data)"
+                        [disabled]="!data?.id">库存调整</a>
+                </td>
+            </tr>
+            <tr *ngIf="attrCheck">
+                <td attr.colspan="{{tableTh?.length + 3}}">批量操作</td>
+                <!-- 预警值 -->
+                <td>
+                    <input nz-input placeholder="请输入" nzBorderless [(ngModel)]="bulkData.warnSkuNum" />
+                </td>
+                <!-- B端设置 最小购买 -->
+                <td>
+                    <input nz-input placeholder="请输入" nzBorderless [(ngModel)]="bulkData.buyMinB" />
+                </td>
+                <td>
+                    <input nz-input placeholder="请输入" nzBorderless [(ngModel)]="bulkData.buyMaxB" />
+                </td>
+                <td>
+                    <input nz-input placeholder="请输入" nzBorderless [(ngModel)]="bulkData.retailPriceB" />
+                </td>
+                <td>
+                    <input nz-input placeholder="请输入" nzBorderless [(ngModel)]="bulkData.shopPriceB" />
+                </td>
+                <td>
+                    <input nz-input placeholder="请输入" nzBorderless [(ngModel)]="bulkData.originalPriceB" />
+                </td>
+                <td>
+                    <input nz-input placeholder="请输入" nzBorderless [(ngModel)]="bulkData.buyMinC" />
+                </td>
+                <td>
+                    <input nz-input placeholder="请输入" nzBorderless [(ngModel)]="bulkData.buyMaxC" />
+                </td>
+                <td>
+                    <input nz-input placeholder="请输入" nzBorderless [(ngModel)]="bulkData.shopPriceC" />
+                </td>
+                <td>
+                    <input nz-input placeholder="请输入" nzBorderless [(ngModel)]="bulkData.originalPriceC" />
+                </td>
+                <td>
+                    <label nz-checkbox [(ngModel)]="bulkData.selectUserTypeB">B端商户</label>
+                    <br>
+                    <label nz-checkbox [(ngModel)]="bulkData.selectUserTypeC">C端用户</label>
+                </td>
+                <td>
+                    <nz-switch nzCheckedChildren="上架" nzUnCheckedChildren="下架" [ngModel]="bulkData.status == 1"
+                        (click)="clickSwitch(bulkData)"></nz-switch>
+                </td>
+                <td>
+                    <a nz-button nz-button-tdlink nzType="link">合计{{bulkData.bulkData}}个</a>
+                </td>
+                <td>
+                    <a nz-button nz-button-tdlink nzType="link" (click)="batchWrite()">批量填写</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <br>
+    <button nz-button nzType="primary" [nzLoading]="saveAllLoading" (click)="saveAll()"
+        [disabled]="saveAllDisabled">全部保存(SKU)</button>
+</main>
+<!-- 阶梯价格模态框 -->
+<nz-modal [nzWidth]="'650px'" [(nzVisible)]="isVisible" nzTitle="阶梯价格设置" (nzOnCancel)="handleCancel()"
+    [nzFooter]="null">
+    <!-- <h3>{{detailsData.name}}</h3> -->
+    <p>
+        <span *ngFor="let data of objModal.propertiesStr; let i=index">{{data.value}}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    </p>
+    <nz-table class="ladderTable" #borderedTable nzBordered [nzData]="dataModal" [nzShowPagination]="false">
+        <thead>
+            <tr>
+                <th>序号</th>
+                <th>起购数量区间</th>
+                <th>单价</th>
+                <!-- <th>状态</th> -->
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>-</td>
+                <td>1{{dataModal.length > 0 && dataModal[0].count ? '~'+ (dataModal[0].count -1 ) : '' }}</td>
+                <td>{{objModal.shopPriceB}}</td>
+                <td>-</td>
+            </tr>
+            <tr *ngFor="let data of dataModal; let i=index">
+                <td>{{data.id ?  data.id :'-'}}</td>
+                <td class="ladderInput">
+                    <nz-input-number [(ngModel)]="data.count" [nzMin]="2" [nzStep]="1" placeholder="请输入">
+                    </nz-input-number>
+                    <span>
+                        {{dataModal.length > 1 && (dataModal.length != i+1) && dataModal[i+1].count ? '~' + (dataModal[i+1].count-1) :  '~无限制'}}
+                    </span>
+                </td>
+                <td>
+                    <nz-input-group nzAddOnAfter="元" style="width: 126px;">
+                        <nz-input-number [(ngModel)]="data.price" [nzMin]="1" [nzPrecision]="2" nzPlaceHolder="请输入">
+                        </nz-input-number>
+                    </nz-input-group>
+                </td>
+                <!-- <td class="{{data.status == 1 ? 'font_Green' : 'font_Ged' }}">{{data.status == 1 ? '启用' : '禁用'}}</td> -->
+                <td>
+                    <!-- <a nz-popconfirm nzPopconfirmTitle="确定{{data.status == 1 ? '禁用' : '启用'}}?"
+                        nzOkText="{{data.status == 1 ? '禁用' : '启用'}}" nzCancelText="取消"
+                        (nzOnConfirm)="stateModal(i)">{{data.status == 1 ? '禁用' : '启用'}} &nbsp;</a> -->
+                    <a nz-button nz-button-tdlink nzType="link" nzDanger nz-popconfirm nzPopconfirmTitle="确认删除吗?"
+                        [nzIcon]="iconTpl" (nzOnConfirm)="confirm(i)">删除</a>
+                    <ng-template #iconTpl>
+                        <i nz-icon nzType="question-circle-o" style="color: red;"></i>
+                    </ng-template>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <a class="addParam" (click)="addDataModal()">+添加</a>
+    <br>
+    <!-- <button nz-button nzType="default" (click)="addDataModal()">添加</button>&nbsp; -->
+    <button nz-button nzType="primary"  (click)="submit()">保存</button>
+    <!-- <br>
+    <br>
+    PS:每个规格最多设置3个启用的阶梯价格 -->
+</nz-modal>
+<!-- 规格模态框 -->
+<nz-modal class="" [(nzVisible)]="attrModal" nzTitle="{{attrModalTitle}}" (nzOnCancel)="handleCancel()"
+    [nzFooter]="null">
+    <form nz-form [formGroup]="modalAttrForm" (ngSubmit)="submitForm()">
+        <nz-form-item *ngIf="modalJson.id">
+            <nz-form-label [nzSpan]="4">选择已有</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <nz-select nzPlaceHolder="请选择" nzAllowClear formControlName="selectStr"
+                    (ngModelChange)="attrCall($event)">
+                    <nz-option nzValue="{{data.name}}" nzLabel="{{data.name}}"
+                        *ngFor="let data of attrParamr; index as i"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item *ngIf="canWrite == 2">
+            <nz-form-label [nzSpan]="4">自由设定</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="attrVal" id="attrVal" placeholder="" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-control [nzSpan]="8" [nzOffset]="4">
+                <button nz-button nzType="primary">保存</button>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+</nz-modal>
+<!-- 库存调整 -->
+<nz-modal [(nzVisible)]="whgoodsModal" nzTitle="调整库存" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+    <form nz-form [formGroup]="whgoodsForm" (ngSubmit)="subWhgoodsForm()">
+        <nz-form-item *ngIf="canWrite == 2">
+            <nz-form-label [nzSpan]="8">还剩库存</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                {{modalJson.notonQuantity}}
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="8">请输入需要调节的量</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="number" id="number" placeholder="请输入数量" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-control [nzSpan]="8" [nzOffset]="4">
+                <button nz-button nzType="primary">保存</button>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+</nz-modal>

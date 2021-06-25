@@ -1,0 +1,20 @@
+.tabset{
+    height: 30px;
+    padding: 0 20px;    
+    background-color: #fff;
+    border-bottom: 1px solid #e7eaef;
+    position: absolute;
+    top: 49px;
+    left: 0;
+    right: 0;
+}
+main{
+    padding-top: 30px;
+}
+:host ::ng-deep .ant-tabs-tab{
+    height: 30px;
+    padding: 0px;
+}
+:host ::ng-deep.ant-tabs-top > .ant-tabs-nav::before{
+    border: none;
+}

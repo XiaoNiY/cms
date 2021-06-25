@@ -1,0 +1,47 @@
+<!-- <textarea name="" id="" cols="30" rows="10"  [(ngModel)]="introductionC"></textarea> -->
+<!-- <div id="editorC" style="width:500px;height:500px;"></div>
+<br>
+<button nz-button nzType="primary" [nzLoading]="modalLoading" (click)="submit()">保存</button>
+ -->
+
+<main>
+    <div class="main-box">
+        <div class="editBox">
+            <p>商品详情</p>
+            <br>
+            <ul class="toolbars">
+                <li>
+                    <label for="file" class="upFile">
+                        <span>图片</span>
+                        <input id="file" type="file" multiple="multiple" accept="image/*" (change)="handleFileInput($event)">
+                    </label>
+                    <!-- <nz-upload nzAction="/common/upload/image" [nzShowUploadList]="false"
+                        (nzChange)="handleChange($event)" [nzData]="getExtraData">
+                        图片
+                    </nz-upload> -->
+                </li>
+            </ul>
+            <br>
+            <div class="scrollBox">
+                <div id="editorC"></div>
+            </div>
+        </div>
+        <div style="clear:both"></div>
+    </div>
+    <div class="submit-box">
+        <div class="bt-box">
+            <button nz-button nzType="primary"  (click)="submit()">确定</button>
+            <app-bt-group [btType]="'default'" [btText]="'返回'"></app-bt-group>
+        </div>
+    </div>
+
+</main>
+
+<!-- <div class="viewBox">
+    <p>效果预览</p>
+    <br>
+    <div class="view"  [innerHTML]="viewContent | html"></div>
+</div> -->
+<!-- <div style="clear:both"></div>
+<br>
+<button nz-button nzType="primary" [nzLoading]="modalLoading" (click)="submit()">保存</button> -->

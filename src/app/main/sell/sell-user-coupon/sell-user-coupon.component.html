@@ -1,0 +1,174 @@
+<div class="userCoupon">
+    <div class="bt-box">
+        <button nz-button nzType="primary" (click)="showModel()">批量撤回用户用券</button>
+    </div>
+    <!-- 查询 -->
+    <div class="bt-search">
+        <button nz-button nzType="primary" (click)="query()">查询</button>
+    </div>
+    <div class="search-box">
+        <!-- 状态 -->
+        <div class="status">
+            <nz-form-label>状态</nz-form-label>
+            <nz-select nzShowSearch nzAllowClear [(ngModel)]="queryForm.status">
+                <nz-option nzLabel="全部" nzValue=""></nz-option>
+                <nz-option nzLabel="待使用" nzValue="1"></nz-option>
+                <nz-option nzLabel="售后中" nzValue="2"></nz-option>
+                <nz-option nzLabel="已过期" nzValue="3"></nz-option>
+                <nz-option nzLabel="已使用" nzValue="4"></nz-option>
+                <nz-option nzLabel="强制停止" nzValue="5"></nz-option>
+            </nz-select>
+        </div>
+        <!-- 领取时间 -->
+        <div class="date-box">
+            <nz-form-label>领取时间</nz-form-label>
+            <nz-range-picker [(ngModel)]="queryForm.getTimeForm"></nz-range-picker>
+        </div>
+        <!-- 优惠券ID -->
+        <div class="couponNo">
+            <nz-form-label>优惠券ID</nz-form-label>
+            <input nz-input placeholder="请输入优惠券ID" [(ngModel)]="queryForm.couponNo" />
+        </div>
+
+        <!-- 客户 -->
+        <div class="userInfo">
+            <nz-form-label>客户</nz-form-label>
+            <input nz-input placeholder="请输入名称/昵称/ID" [(ngModel)]="queryForm.userInfo" />
+        </div>
+    </div>
+</div>
+
+<main>
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="listOfData?.records" [nzShowPagination]="false"
+        [nzPageSize]="listOfData?.size" [nzLoading]="tableLoading">
+        <thead>
+            <tr>
+                <th [(nzChecked)]="checked" (nzCheckedChange)="onAllChecked($event)"></th>
+                <th nzAlign="center">券码</th>
+                <th nzAlign="center">客户</th>
+                <th nzAlign="center">联系方式</th>
+                <th nzAlign="center">优惠券名称</th>
+                <th nzAlign="center">领取面值</th>
+                <th nzAlign="center">实际抵扣</th>
+                <th nzAlign="center">关联订单号</th>
+                <th nzAlign="center">领取时间</th>
+                <th nzAlign="center">过期时间</th>
+                <th nzAlign="center">使用时间</th>
+                <th nzAlign="center">状态</th>
+                <th nzAlign="center">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="searchHint && listOfData?.records">
+                <td class="searchHint" nzAlign="center" colspan="13">
+                    <span>搜索 “{{searchName}}”，找到&nbsp;{{ listOfData?.total }}&nbsp;条结果</span>
+                    <a (click)="backList()">返回原列表</a>
+                </td>
+            </tr>
+            <tr *ngFor="let data of rowSelectionTable.data">
+                <!-- 复选框 -->
+                <td nzAlign="center" [nzChecked]="data.checked" (nzCheckedChange)="onItemChecked(data.id, $event)"
+                    [nzDisabled]=" data.status != '1' ">
+                    <!-- 券码 -->
+                <td nzAlign="center">{{ data.couponNo ? data.couponNo : '-' }}</td>
+                <!-- 客户 -->
+                <td nzAlign="center">{{ data.userName ? data.userName : '-' }}</td>
+                <!-- 联系方式 -->
+                <td nzAlign="center">{{ data.userPhone ? data.userPhone : '-' }}</td>
+                <!-- 优惠券名称 -->
+                <td nzAlign="center">
+                    {{ data.couponName }}
+                    <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline" [nzTooltipTitle]="titleTemplate"
+                        nzTooltipPlacement="bottom"></i>
+                    <ng-template #titleTemplate>
+                        <p>名称：{{ data.couponInfo.couponName }}</p>
+                        <p>备注：{{ data.couponInfo.remark }}</p>
+                        <p>类型：{{ data.couponInfo.type }}</p>
+                        <p>内容：{{ data.couponInfo.useDesc }}</p>
+                        <p>使用时间：{{ data.couponInfo.useTime }}</p>
+                    </ng-template>
+                </td>
+                <!-- 领取面值 -->
+                <td nzAlign="center">{{ data.couponLimitSmall }}</td>
+                <!-- 实际抵扣 -->
+                <td nzAlign="center">{{ data.discountsAmount ? '￥' + data.discountsAmount : '-'}}</td>
+                <!-- 关联订单号 -->
+                <td nzAlign="center">{{ data.orderNum ? data.orderNum : '-' }}</td>
+                <!-- 领取时间 -->
+                <td nzAlign="center">{{ data.getTime }}</td>
+                <!-- 过期时间 -->
+                <td nzAlign="center" [ngStyle]="{color: flagTime(data.useEndTime)}">
+                    {{ data.useEndTime }}
+                </td>
+                <!-- 使用时间 -->
+                <td nzAlign="center">{{ data.useTime ? data.useTime : '-' }}</td>
+                <!-- 状态 -->
+                <td nzAlign="center"
+                    class="{{ data.status == 1 ? 'font_Green' : data.status == 2 ? 'font_Yellow' : 'font_Black' }}">
+                    {{ status_to_text(data.status) }}
+                    <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline" [nzTooltipTitle]="statusTemplate"
+                        nzTooltipPlacement="right" *ngIf="data.status == 5"></i>
+                    <ng-template #statusTemplate>
+                        <p>备注：{{ data.couponInfo.remark }}</p>
+                    </ng-template>
+                </td>
+                <td nzAlign="center">
+                    <a nz-button nzType="link" (click)="showVouchers(data.id)" [disabled]="data.status != 1">撤回用户用券</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+
+    <div class="pagination-box">
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]" nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="1"
+                [nzTotal]="listOfData?.total" [nzShowTotal]="totalTemplate" [nzPageSize]="queryForm.pageSize"
+                [nzPageIndex]="queryForm.pageNum" (nzPageIndexChange)="onPageIndexChange($event)"
+                (nzPageSizeChange)="onPageSizeChange($event)">
+            </nz-pagination>
+        </div>
+    </div>
+</main>
+
+<!-- 批量停止用户用券 -->
+<nz-modal [(nzVisible)]="batch" nzTitle="提示" (nzOnCancel)="handleCancel()">
+    <form nz-form>
+        <nz-form-item>
+            <nz-form-label [nzSm]="4">
+                撤回原因
+            </nz-form-label>
+            <nz-form-control nzFlex="430px" [nzSpan]="64">
+                <nz-mention>
+                    <textarea rows="6" nz-input [(ngModel)]="stopContent" name="stopContent"></textarea>
+                </nz-mention>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-control [nzOffset]="14">
+            <button nz-button nzCentered nzType="primary" (click)="stop(0)">确认撤回</button>
+            <button nz-button nzCentered nzType="default" (click)="handleCancel()">取消</button>
+        </nz-form-control>
+    </form>
+</nz-modal>
+
+<!-- 停止用户用券 -->
+<nz-modal [(nzVisible)]="stopUserVouchers" nzTitle="提示" (nzOnCancel)="handleCancel()">
+    <form nz-form>
+        <nz-form-item>
+            <nz-form-label [nzSm]="4">
+                撤回原因
+            </nz-form-label>
+            <nz-form-control nzFlex="430px" [nzSpan]="64">
+                <nz-mention>
+                    <textarea rows="6" nz-input [(ngModel)]="stopContent" name="stopContent"></textarea>
+                </nz-mention>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-control [nzOffset]="14">
+            <button nz-button nzCentered nzType="primary" (click)="stop(1)">确认撤回</button>
+            <button nz-button nzCentered nzType="default" (click)="handleCancel()">取消</button>
+        </nz-form-control>
+    </form>
+</nz-modal>

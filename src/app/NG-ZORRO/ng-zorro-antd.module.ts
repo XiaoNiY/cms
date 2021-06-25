@@ -42,7 +42,6 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
-import { NzIconModule } from 'ng-zorro-antd/icon';
 @NgModule({
     exports: [
         NzTableModule,
@@ -87,7 +86,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
         DragDropModule,
         NzPopoverModule,
         NzSpinModule,
-        NzIconModule
     ],
 })
-export class NgZorroAntdModule { }
+export class DemoNgZorroAntdModule { }

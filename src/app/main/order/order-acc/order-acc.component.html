@@ -1,0 +1,252 @@
+<!-- <div class="tabset">
+    <nz-tabset>
+        <nz-tab nzTitle="{{data.name}}" *ngFor="let data of tabsArr; let i=index" (nzClick)="toTabs(data.id)">
+        </nz-tab>
+    </nz-tabset>
+</div> -->
+<div class="bt-search">
+    <div class="bt-box">
+        <button nz-button nzType="primary" (click)="toAdjustOrder()">新建调节订单</button>
+        <button nz-button nzType="primary" (click)="showModal()">批量审核</button>
+        <button nz-button nzType="primary" (click)="goodsDeliver()">批量发货</button>
+        <button nz-button nzType="default" (click)="exportModal(1)">导出主信息</button>
+        <button nz-button nzType="default" (click)="exportModal(2)">导出明细信息</button>
+    </div>
+    <!-- 其他功能按钮 -->
+    <div class="bt-list">
+        <a class="refresh" nzTooltipTitle="刷新" nzTooltipPlacement="top" nz-tooltip (click)="refresh()"><i nz-icon
+                nzType="sync" nzTheme="outline"></i></a>
+        <!-- <a class="export" nzTooltipTitle="导出" nzTooltipPlacement="top" nz-tooltip><i nz-icon nzType="download"
+                nzTheme="outline"></i></a> -->
+    </div>
+    <div class="search-box">
+        <nz-form-label>订单号</nz-form-label>
+        <input type="text" nz-input placeholder="请输入订单号" nzSize="default" [(ngModel)]="queryForm.orderNum">
+
+        <nz-form-label>商品</nz-form-label>
+        <input type="text" nz-input placeholder="请输入商品编号或名称" nzSize="default" [(ngModel)]="queryForm.goodsName">
+
+        <nz-form-label>下单时间</nz-form-label>
+        <nz-range-picker [nzFormat]="'yyyy-MM-dd'" [(ngModel)]="queryForm.dateFormat"></nz-range-picker>
+
+        <nz-form-label>订单状态</nz-form-label>
+        <nz-select nzAllowClear nzPlaceHolder="请选择" [(ngModel)]="queryForm.orderState">
+            <nz-option nzLabel="全部" nzValue=""></nz-option>
+            <!-- <nz-option nzLabel="有效" nzValue="0"></nz-option>
+            <nz-option nzLabel="无效" nzValue="1"></nz-option> -->
+            <nz-option nzLabel="待付款" nzValue="2"></nz-option>
+            <nz-option nzLabel="待审核" nzValue="3"></nz-option>
+            <nz-option nzLabel="审核不通过" nzValue="4"></nz-option>
+            <nz-option nzLabel="审核通过" nzValue="5"></nz-option>
+            <nz-option nzLabel="排队发货" nzValue="6"></nz-option>
+            <nz-option nzLabel="待发货" nzValue="7"></nz-option>
+            <nz-option nzLabel="待收货(已发货)" nzValue="8"></nz-option>
+            <nz-option nzLabel="交易完成" nzValue="9"></nz-option>
+            <nz-option nzLabel="支付超时" nzValue="10"></nz-option>
+            <nz-option nzLabel="客服取消" nzValue="11"></nz-option>
+            <nz-option nzLabel="客户取消" nzValue="12"></nz-option>
+            <nz-option nzLabel="售后中" nzValue="13"></nz-option>
+            <nz-option nzLabel="全部退货" nzValue="14"></nz-option>
+        </nz-select>
+        <!-- 搜索 -->
+        <button nz-button nzType="primary" nzSearch (click)="query()"><i nz-icon nzType="search"></i></button>
+    </div>
+</div>
+<main>
+    <div class="tableTh">
+        <div class="tableAll">
+            <label nz-checkbox [(ngModel)]="checked" (ngModelChange)="onAllChecked($event)"></label>
+        </div>
+        <nz-table class="tab-border">
+            <thead>
+                <tr>
+                    <th nzAlign="left" style="padding-left: 20px;">商品</th>
+                    <th nzAlign="center">价格/数量</th>
+                    <th nzAlign="center">应收金额</th>
+                    <th nzAlign="center">实收金额</th>
+                    <th nzAlign="center">收货人/联系电话</th>
+                    <th nzAlign="center">物流信息</th>
+                    <th nzAlign="center">订单状态</th>
+                    <th nzAlign="center">操作</th>
+                </tr>
+            </thead>
+        </nz-table>
+    </div>
+    <div class="noData" *ngIf="searchHint && listOfData?.records">
+        <span>搜索 “{{searcName}}”，找到&nbsp;{{ listOfData?.total }}&nbsp;条结果</span>
+        <a (click)="backList()">返回原列表</a>
+    </div>
+    <div class="tableMain" *ngFor="let list of listOfData?.records; let k=index">
+        <div class="tableCheck">
+            <label nz-checkbox [(ngModel)]="list.Checked" (ngModelChange)="onItemChecked(list.id, $event)"
+                [nzDisabled]=" list.statusTest != '待审核' "></label>
+        </div>
+        <div class="tableBox">
+            <div class="tableTitle">
+                <nz-tag [nzColor]="'magenta'" *ngIf="list.platform == 1">H5</nz-tag>
+                <nz-tag [nzColor]="'orange'" *ngIf="list.platform == 2">PC</nz-tag>
+                <nz-tag [nzColor]="'purple'" *ngIf="list.platform == 3">APP</nz-tag>
+
+                <nz-tag [nzColor]="'#2db7f5'" *ngIf="list.userType == 2">B端</nz-tag>
+                <nz-tag [nzColor]="'#87d068'" *ngIf="list.userType == 1">C端</nz-tag>
+                <span>id： {{list.id}}</span>
+                <span>订单号: <font>{{list.orderNum}}</font></span>
+                <!-- <span>订单状态： {{list.statusTest}}</span> -->
+                <span>下单时间： {{list.createTime}}</span>
+                <span>成交时间： {{list.dealTime ?list.dealTime : '-'}}</span>
+            </div>
+            <nz-table nzBordered [nzShowPagination]="false" [nzData]="list.orderDetailsList">
+                <tbody>
+                    <tr *ngFor="let item of list.orderDetailsList; let i=index">
+                        <!-- 商品 -->
+                        <td style="border-right:none">
+                            <div class="goodsName">
+                                <img nz-image nzSrc="{{item.icon}}" [nzFallback]="fallback" />
+                                <div class="goodsText">
+                                    <a href=".#/goods/goodsTabs/{{item.goodsId}}" target="_blank"
+                                        title="{{item.goodsName}}">{{item.goodsName}}</a>
+
+                                    <!-- <span title="{{item.goodsName}}"
+                                        (click)="toGoodsInfo(item.goodsId)">{{item.goodsName}}</span> -->
+                                    <p>{{item.code ?item.code :'---'}}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <!-- 价格/数量 -->
+                        <td nzAlign="center" style="border-right: 1px solid #e7eaef">
+                            {{item.price}}元
+                            <br>
+                            {{item.num}}件
+                        </td>
+                        <ng-container *ngIf="i == 0">
+                            <!-- 应收金额 -->
+                            <td nzAlign="center" rowSpan="{{list.length}}">￥{{list.totalPrice | number : '0.2-2' }}</td>
+                            <!-- 实收金额 -->
+                            <td nzAlign="center" rowSpan="{{list.length}}">￥{{list.realPrice | number : '0.2-2' }}</td>
+                            <!-- 买家/收货人 -->
+                            <td nzAlign="center" rowSpan="{{list.length}}">
+                                {{list.consignee}}
+                                <br>
+                                {{list.tel}}
+                            </td>
+                            <!-- 物流信息 -->
+                            <td nzAlign="left" rowSpan="{{list.length}}" style="padding-left: 20px;">
+                                公司名称：{{list.orderExpressList.length!=0 ?
+                                expressCode_To_Text(list.orderExpressList[0].expressCode) : '---'}}
+                                <br>
+                                快递单号：{{list.orderExpressList !=0? list.orderExpressList[0].expressNum : '---'}}
+                            </td>
+                            <!-- 订单状态 -->
+                            <td nzAlign="center" class="{{getStatusColor(list.status)}}" rowSpan="{{list.length}}">
+                                {{list.statusTest}}
+                            </td>
+                            <td nzAlign="center" rowSpan="{{list.length}}">
+                                <a nz-button nz-button-tdlink nzType="link"
+                                    [routerLink]="['../accDetails',list.id]">查看详情</a>
+                                <a nz-button nz-button-tdlink nzType="link" [disabled]=" list.statusTest != '待审核' "
+                                    (click)="showModal(list)">审核</a>
+                                <a nz-button nz-button-tdlink nzType="link"
+                                    (click)="followModal(list.orderNum)">跟进</a>
+                            </td>
+                        </ng-container>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+    <div class="pagination-box">
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]" nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="1"
+                [nzTotal]="listOfData?.total" [nzShowTotal]="totalTemplate" [nzPageSize]="listOfData?.size"
+                (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)">
+            </nz-pagination>
+        </div>
+    </div>
+</main>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="审核" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+    <nz-form-item>
+        <nz-form-label [nzSpan]="4">审核意见</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+            <textarea rows="6" nz-input [(ngModel)]="auditDesc"></textarea>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control [nzSpan]="18" [nzOffset]="4">
+            <button nz-button nzType="primary" (click)="save(5)">通过({{selectArr.length}})</button>
+            <button nz-button nzType="primary" (click)="save(4)">不通过({{selectArr.length}})</button>
+            <button nz-button nzType="default" (click)="handleCancel()">取消</button>
+        </nz-form-control>
+    </nz-form-item>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="exportVisible" nzTitle="导出信息" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+    <nz-form-item>
+        <nz-form-label [nzSpan]="9">请选择要导出的时间范围</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+            <nz-range-picker [(ngModel)]="exportDate"></nz-range-picker>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control [nzSpan]="18" [nzOffset]="9">
+            <button nz-button nzType="primary" (click)="exportOrder()">确定</button>
+            <button nz-button nzType="default" (click)="handleCancel()">取消</button>
+        </nz-form-control>
+    </nz-form-item>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="followVisible" nzTitle="跟进" (nzOnCancel)="handleCancel()" [nzFooter]="null"
+    [nzWidth]="'1050px'">
+    <div class="importBox">
+        <textarea rows="6" nz-input [(ngModel)]="followParam.content" placeholder="请输入内容，限制100字"
+            [maxlength]="100"></textarea>
+        <div class="bt-box">
+            <label for="file" class="followFile">
+                <span>选择文件</span>
+                <input id="file" type="file" multiple="multiple" [(ngModel)]="inputVal"
+                    (change)="handleFileInput($event,2)">
+            </label>
+            <font>请选择图片、office文件、PDF文件</font>
+            <button nz-button nzType="primary" (click)="followerSave()">提交</button>
+        </div>
+        <ul>
+            <li *ngFor="let item of followParam.enclosure; index as i">
+                <span>{{item.showUrl}}</span>
+                <a nz-button nz-button-tdlink nzType="link" (click)="deleteFollowImg(i)">删除</a>
+            </li>
+        </ul>
+    </div>
+    <div class="followTable" *ngIf="followList.length != 0">
+        <h3>跟进记录</h3>
+        <br>
+        <nz-table #colSpanTable nzBordered [nzShowPagination]="false" [nzData]="[{}]">
+            <thead>
+                <tr>
+                    <th nzAlign="center">id</th>
+                    <th nzAlign="center">跟进时间</th>
+                    <th nzAlign="center">跟进人</th>
+                    <th nzAlign="center">跟进内容</th>
+                    <th nzAlign="center">附件</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of followList">
+                    <td nzAlign="center">{{item.id}}</td>
+                    <td nzAlign="center">{{item.createTime}}</td>
+                    <td nzAlign="center">{{item.follower}}</td>
+                    <td nzAlign="center">{{item.content}}</td>
+                    <td nzAlign="center">
+                        <ul>
+                            <li *ngFor="let o of item.enclosure">
+                                <span>{{formUrl(o)}}</span>
+                                <a href="{{o}}">下载</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</nz-modal>
+

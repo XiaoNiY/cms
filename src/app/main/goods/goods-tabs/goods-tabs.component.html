@@ -1,0 +1,47 @@
+<div class="tabset">
+    <nz-tabset>
+        <nz-tab nzTitle="{{data.name}}" *ngFor="let data of tabArr; let i=index" (nzClick)="toTabs(data.path)"
+            [nzDisabled]="data.disabled">
+        </nz-tab>
+    </nz-tabset>
+    <div class="switch-bt">
+        <nz-switch [ngModel]="status == 1" nzCheckedChildren="上架" nzUnCheckedChildren="下架" [nzLoading]="loading"
+            (click)="clickSwitch()" [nzDisabled]="detailsData"></nz-switch>
+        <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline" [nzTooltipTitle]="titleTemplate"
+            nzTooltipPlacement="right"></i>
+        <ng-template #titleTemplate>
+            <p>商品上架必须满足条件</p>
+            <p>1：至少有一张商品图片</p>
+            <p>2：B端,C端价格必填</p>
+            <p>3：库存和关联商品必填</p>
+            <p>4：详细信息必填</p>
+        </ng-template>
+
+    </div>
+</div>
+<main>
+    <div class="explain-box">
+        <i nz-icon nzType="info-circle" nzTheme="outline"></i>
+        <span>商品上架条件：1. 至少有一张商品图片；2. B端,C端价格必填；3. 库存和关联商品必填；4. 详细信息必填；</span>
+    </div>
+    <router-outlet></router-outlet>
+</main>
+<!-- 
+<nz-layout>
+    <nz-content>
+        <nz-tabset>
+            <nz-tab nzTitle="{{data.name}}" *ngFor="let data of tabArr; let i=index" (nzClick)="toTabs(data.path)"
+                [nzDisabled]="data.disabled">
+            </nz-tab>
+        </nz-tabset>
+        <nz-skeleton *ngIf="skeletonActive" [nzActive]="true"></nz-skeleton>
+        <nz-skeleton *ngIf="skeletonActive" [nzActive]="true"></nz-skeleton>
+
+        <nz-result *ngIf="resultError" nzStatus="500" nzTitle="500" nzSubTitle="服务器发生了错误">
+            <div nz-result-extra>
+                <button nz-button nzType="primary">重新加载</button>
+            </div>
+        </nz-result>
+        
+    </nz-content>
+</nz-layout> -->

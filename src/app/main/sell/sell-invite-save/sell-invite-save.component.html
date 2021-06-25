@@ -1,0 +1,198 @@
+<main>
+    <form class="formBox">
+        <h3>基础信息</h3>
+        <nz-form-item>
+            <nz-form-label nzRequired>活动状态</nz-form-label>
+            <nz-form-control nzFlex="147px">
+                <nz-radio-group>
+                    <label nz-radio nzValue="开启">开启</label>
+                    <label nz-radio nzValue="停止">停止</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzRequired>活动时间</nz-form-label>
+            <nz-form-control>
+                <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" nzPlaceHolder="请选择开始时间">
+                </nz-date-picker>
+                &nbsp;
+                <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" nzPlaceHolder="请选择结束时间">
+                </nz-date-picker>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzRequired>链接地址</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input nz-input type="text" placeholder="请输入">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzRequired>备注</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <nz-mention>
+                    <textarea rows="4" nz-input placeholder="仅内部可见"></textarea>
+                </nz-mention>
+            </nz-form-control>
+        </nz-form-item>
+
+        <h3>邀请人相关配置</h3>
+        <nz-form-item>
+            <nz-form-label>新用户注册</nz-form-label>
+            <nz-form-control nzFlex="100px">
+                <input nz-input type="text" [title]="'成长值'" placeholder="成长值">
+            </nz-form-control>
+            <nz-form-control nzFlex="100px">
+                <input nz-input type="text" [title]="'积分'" placeholder="积分">
+            </nz-form-control>
+            <nz-form-control nzFlex="200px">
+                <input nz-input type="text" [title]="'不可提现余额'" placeholder="不可提现余额">
+            </nz-form-control>
+            <nz-form-control nzFlex="200px">
+                <input nz-input type="text" [title]="'可提现余额'" placeholder="可提现余额">
+            </nz-form-control>
+            <nz-form-control nzFlex="200px">
+                <input nz-input type="text" [title]="'选择b端优惠券'" placeholder="选择b端优惠券">
+            </nz-form-control>
+            <nz-form-control nzFlex="200px">
+                <input nz-input type="text" [title]="'选择c端优惠券'" placeholder="选择c端优惠券">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>新用户认证成功</nz-form-label>
+            <nz-form-control nzFlex="100px">
+                <input nz-input type="text" [title]="'成长值'" placeholder="成长值">
+            </nz-form-control>
+            <nz-form-control nzFlex="100px">
+                <input nz-input type="text" [title]="'积分'" placeholder="积分">
+            </nz-form-control>
+            <nz-form-control nzFlex="200px">
+                <input nz-input type="text" [title]="'不可提现余额'" placeholder="不可提现余额">
+            </nz-form-control>
+            <nz-form-control nzFlex="200px">
+                <input nz-input type="text" [title]="'可提现余额'" placeholder="可提现余额">
+            </nz-form-control>
+            <nz-form-control nzFlex="200px">
+                <input nz-input type="text" [title]="'选择b端优惠券'" placeholder="选择b端优惠券">
+            </nz-form-control>
+            <nz-form-control nzFlex="200px">
+                <input nz-input type="text" [title]="'选择c端优惠券'" placeholder="选择c端优惠券">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>新用户首单</nz-form-label>
+            <nz-form-control nzFlex="100px">
+                <input nz-input type="text" [title]="'成长值'" placeholder="成长值">
+            </nz-form-control>
+            <nz-form-control nzFlex="100px">
+                <input nz-input type="text" [title]="'积分'" placeholder="积分">
+            </nz-form-control>
+            <nz-form-control nzFlex="200px">
+                <input nz-input type="text" [title]="'不可提现余额'" placeholder="不可提现余额">
+            </nz-form-control>
+            <nz-form-control nzFlex="200px">
+                <input nz-input type="text" [title]="'可提现余额'" placeholder="可提现余额">
+            </nz-form-control>
+            <nz-form-control nzFlex="200px">
+                <input nz-input type="text" [title]="'选择b端优惠券'" placeholder="选择b端优惠券">
+            </nz-form-control>
+            <nz-form-control nzFlex="200px">
+                <input nz-input type="text" [title]="'选择c端优惠券'" placeholder="选择c端优惠券">
+            </nz-form-control>
+        </nz-form-item>
+
+        <h3>被邀请人相关配置</h3>
+        <nz-form-item>
+            <nz-form-label>新用户注册</nz-form-label>
+            <nz-form-control nzFlex="100px">
+                <input nz-input type="text" placeholder="成长值">
+            </nz-form-control>
+            <nz-form-control nzFlex="100px">
+                <input nz-input type="text" placeholder="积分">
+            </nz-form-control>
+            <nz-form-control nzFlex="200px">
+                <input nz-input type="text" placeholder="不可提现余额">
+            </nz-form-control>
+            <nz-form-control nzFlex="200px">
+                <input nz-input type="text" placeholder="可提现余额">
+            </nz-form-control>
+            <nz-form-control nzFlex="200px">
+                <input nz-input type="text" placeholder="选择b端优惠券">
+            </nz-form-control>
+            <nz-form-control nzFlex="200px">
+                <input nz-input type="text" placeholder="选择c端优惠券">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>
+                新用户认证成功
+            </nz-form-label>
+            <nz-form-control nzFlex="100px">
+                <input nz-input type="text" placeholder="成长值">
+            </nz-form-control>
+            <nz-form-control nzFlex="100px">
+                <input nz-input type="text" placeholder="积分">
+            </nz-form-control>
+            <nz-form-control nzFlex="200px">
+                <input nz-input type="text" placeholder="不可提现余额">
+            </nz-form-control>
+            <nz-form-control nzFlex="200px">
+                <input nz-input type="text" placeholder="可提现余额">
+            </nz-form-control>
+            <nz-form-control nzFlex="200px">
+                <input nz-input type="text" placeholder="选择b端优惠券">
+            </nz-form-control>
+            <nz-form-control nzFlex="200px">
+                <input nz-input type="text" placeholder="选择c端优惠券">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>
+                新用户首单
+            </nz-form-label>
+            <nz-form-control nzFlex="100px">
+                <input nz-input type="text" placeholder="成长值">
+            </nz-form-control>
+            <nz-form-control nzFlex="100px">
+                <input nz-input type="text" placeholder="积分">
+            </nz-form-control>
+            <nz-form-control nzFlex="200px">
+                <input nz-input type="text" placeholder="不可提现余额">
+            </nz-form-control>
+            <nz-form-control nzFlex="200px">
+                <input nz-input type="text" placeholder="可提现余额">
+            </nz-form-control>
+            <nz-form-control nzFlex="200px">
+                <input nz-input type="text" placeholder="选择b端优惠券">
+            </nz-form-control>
+            <nz-form-control nzFlex="200px">
+                <input nz-input type="text" placeholder="选择c端优惠券">
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+
+    <div class="submit-box">
+        <div class="bt-box">
+            <button nz-button nzType="primary">保存</button>
+            &nbsp;
+            <app-bt-group [btType]="'default'" [btText]="'返回'"></app-bt-group>
+        </div>
+    </div>
+
+    <div class="look">
+        <div class="lookBox">
+            <p>PS:</p>
+            <p>
+                1，用户邀请其他用户以后，都会留有邀请记录，但是只有在“活动开启，并且在活动时间内”的记录才会触发奖励；
+            </p>
+            <p>例如活动时间是10-01 ~ 10-30，</p>
+            <p>然后新用户是09-30注册的就无法触发注册奖励，</p>
+            <p>然后在10-02提交了认证并且通过了(无论什么时候通过的)，就可以触发认证成功奖励</p>
+            <p>然后在11-01提交了首单，则无法触发首单奖励；</p>
+
+            <p>2，奖励发放时间说明：</p>
+            <p>新用户注册奖励：新用户注册成功以后，新用户和老用户就可以同时得到奖励；</p>
+            <p>新用户认证奖励：新用户认证审核通过的时候，新用户和老用户可以同时得到奖励；</p>
+            <p>新用户首单奖励：新用户首单收货以后，再过n天即可得到(n=售后最长时限，例如15天后不允许售后)</p>
+        </div>
+    </div>
+</main>

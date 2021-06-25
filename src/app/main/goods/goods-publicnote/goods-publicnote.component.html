@@ -1,0 +1,85 @@
+<div class="bt-search">
+    <div class="bt-box">
+        <button nz-button nzType="primary" (click)="showModal()">新增</button>
+        <!-- <button nz-button nzType="default" nzDanger (click)="onAllDel()">批量删除</button> -->
+    </div>
+</div>
+<main>
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="listOfData?.records" [nzShowPagination]="false" nzBordered>
+        <thead>
+            <tr>
+                <!-- <th [nzWidth]="'10px'" [(nzChecked)]="checked" (nzCheckedChange)="onAllChecked($event)"></th> -->
+                <th [nzWidth]="'20px'" nzAlign="center">id</th>
+                <th nzAlign="center">名称</th>
+                <th nzAlign="center">创建时间</th>
+                <th nzAlign="center">更新时间</th>
+                <th nzAlign="center">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of rowSelectionTable.data">
+                <!-- <td nzAlign="center" [nzChecked]="data.Checked" (nzCheckedChange)="onItemChecked(data.id, $event)">
+                </td> -->
+                <td nzAlign="center">{{ data.id }}</td>
+                <td nzAlign="left">{{ data.noteName }}</td>
+                <td nzAlign="center">{{ data.createTime }}</td>
+                <td nzAlign="center">{{ data.updateTime }}</td>
+                <td nzAlign="center">
+                    <a nz-button nz-button-tdlink nzType="link" (click)="showModal(data.id)">编辑</a>
+                    <a nz-button nz-button-tdlink nzType="link" nzDanger nz-popconfirm nzPopconfirmTitle="确认删除吗?"
+                        [nzIcon]="iconTpl" (nzOnConfirm)="confirm(data.id)">删除</a>
+                    <ng-template #iconTpl>
+                        <i nz-icon nzType="question-circle-o" style="color: red;"></i>
+                    </ng-template>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <div class="pagination-box">
+        <!-- <span>共 <strong>0</strong> 条</span> -->
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]"nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="1" [nzTotal]="listOfData?.total"
+                [nzShowTotal]="totalTemplate" [nzPageSize]="listOfData?.size"
+                (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)">
+            </nz-pagination>
+        </div>
+    </div>
+</main>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="请输入类型名称" (nzOnCancel)="handleCancel()" [nzFooter]="null" [nzWidth]="650">
+    <!-- <form nz-form [formGroup]="modalForm" (ngSubmit)="submitForm()"> -->
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">名称</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input [(ngModel)]="json.noteName" [maxLength]="100" placeholder="" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">工具</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <ul class="toolbars">
+                    <li>
+                        <label for="file" class="upFile">
+                            <span>图片</span>
+                            <input id="file" type="file" [(ngModel)]="fileObj" multiple="multiple" accept="image/*"
+                                (change)="handleFileInput($event)">
+                        </label>
+                    </li>
+                </ul>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">通用文本</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <div class="scrollBox">
+                    <div id="publicnote"></div>
+                </div>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-control [nzSpan]="8" [nzOffset]="4">
+                <button nz-button nzType="primary" (click)="submitForm()">保存</button>
+            </nz-form-control>
+        </nz-form-item>
+    <!-- </form> -->
+</nz-modal>

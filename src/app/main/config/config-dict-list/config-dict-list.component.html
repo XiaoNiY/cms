@@ -1,0 +1,135 @@
+<div class="bt-search">
+    <div class="bt-box">
+        <button nz-button nzType="primary" (click)="showModal()">新增字典</button>
+    </div>
+</div>
+<main>
+
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="listOfData?.list.records" [nzShowPagination]="false"  [nzPageSize]="listOfData?.list.size" nzBordered>
+        <thead>
+            <tr>
+                <th nzAlign="center">ID</th>
+                <th nzAlign="center">显示名称</th>
+                <th nzAlign="center">值</th>
+                <th nzAlign="center">{{listOfData?.extendList[0] ? listOfData?.extendList[0] : '字段1'}}</th>
+                <th nzAlign="center">{{listOfData?.extendList[1] ? listOfData?.extendList[1] : '字段2'}}</th>
+                <th nzAlign="center">{{listOfData?.extendList[2] ? listOfData?.extendList[2] : '字段3'}}</th>
+                <th nzAlign="center">备注</th>
+                <th nzAlign="center">排序</th>
+                <th nzAlign="center">颜色</th>
+                <th nzAlign="center">状态</th>
+                <th nzAlign="center">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of rowSelectionTable.data; let i=index">
+                <td nzAlign="center">{{data.id}}</td>
+                <td nzAlign="center">{{data.name}}</td>
+                <td nzAlign="center">{{data.content}}</td>
+                <td nzAlign="center">{{data.field1 ? data.field1 : '---'}}</td>
+                <td nzAlign="center">{{data.field2 ? data.field2 : '---'}}</td>
+                <td nzAlign="center">{{data.field3 ? data.field3 : '---'}}</td>
+                <td nzAlign="center">{{data.remark}}</td>
+                <td nzAlign="center">{{data.sort}}</td>
+                <td nzAlign="center">{{data.color}}</td>
+                <td nzAlign="center">{{data.status== 1 ? '启用':'禁用'}}</td>
+                <td nzAlign="center">
+                    <a nz-button nz-button-tdlink nzType="link" (click)="showModal(data.id)">编辑</a>
+                    <a nz-button nz-button-tdlink nzType="link" nzDanger nz-popconfirm nzPopconfirmTitle="确认删除吗?"
+                        [nzIcon]="iconTpl" (nzOnConfirm)="confirm(data.id)">删除</a>
+                    <ng-template #iconTpl>
+                        <i nz-icon nzType="question-circle-o" style="color: red;"></i>
+                    </ng-template>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <div class="pagination-box">
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]" nzShowSizeChanger nzShowQuickJumper
+                [nzPageIndex]="listOfData?.list.current" [nzTotal]="listOfData?.list.total"
+                [nzShowTotal]="totalTemplate" [nzPageSize]="listOfData?.list.size"
+                (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)">
+            </nz-pagination>
+        </div>
+    </div>
+</main>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="属性设置" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+    <form nz-form [formGroup]="modalForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4" nzRequired nzFor="parentKey">上级</nz-form-label>
+            <nz-form-control [nzSpan]="14" nzErrorTip="必填">
+                <input nz-input formControlName="parentKey" id="parentKey" [maxLength]="50" placeholder="" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4" nzRequired nzFor="name">名称</nz-form-label>
+            <nz-form-control [nzSpan]="14" nzErrorTip="必填">
+                <input nz-input formControlName="name" id="name" [maxLength]="50" placeholder="" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4" nzRequired nzFor="dictKey">键</nz-form-label>
+            <nz-form-control [nzSpan]="14" nzErrorTip="必填">
+                <input nz-input formControlName="dictKey" id="dictKey" [maxLength]="50" placeholder="" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4" nzRequired nzFor="content">值</nz-form-label>
+            <nz-form-control [nzSpan]="14" nzErrorTip="必填">
+                <input nz-input formControlName="content" id="content" [maxLength]="50" placeholder="" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">{{listOfData?.extendList[0] ? listOfData?.extendList[0] : '字段1'}}
+            </nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="field1" [maxLength]="50" placeholder="" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">{{listOfData?.extendList[1] ? listOfData?.extendList[1] : '字段2'}}
+            </nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="field2" [maxLength]="50" placeholder="" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">{{listOfData?.extendList[2] ? listOfData?.extendList[2] : '字段3'}}
+            </nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="field3" [maxLength]="50" placeholder="" />
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">颜色</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="color" type="color" placeholder="" />
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4" nzRequired nzFor="status">状态</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <nz-radio-group formControlName="status" id="status">
+                    <label nz-radio nzValue="1">启用</label>
+                    <label nz-radio nzValue="2">禁用</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">备注</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <textarea rows="4" nz-input [maxLength]="100" formControlName="remark"></textarea>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-control [nzSpan]="8" [nzOffset]="4">
+                <button nz-button nzType="primary" [nzLoading]="modalLoading">保存</button>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+</nz-modal>

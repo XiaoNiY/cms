@@ -1,0 +1,291 @@
+<div class="app-management-search">
+    <div class="bt-box">
+        <button nz-button nzType="primary" (click)="onOpenOneModalAdd()">新增一级分类</button>
+        <button nz-button nzType="primary" (click)="onOpenTwoModalAdd()">新增二级分类</button>
+        <button nz-button nzType="primary" (click)="onOpenThreeModalAdd()">新增三级分类</button>
+    </div>
+</div>
+<main class="app-management-main">
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="tableData?.resultMap" [nzShowPagination]="false"
+        [nzPageSize]="tableData?.resultMap?.size" [nzLoading]="tableLoading">
+        <thead>
+            <tr>
+                <th nzAlign="center" nzWidth="10%">名称</th>
+                <th nzAlign="center" nzWidth="10%">状态</th>
+                <th nzAlign="center" nzWidth="20%">适用用户</th>
+                <th nzAlign="center" nzWidth="10%">跳转方式</th>
+                <th nzAlign="center" nzWidth="10%">链接/值</th>
+                <th nzAlign="center" nzWidth="10%">图标</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of tableData?.resultMap; let i=index;">
+                <!-- 名称 -->
+                <td class="td-name">
+                    {{item.name}}
+                    <div *ngFor="let secondItem of item.secondGoodsTypes; let j=index;">
+                        <i *ngIf="j===0" nz-icon nzType="caret-down" nzTheme="outline"></i>
+                        <i *ngIf="j!==0" nz-icon nzType="caret-down" nzTheme="outline" style="visibility: hidden;"></i>
+                        <span style="margin-left: 5px;">{{secondItem.name}}</span>
+                        <div *ngFor="let thirdItem of item.thirdGoodsTypes; let k=index;" class="third-item">
+                            <i *ngIf="k===0" nz-icon nzType="caret-down" nzTheme="outline"></i>
+                            <i *ngIf="k!==0" nz-icon nzType="caret-down" nzTheme="outline"
+                                style="visibility: hidden;"></i>
+                            <span style="margin-left: 5px;">{{thirdItem.name}}</span>
+                        </div>
+                    </div>
+                </td>
+                <!-- 状态 -->
+                <td nzAlign="center">
+                    {{status_to_text(item.status)}}
+                    <div *ngFor="let secondItem of item.secondGoodsTypes;">
+                        {{status_to_text(secondItem.status)}}
+                        <div *ngFor="let thirdItem of item.thirdGoodsTypes;">
+                            {{status_to_text(thirdItem.status)}}
+                        </div>
+                    </div>
+                </td>
+                <!-- 适用用户 -->
+                <td nzAlign="center">
+                    {{userType_to_text(item.userType)}}
+                    <div *ngFor="let secondItem of item.secondGoodsTypes;">
+                        {{userType_to_text(item.userType)}}
+                        <div *ngFor="let thirdItem of item.thirdGoodsTypes;">
+                            {{userType_to_text(thirdItem.userType)}}
+                        </div>
+                    </div>
+                </td>
+                <!-- 跳转方式 -->
+                <td nzAlign="center">
+                    {{type_to_text(item.type)}}
+                    <div *ngFor="let secondItem of item.secondGoodsTypes;">
+                        {{type_to_text(item.type)}}
+                        <div *ngFor="let thirdItem of item.thirdGoodsTypes;">
+                            {{type_to_text(thirdItem.type)}}
+                        </div>
+                    </div>
+                </td>
+                <!-- 链接/值 -->
+                <td nzAlign="center">
+                    {{item.url || '-'}}
+                    <div *ngFor="let secondItem of item.secondGoodsTypes;">
+                        {{secondItem.url || '-'}}
+                        <div *ngFor="let thirdItem of item.thirdGoodsTypes;">
+                            {{thirdItem.url || '-'}}
+                        </div>
+                    </div>
+                </td>
+                <!-- 图标 -->
+                <td nzAlign="center">
+                    <img *ngIf="item.icon" nz-image [nzSrc]="item.icon" class="pic-icon">
+                    <span *ngIf="!item.icon">-</span>
+                    <div *ngFor="let secondItem of item.secondGoodsTypes;">
+                        <img *ngIf="secondItem.icon" nz-image [nzSrc]="secondItem.icon" class="pic-icon">
+                        <span *ngIf="!secondItem.icon">-</span>
+                        <div *ngFor="let thirdItem of item.thirdGoodsTypes;">
+                            <img *ngIf="thirdItem.icon" nz-image [nzSrc]="thirdItem.icon" class="pic-icon">
+                            <span *ngIf="!thirdItem.icon">-</span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <div class="pagination-box">
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有 {{ tableData.total }} 条 </ng-template>
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]" nzShowSizeChanger nzShowQuickJumper
+                [nzPageIndex]="queryForm.pageNum" [nzTotal]="tableData.total" [nzShowTotal]="totalTemplate"
+                [nzPageSize]="queryForm.pageSize" (nzPageIndexChange)="onPageIndexChange($event)"
+                (nzPageSizeChange)="onPageSizeChange($event)">
+            </nz-pagination>
+        </div>
+    </div>
+</main>
+
+<!-- 一级弹窗 -->
+<nz-modal [(nzVisible)]="isOneModalShow" nzTitle="一级分类" (nzOnCancel)="onModalClose()" [nzFooter]="null"
+    [nzStyle]="{ width: '600px' }">
+    <!-- 名称 -->
+    <nz-form-item>
+        <nz-form-label nzRequired>名称：</nz-form-label>
+        <nz-form-control nzFlex="400px">
+            <input nz-input [(ngModel)]="modalForm.name" placeholder="请输入" />
+        </nz-form-control>
+    </nz-form-item>
+    <article class="modal-pic-box">
+        <!-- 顶部图片 -->
+        <nz-form-item>
+            <nz-form-label>顶部图片：</nz-form-label>
+            <nz-form-control>
+                <nz-upload nzAccept="image/*" nzAction="" nzListType="picture-card" (nzChange)="onModalPreview($event)"
+                    [nzShowUploadList]="false">
+                    <ng-container *ngIf="!modalForm.icon">
+                        <i class="upload-icon" nz-icon nzType="plus"></i>
+                    </ng-container>
+                    <img *ngIf="modalForm.icon" [src]="modalForm.icon" style="width: 100%" />
+                </nz-upload>
+            </nz-form-control>
+        </nz-form-item>
+    </article>
+    <!-- 跳转方式 -->
+    <nz-form-item>
+        <nz-form-label>跳转方式：</nz-form-label>
+        <nz-form-control>
+            <nz-radio-group [(ngModel)]="modalForm.type">
+                <label nz-radio [nzValue]="1">商品ID</label>
+                <label nz-radio [nzValue]="2">链接</label>
+                <label nz-radio [nzValue]="3">搜索</label>
+            </nz-radio-group>
+        </nz-form-control>
+    </nz-form-item>
+    <!-- 链接/值 -->
+    <nz-form-item>
+        <nz-form-label>链接/值：</nz-form-label>
+        <nz-form-control nzFlex="400px">
+            <input nz-input [(ngModel)]="modalForm.url" placeholder="请输入" />
+        </nz-form-control>
+    </nz-form-item>
+    <!-- 适用用户 -->
+    <nz-form-item>
+        <nz-form-label nzRequired>适用用户：</nz-form-label>
+        <nz-form-control>
+            <nz-radio-group [(ngModel)]="modalForm.userType">
+                <label nz-radio [nzValue]="2">b端商家</label>
+                <label nz-radio [nzValue]="1">c端用户</label>
+            </nz-radio-group>
+        </nz-form-control>
+    </nz-form-item>
+    <!-- 状态 -->
+    <nz-form-item>
+        <nz-form-label nzRequired>状态：</nz-form-label>
+        <nz-form-control>
+            <nz-radio-group [(ngModel)]="modalForm.status">
+                <label nz-radio [nzValue]="0">启用</label>
+                <label nz-radio [nzValue]="1">禁用</label>
+            </nz-radio-group>
+        </nz-form-control>
+    </nz-form-item>
+
+    <footer class="app-modal-foot">
+        <button nz-button nzType="default" (click)="onModalClose()">取消</button>
+        <button nz-button nzType="primary" (click)="onConfirm(1)">确定</button>
+    </footer>
+</nz-modal>
+
+<!-- 二级弹窗 -->
+<nz-modal [(nzVisible)]="isTwoModalShow" nzTitle="二级分类" (nzOnCancel)="onModalClose()" [nzFooter]="null"
+    [nzStyle]="{ width: '600px' }">
+    <!-- 名称 -->
+    <nz-form-item>
+        <nz-form-label nzRequired>名称：</nz-form-label>
+        <nz-form-control nzFlex="400px">
+            <input nz-input [(ngModel)]="modalForm.name" placeholder="请输入" />
+        </nz-form-control>
+    </nz-form-item>
+    <!-- 上级分类 -->
+    <nz-form-item>
+        <nz-form-label nzRequired>上级分类：</nz-form-label>
+        <nz-form-control nzFlex="400px">
+            <nz-select nzAllowClear nzPlaceHolder="请选择" [(ngModel)]="modalForm.pid">
+                <nz-option *ngFor="let item of categoryList" nzValue="{{item.id}}" nzLabel="{{item.name}}">
+                </nz-option>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item>
+    <!-- 链接/值 -->
+    <nz-form-item>
+        <nz-form-label>链接/值：</nz-form-label>
+        <nz-form-control nzFlex="400px">
+            <input nz-input [(ngModel)]="modalForm.url" placeholder="请输入" />
+        </nz-form-control>
+    </nz-form-item>
+    <!-- 适用用户 -->
+    <nz-form-item>
+        <nz-form-label nzRequired>适用用户：</nz-form-label>
+        <nz-form-control>
+            <nz-radio-group [(ngModel)]="modalForm.userType">
+                <label nz-radio [nzValue]="2">b端商家</label>
+                <label nz-radio [nzValue]="1">c端用户</label>
+            </nz-radio-group>
+        </nz-form-control>
+    </nz-form-item>
+    <!-- 状态 -->
+    <nz-form-item>
+        <nz-form-label nzRequired>状态：</nz-form-label>
+        <nz-form-control>
+            <nz-radio-group [(ngModel)]="modalForm.status">
+                <label nz-radio [nzValue]="0">启用</label>
+                <label nz-radio [nzValue]="1">禁用</label>
+            </nz-radio-group>
+        </nz-form-control>
+    </nz-form-item>
+
+    <footer class="app-modal-foot">
+        <button nz-button nzType="default" (click)="onModalClose()">取消</button>
+        <button nz-button nzType="primary" (click)="onConfirm(2)">确定</button>
+    </footer>
+</nz-modal>
+
+<!-- 三级弹窗 -->
+<nz-modal [(nzVisible)]="isThreeModalShow" nzTitle="三级分类" (nzOnCancel)="onModalClose()" [nzFooter]="null"
+    [nzStyle]="{ width: '600px' }">
+    <!-- 上级分类 -->
+    <nz-form-item>
+        <nz-form-label nzRequired>上级分类：</nz-form-label>
+        <nz-form-control nzFlex="400px">
+            <nz-select nzAllowClear nzPlaceHolder="请选择" [(ngModel)]="modalForm.pid">
+                <nz-option *ngFor="let item of categoryList;" nzValue="{{item.id}}" nzLabel="{{item.name}}">
+                </nz-option>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item>
+    <!-- 名称 -->
+    <nz-form-item>
+        <nz-form-label nzRequired>名称：</nz-form-label>
+        <nz-form-control nzFlex="400px">
+            <input nz-input [(ngModel)]="modalForm.name" placeholder="请输入" />
+        </nz-form-control>
+    </nz-form-item>
+    <!-- 图标 -->
+    <nz-form-item>
+        <nz-form-label>图标：</nz-form-label>
+        <nz-form-control nzFlex="400px">
+            <input nz-input [(ngModel)]="modalForm.icon" placeholder="请输入" />
+        </nz-form-control>
+    </nz-form-item>
+    <!-- 跳转方式 -->
+    <nz-form-item>
+        <nz-form-label nzRequired>跳转方式：</nz-form-label>
+        <nz-form-control>
+            <nz-radio-group [(ngModel)]="modalForm.type">
+                <label nz-radio [nzValue]="1">商品ID</label>
+                <label nz-radio [nzValue]="2">链接</label>
+                <label nz-radio [nzValue]="3">搜索</label>
+                <label nz-radio [nzValue]="4">分类</label>
+            </nz-radio-group>
+        </nz-form-control>
+    </nz-form-item>
+    <!-- 链接/值 -->
+    <nz-form-item>
+        <nz-form-label>链接/值：</nz-form-label>
+        <nz-form-control nzFlex="400px">
+            <input nz-input [(ngModel)]="modalForm.url" placeholder="请输入" />
+        </nz-form-control>
+    </nz-form-item>
+    <!-- 状态 -->
+    <nz-form-item>
+        <nz-form-label nzRequired>状态：</nz-form-label>
+        <nz-form-control>
+            <nz-radio-group [(ngModel)]="modalForm.status">
+                <label nz-radio [nzValue]="0">启用</label>
+                <label nz-radio [nzValue]="1">禁用</label>
+            </nz-radio-group>
+        </nz-form-control>
+    </nz-form-item>
+
+    <footer class="app-modal-foot">
+        <button nz-button nzType="default" (click)="onModalClose()">取消</button>
+        <button nz-button nzType="primary" (click)="onConfirm(3)">确定</button>
+    </footer>
+</nz-modal>

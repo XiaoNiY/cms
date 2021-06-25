@@ -1,0 +1,177 @@
+<main>
+    <div class="panelgroup">
+        <div class="panel-hd">
+            <h3>基本信息</h3>
+        </div>
+        <div class="panel-bd">
+            <ul>
+                <li>
+                    <div class="key">
+                        <span>入库单号</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.warehousing.warehousingNumber}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>采购单号</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.warehousing.purchaseNumber}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>新建人员</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.warehousing.founder}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>状态</span>
+                    </div>
+                    <div class="val" [class]="'font-' + detailsData?.warehousing.state">
+                        <span>{{detailsData?.warehousing.stateText}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>入库仓库</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.warehousing.whPutName}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>新建时间</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.warehousing.createTime}}</span>
+                    </div>
+                </li>
+            </ul>
+            <ul>
+                <li class="len">
+                    <div class="key">
+                        <span>备注</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.warehousing.remark ? detailsData?.warehousing.remark : '-'}}</span>
+                    </div>
+                </li>
+            </ul>
+            <ul *ngIf="detailsData?.warehousing.closeRemark">
+                <li>
+                    <div class="key">
+                        <span>关闭原因</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.warehousing.closeRemark}}</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <br>
+        <div class="panel-hd">
+            <h3>入库信息</h3>
+        </div>
+        <div class="panel-bd">
+            <nz-table #colSpanTable nzBordered [nzShowPagination]="false" [nzData]="detailsData?.list">
+                <thead>
+                    <tr>
+                        <th nzAlign="center">序号</th>
+                        <th nzAlign="center">商品编号</th>
+                        <th nzAlign="center">商品名称</th>
+                        <th nzAlign="center">商品规格</th>
+                        <th nzAlign="center">69码</th>
+                        <th nzAlign="center">标准采购价(含税)</th>
+                        <th nzAlign="center">采购数量</th>
+                        <th nzAlign="center">冻结数量</th>
+                        <th nzAlign="center">采购单价</th>
+                        <th nzAlign="center">金额小计</th>
+                        <th nzAlign="center">入库数量</th>
+                        <th nzAlign="center">实际入库数量</th>
+                        <th nzAlign="center">实际入库时间</th>
+                        <th nzAlign="center">状态</th>
+                        <th nzAlign="center">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of detailsData?.list; let i=index">
+                        <!-- 序号 -->
+                        <td nzAlign="center">{{ i+ 1}}</td>
+                        <!-- 商品编号 -->
+                        <td nzAlign="center">{{ item.whGoodsId }}</td>
+                        <!-- 商品名称 -->
+                        <td nzAlign="left">{{ item.name }}</td>
+                        <!-- 商品规格 -->
+                        <td nzAlign="center">{{ item.attr }}</td>
+                        <!-- 69码 -->
+                        <td nzAlign="center">{{ item.code }}</td>
+                        <!-- 标准采购价(含税) -->
+                        <td nzAlign="center">
+                            ￥{{ (item.standardCostPrice | number : '0.4-4') || '-'}}</td>
+                        <!-- 采购数量 -->
+                        <td nzAlign="center">{{ item.purchaseNumber }}</td>
+                        <!-- 冻结数量 -->
+                        <td nzAlign="center">{{ item.frozenNumber ? item.frozenNumber : '-' }}</td>
+                        <!-- 采购单价 -->
+                        <td nzAlign="center">{{ item.purchasePrice }}</td>
+                        <!-- 金额小计 -->
+                        <td nzAlign="center">￥{{(item.purchaseNumber * item.purchasePrice | number : '0.4-4') || '-'}}</td>
+                        <!-- 入库数量 -->
+                        <td nzAlign="center">{{item.number ? item.number : '-'}}</td>
+                        <!-- 实际入库数量 -->
+                        <td nzAlign="center">{{item.actualStorageNumber}}</td>
+                        <!-- 实际入库时间 -->
+                        <td nzAlign="center">{{ item.updateTime }}</td>
+                        <!-- 状态 -->
+                        <td nzAlign="center">
+                            {{ item.stateText }}
+                            <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline"
+                                nzTooltipTitle="{{item.closeRemark}}" nzTooltipPlacement="right"
+                                *ngIf="item.closeRemark"></i>
+
+                        </td>
+                        <!-- 操作 -->
+                        <td nzAlign="center">
+                            <a nz-button nz-button-tdlink nzType="link" [disabled]="item.state != 2"
+                                (click)="showCloseModal(0,item.id)">手动关闭</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+    <div class="submit-box">
+        <nz-divider></nz-divider>
+        <div class="bt-box">
+            <button nz-button nzType="primary" [routerLink]="['/stock/putSave', id]"
+                *ngIf="detailsData?.warehousing.state == 0"
+                [queryParams]="{type: detailsData?.warehousing.type, entrance: detailsData?.warehousing.type == 1 ? '' : 'edit'}">编辑</button>
+            <button (click)="showCloseModal(1)" nz-button nzType="dashed"
+                *ngIf="detailsData?.warehousing.state == 2 ">手动关闭</button>
+            <app-bt-group [btType]="'default'" [btText]="'返回'"></app-bt-group>
+        </div>
+    </div>
+</main>
+
+
+<nz-modal [(nzVisible)]="closeVisible" nzTitle="手动关闭" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+    <nz-form-item>
+        <nz-form-label [nzSpan]="4">关闭原因</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+            <textarea rows="6" nz-input [(ngModel)]="closeParams.content"></textarea>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control [nzSpan]="12" [nzOffset]="4">
+            <button nz-button nzType="primary" (click)="closeFun()">关闭</button>
+            <button nz-button nzType="primary" (click)="handleCancel()">取消</button>
+        </nz-form-control>
+    </nz-form-item>
+</nz-modal>

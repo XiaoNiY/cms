@@ -1,0 +1,94 @@
+<main>
+    <div class="main-box">
+        <h3>参数大类 <em style="color: #b7b7b7;font-weight: lighter;font-size: 12px;">（拖动可以调整顺序）</em> </h3>
+        <div class="paramHd">
+            <ul cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)">
+                <li *ngFor="let item of entityParam.goodsParam; let i = index" cdkDrag>{{item.name}} <a (click)="fDelete(i)"><i nz-icon nzType="close" nzTheme="outline"></i></a> </li>
+            </ul>
+            <!-- <nz-tag *ngFor="let tag of tags; let i = index" [nzMode]="'closeable'" (nzOnClose)="handleClose(tag)"
+                    cdkDrag>
+                    {{ sliceTagName(tag) }}
+                </nz-tag> -->
+
+            <!-- <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
+                <div class="example-box" *ngFor="let tag of tags; let i = index" cdkDrag>  {{ sliceTagName(tag) }}</div>
+              </div> -->
+
+            <nz-tag *ngIf="!inputVisible" class="editable-tag" nzNoAnimation (click)="showInput()">
+                <i nz-icon nzType="plus"></i>
+                新建参数
+            </nz-tag>
+
+            <input #inputElement nz-input nzSize="small" *ngIf="inputVisible" type="text" [(ngModel)]="inputValue"
+                style="width: 78px;" (blur)="handleInputConfirm()" (keydown.enter)="handleInputConfirm()" />
+        </div>
+        <h3>参数详情<em style="color: #b7b7b7;font-weight: lighter;font-size: 12px;">（拖动可以调整顺序）</em></h3>
+        <div class="paramCt">
+            <ul>
+                <li *ngFor="let item of entityParam.goodsParam; let i = index">
+                    <span>{{item.name}} </span><a (click)="addItem(i)"><i nz-icon nzType="plus-circle"
+                            nzTheme="outline"></i></a>
+                    <dl cdkDropList (cdkDropListDropped)="itemDrop(i,$event)">
+                        <dd *ngFor="let c of item.list; let k = index" cdkDrag>
+                            <input nz-input placeholder="例如:产品净重（kg）" [(ngModel)]="c.key" />
+                            <em>:</em>
+                            <input nz-input placeholder="例如:2.4kg" [(ngModel)]="c.val" />
+                            <a nz-button nzType="link" nzDanger (click)="delete(k,i)">删除</a>
+                        </dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+        <!-- <nz-form-label>属性分类</nz-form-label>
+        <nz-select id="typeId" nzPlaceHolder="请选择" (ngModelChange)="typeCall($event)" [(ngModel)]="selectAttr">
+            <nz-option nzValue="{{data.id}}" nzLabel="{{data.name}}" *ngFor="let data of goodsTypesArr; index as i">
+            </nz-option>
+        </nz-select>
+        <br>
+        <br>
+        <nz-table #groupingTable [nzData]="listOfOption" nzShowSizeChanger nzBordered [nzShowPagination]="false"
+            nzSize="middle">
+            <thead>
+                <tr>
+                    <th nzAlign="center">参数名</th>
+                    <th nzAlign="center">参数值</th>
+                    <th nzAlign="center">自定义值</th>
+                    <th nzAlign="center">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of groupingTable.data; index as i">
+                    <td nzAlign="center">
+                        <input nz-input placeholder="请输入" [(ngModel)]="data.name" nzBorderless />
+                    </td>
+                    <td nzAlign="center">
+
+                        <nz-select nzMode="multiple" nzPlaceHolder="请选择" [(ngModel)]="data.listOfSelectedValue">
+                            <nz-option *ngFor="let item of data.value" [nzLabel]="item" [nzValue]="item"></nz-option>
+                        </nz-select>
+                    </td>
+                    <td nzAlign="center">
+                        <input nz-input placeholder="请输入" [(ngModel)]="data.inputVal" nzBorderless />
+                    </td>
+                    <td nzAlign="center">
+                        <a nz-button nz-button-tdlink nzType="link" nzDanger nz-popconfirm nzPopconfirmTitle="确认删除吗?"
+                            [nzIcon]="iconTpl" (nzOnConfirm)="delete(i)">删除</a>
+                        <ng-template #iconTpl>
+                            <i nz-icon nzType="question-circle-o" style="color: red;"></i>
+                        </ng-template>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+        <a class="addParam" (click)="addItem()">+添加参数</a> -->
+    </div>
+    <div class="submit-box">
+        <nz-divider></nz-divider>
+        <div class="bt-box">
+            <button nz-button nzType="primary" (click)="save()">保存</button>
+            <app-bt-group [btType]="'default'" [btText]="'返回'"></app-bt-group>
+        </div>
+    </div>
+    <button class="ImportGoods" nz-button nzType="default">从其他商品复制</button>
+
+</main>

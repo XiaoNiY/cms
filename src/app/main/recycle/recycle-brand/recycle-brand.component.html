@@ -1,0 +1,66 @@
+<div class="recycleBrand">
+    <div class="search-box">
+        <!-- 品牌名称 -->
+        <div class="input-box">
+            <nz-form-label>品牌名称</nz-form-label>
+            <input nz-input placeholder="请输入品牌名称" [(ngModel)]="queryForm.name">
+        </div>
+         <!-- 类型 -->
+        <div class="select-box">
+            <nz-form-label>类型</nz-form-label>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" [(ngModel)]="queryForm.type">
+                <nz-option nzLabel="全部" nzValue=""></nz-option>
+                <nz-option nzLabel="手机" nzValue="1"></nz-option>
+                <nz-option nzLabel="平板" nzValue="2"></nz-option>
+                <nz-option nzLabel="笔记本" nzValue="3"></nz-option>
+                <nz-option nzLabel="其他" nzValue="4"></nz-option>
+            </nz-select>
+        </div>
+    </div>
+    <div class="bt-search">
+        <button nz-button nzType="primary" (click)="query()">查询</button>
+    </div>
+
+    <div class="bt-reset">
+        <button nz-button nzType="default" (click)="reset()">重置</button>
+    </div>
+</div>
+
+<main>
+    <nz-table #basicTable nzShowSizeChanger [nzData]="listOfData?.records" [nzShowPagination]="false" [nzPageSize]="listOfData?.size"
+    [nzLoading]="tableLoading" nzBordered>
+        <thead>
+            <tr>
+                <th nzAlign="center">ID</th>
+                <th nzAlign="center">类型</th>
+                <th nzAlign="center">品牌名称</th>
+                <th nzAlign="center">品牌排序</th>
+                <th nzAlign="center">更新时间</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="searchHint && basicTable.data">
+                <td class="searchHint" nzAlign="center" colspan="13">
+                    <span>搜索 “{{searchName}}”，找到&nbsp;{{ listOfData?.total }}&nbsp;条结果</span>
+                    <a (click)="backList()">返回原列表</a>
+                </td>
+            </tr>
+            <tr *ngFor="let data of basicTable.data">
+                <td nzAlign="center">{{ data.id }}</td>
+                <td nzAlign="center">{{ type_to_text(data.type) }}</td>
+                <td nzAlign="center">{{ data.name }}</td>
+                <td nzAlign="center">{{ data.sort }}</td>
+                <td nzAlign="center">{{ data.updateTime }}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <div class="pagination-box">
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]"nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="1" [nzTotal]="listOfData?.total"
+                [nzShowTotal]="totalTemplate" [nzPageSize]="queryForm.pageSize" [nzPageIndex]="queryForm.pageNum"
+                (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)">
+            </nz-pagination>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,215 @@
+<main>
+    <div class="form-box">
+
+        <!-- <form nz-form [formGroup]="validateForm"  > -->
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px" nzRequired>
+                商品名称
+            </nz-form-label>
+            <nz-form-control nz-col nzFlex="400px">
+                <input nz-input [(ngModel)]="entityParam.name" placeholder="请输入商品名称" [maxlength]="50" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px" nzRequired>短名称</nz-form-label>
+            <nz-form-control nz-col nzFlex="400px">
+                <input nz-input [(ngModel)]="entityParam.shortName" [maxlength]="20" placeholder="请输入短名称"
+                    nzTooltipTitle="通常用于推荐列表之类的地方" nzTooltipPlacement="right" nz-button nz-tooltip />
+            </nz-form-control>
+            <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline" [nzTooltipTitle]="shortName"
+                nzTooltipPlacement="right"></i>
+            <ng-template #shortName>
+                <span>通常用于推荐列表之类的地方</span>
+            </ng-template>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px">副标题</nz-form-label>
+            <nz-form-control nz-col nzFlex="400px">
+                <input nz-input [(ngModel)]="entityParam.slogan" [maxlength]="50" placeholder="请输入副标题"
+                    nzTooltipTitle="主要用于产品副标题或者广告语" nzTooltipPlacement="right" nz-button nz-tooltip />
+            </nz-form-control>
+            <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline" [nzTooltipTitle]="slogan"
+                nzTooltipPlacement="right"></i>
+            <ng-template #slogan>
+                <span>主要用于产品副标题或者广告语</span>
+            </ng-template>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px" nzRequired>商品分类</nz-form-label>
+            <nz-form-control nz-col nzFlex="400px">
+                <nz-select [(ngModel)]="entityParam.typeId" nzPlaceHolder="请选择商品分类">
+                    <nz-option [nzValue]="data.id" [nzLabel]="data.name" *ngFor="let data of GoodsTypeList">
+                    </nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px">标签</nz-form-label>
+            <nz-form-control nz-col nzFlex="400px">
+                <input nz-input [(ngModel)]="entityParam.labels" [maxlength]="50" placeholder="输入，多个用英文逗号分隔"
+                    nzTooltipTitle="例如 '爱思自营.超值'等,用于突出商品卖点" nzTooltipPlacement="right" nz-button nz-tooltip />
+            </nz-form-control>
+            <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline" [nzTooltipTitle]="labels"
+                nzTooltipPlacement="right"></i>
+            <ng-template #labels>
+                <span>例如"爱思自营,超值"等</span>
+                <span>用于突出商品卖点</span>
+            </ng-template>
+        </nz-form-item>
+
+        <nz-divider></nz-divider>
+
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px">关键字</nz-form-label>
+            <nz-form-control nz-col nzFlex="400px">
+                <input nz-input [maxlength]="100" [(ngModel)]="entityParam.keyword" placeholder="输入，多个用英文逗号分隔"
+                    nzTooltipTitle="主要用于用户快速检索商品多个标签请用英文逗号分隔" nzTooltipPlacement="right" nz-button nz-tooltip />
+            </nz-form-control>
+            <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline" [nzTooltipTitle]="keyWord"
+                nzTooltipPlacement="right"></i>
+            <ng-template #keyWord>
+                <span>主要用于用户快速检索商品</span>
+                <span>多个标签请用英文逗号分隔</span>
+            </ng-template>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px" nzRequired>品牌</nz-form-label>
+            <nz-form-control nz-col nzFlex="400px">
+                <nz-select [(ngModel)]="entityParam.brandId" nzPlaceHolder="请选择品牌">
+                    <nz-option [nzValue]="data.id" [nzLabel]="data.name" *ngFor="let data of BrandList"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px">商品属性</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" placeholder="请输入">
+                <nz-checkbox-group [(ngModel)]="entityParam.properties"></nz-checkbox-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px">服务承诺</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24">
+                <nz-checkbox-group [(ngModel)]="entityParam.mallService"></nz-checkbox-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px">销量基数</nz-form-label>
+            <nz-form-control nz-col nzFlex="100px">
+                <nz-input-number [(ngModel)]="entityParam.salesVolumeBase" [nzMin]="1" [nzStep]="1"></nz-input-number>
+            </nz-form-control>
+            <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline" [nzTooltipTitle]="salesVolumeBase"
+                nzTooltipPlacement="right"></i>
+            <ng-template #salesVolumeBase>
+                <span>会定时累加该数据</span>
+                <span>显示的时候会用实际销量+基数去展示给用户看</span>
+            </ng-template>
+        </nz-form-item>
+
+        <nz-divider></nz-divider>
+
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px">顶部说明-b端</nz-form-label>
+            <nz-form-control nz-col nzFlex="400px">
+                <nz-select [(ngModel)]="entityParam.topNoteldB" nzPlaceHolder="请选择" [nzAllowClear]="true">
+                    <nz-option [nzValue]="data.id" [nzLabel]="data.noteName" *ngFor="let data of PublicList">
+                    </nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px">通用说明-b端</nz-form-label>
+            <nz-form-control nz-col nzFlex="400px">
+                <nz-select [(ngModel)]="entityParam.publicNoteldB" nzPlaceHolder="请选择" [nzAllowClear]="true">
+                    <nz-option [nzValue]="data.id" [nzLabel]="data.noteName" *ngFor="let data of PublicList">
+                    </nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px">通用说明-c端</nz-form-label>
+            <nz-form-control nz-col nzFlex="400px">
+                <nz-select [(ngModel)]="entityParam.publicNoteldC" nzPlaceHolder="请选择" [nzAllowClear]="true">
+                    <nz-option [nzValue]="data.id" [nzLabel]="data.noteName" *ngFor="let data of PublicList">
+                    </nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <!-- <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px">商家ID</nz-form-label>
+            <nz-form-control nz-col nzFlex="400px">
+                <nz-select id="gender" formControlName="businessId" nzPlaceHolder="请选择">
+                    <nz-option nzValue="6" nzLabel="爱思"></nz-option>
+                    <nz-option nzValue="7" nzLabel="其他"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item> -->
+        <!-- <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px">b端-倍数购买</nz-form-label>
+            <nz-form-control nz-col nzFlex="100px">
+                <nz-input-number formControlName="buyMulB" [nzMin]="1" [nzStep]="1"></nz-input-number>
+            </nz-form-control>
+            <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline" [nzTooltipTitle]="buyMulB"
+                nzTooltipPlacement="right"></i>
+            <ng-template #buyMulB>
+                <span>如果不为空,则只能购买该数字得倍数</span>
+                <span>例如输入5,则购买数量只能5,10,15.......</span>
+            </ng-template>
+    
+        </nz-form-item> -->
+        <!-- <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px">b端-最大购买总数</nz-form-label>
+            <nz-form-control nz-col nzFlex="100px">
+                <input nz-input id="" formControlName="buyMaxB" placeholder="请输入" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px">b端-最小购买总数</nz-form-label>
+            <nz-form-control nz-col nzFlex="100px">
+                <input nz-input id="" formControlName="buyMinB" placeholder="请输入" />
+            </nz-form-control>
+        </nz-form-item> -->
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px" nzRequired>适用用户</nz-form-label>
+            <nz-form-control nzFlex="174px">
+                <label nz-checkbox [(ngModel)]="entityParam.selectUserTypeB">B端商户</label>
+                <label nz-checkbox [(ngModel)]="entityParam.selectUserTypeC">C端用户</label>
+            </nz-form-control>
+
+            <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline" [nzTooltipTitle]="selectUserType"
+                nzTooltipPlacement="right"></i>
+            <ng-template #selectUserType>
+                <span>勾选以后,对应的会在B端C端商城控制是否显示</span>
+            </ng-template>
+
+        </nz-form-item>
+        <!-- <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px">上架状态</nz-form-label>
+            <nz-form-control nz-col nzFlex="56px">
+                <nz-badge nzStatus="{{this.detailsData?.status == 1 ?'success' : 'error'}} "
+                    nzText="{{this.detailsData?.status == 1 ?'已上架' : '已下架'}}"></nz-badge>
+            </nz-form-control>
+            <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline" [nzTooltipTitle]="selectUserType"
+                nzTooltipPlacement="right"></i>
+            <ng-template #selectUserType>
+                <span>如果需要上下架,请在右上角或列表页进行操作</span>
+            </ng-template>
+        </nz-form-item> -->
+        <!-- <nz-form-item>
+            <nz-form-control style="margin-left: 100px;">
+                <button nz-button nzType="primary" [nzLoading]="modalLoading">保存</button>
+            </nz-form-control>
+        </nz-form-item> -->
+        <!-- </form> -->
+
+    </div>
+    <div class="submit-box">
+        <nz-divider></nz-divider>
+        <div class="bt-box">
+            <!-- <button nz-button nzType="primary" (click)="submitForm()">保存</button> -->
+            <!-- &nbsp; -->
+            <!-- <button nz-button nzType="default"  [routerLink]="['../']">返回</button> -->
+            <app-bt-group [btType]="'primary'" (btClick)="submitForm()" [btText]="'保存'"></app-bt-group>
+            <app-bt-group [btType]="'default'" [btText]="'返回'"></app-bt-group>
+        </div>
+    </div>
+</main>

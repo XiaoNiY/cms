@@ -1,0 +1,222 @@
+<main>
+    <nz-skeleton *ngIf="skeletonActive" [nzActive]="true"></nz-skeleton>
+    <nz-skeleton *ngIf="skeletonActive" [nzActive]="true"></nz-skeleton>
+    <div class="form-box" *ngIf="!skeletonActive">
+        <h3>基础信息</h3>
+        <nz-form-item *ngIf="!routeParams?.type  && entityParams?.id >0">
+            <nz-form-label>出库单号</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input type="text" nz-input [(ngModel)]="entityParams.deliveryNumber" [disabled]="true">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzRequired>出库类型</nz-form-label>
+            <nz-form-control>
+                <nz-radio-group [(ngModel)]="entityParams.type">
+                    <label nz-radio *ngFor="let o of dict.outTypeList" [nzValue]="o['content']">{{ o['name'] }}</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+        <!-- <nz-form-item>
+            <nz-form-label nzRequired>出库仓库</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <nz-select [(ngModel)]="entityParams.whPut" nzAllowClear nzPlaceHolder="请选择">
+                    <nz-option *ngFor="let data of WhList" [nzValue]="data.id" [nzLabel]="data.name">
+                    </nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item> -->
+        <nz-form-item>
+            <nz-form-label>
+                备注
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <textarea rows="3" nz-input placeholder="仅内部可见" [(ngModel)]="entityParams.remark"
+                    [maxlength]="100"></textarea>
+            </nz-form-control>
+        </nz-form-item>
+        <h3>收货人信息</h3>
+        <nz-form-item>
+            <nz-form-label>供应商</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <nz-select [(ngModel)]="entityParams.supId" (ngModelChange)="selectSupplier($event)" nzAllowClear
+                    nzPlaceHolder="请选择">
+                    <nz-option *ngFor="let data of SupplierList" [nzValue]="data.id" [nzLabel]="data.name">
+                    </nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzRequired>收货人</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input type="text" [(ngModel)]="entityParams.consignee" nz-input nzPlaceHolder="请输入收货人">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzRequired>联系方式</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input type="text" [(ngModel)]="entityParams.tel" nz-input nzPlaceHolder="请输入联系方式">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzRequired>地区</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <nz-cascader [nzOptions]="nzOptions" [(ngModel)]="entityParams.districtId" [nzAllowClear]="true"
+                    nzPlaceHolder="请选择">
+                </nz-cascader>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzRequired>详细地址</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input type="text" [(ngModel)]="entityParams.address" nz-input nzPlaceHolder="请选择" [maxlength]="100">
+            </nz-form-control>
+        </nz-form-item>
+        <h3>出库详情<a style="margin-left: 12px;" (click)="showModal()"><i nz-icon nzType="plus-circle"
+                    nzTheme="outline"></i></a></h3>
+
+
+        <nz-table #groupingTable nzShowSizeChanger nzBordered [nzData]="[{}]" [nzShowPagination]="false"
+            nzSize="middle">
+            <thead>
+                <tr>
+                    <th colspan="5" nzAlign="center">商品信息</th>
+                    <th colspan="3" nzAlign="center">本次出库信息</th>
+                </tr>
+                <tr>
+                    <th rowspan="3" nzAlign="center" style="width: 50px;">序号</th>
+                    <th rowspan="3" nzAlign="center">商品名称</th>
+                    <th rowspan="3" nzAlign="center" style="width: 62px;">商品编号</th>
+                    <th rowspan="3" nzAlign="center">商品69码</th>
+                    <th rowspan="3" nzAlign="center">标准采购价(含税)</th>
+                </tr>
+                <tr>
+                    <th rowspan="2" nzAlign="center">出库数量</th>
+                    <th rowspan="2" nzAlign="center">品质</th>
+                    <th rowspan="2" nzAlign="center">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let item of outTable; let i=index">
+                    <tr *ngIf="item.deleteState == 0">
+                        <!-- 序号 -->
+                        <td nzAlign="center">{{i + 1}}</td>
+                        <!-- 商品名称 -->
+                        <td nzAlign="center">
+                            <div class="texTflow" title="{{item.name}}">
+                                {{item.name}}
+                            </div>
+                        </td>
+                        <!-- 商品编号 -->
+                        <td nzAlign="center">{{item.whGoodsId}}</td>
+                        <!-- 商品69码 -->
+                        <td nzAlign="center">{{item.code}}</td>
+                        <!-- 标准采购价 (含税) -->
+                        <td nzAlign="center">
+                            {{ item.standardCostPrice ?  '￥' + (item.standardCostPrice | number : '0.4-4') : '-'}}
+                        </td>
+                        <!-- 出库数量 -->
+                        <td nzAlign="center">
+                            <div class="domBox">
+                                <nz-input-number [(ngModel)]="item.number" nzPlaceHolder="请选择" [nzMin]="1">
+                                </nz-input-number>
+                            </div>
+                        </td>
+                        <!-- 品质 -->
+                        <td nzAlign="center">
+                            <div class="domBox">
+                                <nz-select [(ngModel)]="item.quality" nzAllowClear nzPlaceHolder="请选择">
+                                    <nz-option *ngFor="let data of dict.qualityList" [nzValue]="data['content']"
+                                        [nzLabel]="data['name']">
+                                    </nz-option>
+                                </nz-select>
+                            </div>
+                        </td>
+                        <!-- 操作 -->
+                        <td nzAlign="center">
+
+                            <a nz-button nz-button-tdlink nzType="link" nzDanger nz-popconfirm
+                                nzPopconfirmTitle="确认删除吗?" [nzIcon]="iconTpl" (nzOnConfirm)="delete(item)"
+                                class="font2">删除</a>
+                            <ng-template #iconTpl>
+                                <i nz-icon nzType="question-circle-o" style="color: red;"></i>
+                            </ng-template>
+
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </nz-table>
+
+    </div>
+    <div class="submit-box">
+        <nz-divider></nz-divider>
+        <div class="bt-box">
+            <button nz-button nzType="primary" (click)="save(0)">保存</button>
+            <app-bt-group [btType]="'default'" [btText]="'返回'"></app-bt-group>
+        </div>
+    </div>
+</main>
+
+<nz-modal [(nzVisible)]="showGoods" nzTitle="选择仓库商品" (nzOnCancel)="handleCancel()" [nzFooter]="null" [nzWidth]="1350">
+    <div class="search-box">
+        <div class="label-box">
+            <nz-form-label>商品</nz-form-label>
+            <nz-form-control>
+                <input type="text" nz-input placeholder="请输入69码、商品编码、名称" [(ngModel)]="queryForm.whGood" />
+            </nz-form-control>
+            &nbsp;
+            &nbsp;
+            <nz-form-label>排队数量大于</nz-form-label>
+            <nz-form-control>
+                <input type="text" nz-input placeholder="请输入排队数量大于" [(ngModel)]="queryForm.lineupNumber" />
+            </nz-form-control>
+            &nbsp;
+            &nbsp;
+            <nz-form-label>实际库存小于</nz-form-label>
+            <nz-form-control>
+                <input type="text" nz-input placeholder="请输入实际库存小于" [(ngModel)]="queryForm.stock" />
+            </nz-form-control>
+            &nbsp;
+            &nbsp;
+            <nz-form-label>超卖数量大于</nz-form-label>
+            <nz-form-control>
+                <input type="text" nz-input placeholder="请输入超卖数量大于" [(ngModel)]="queryForm.oversoldNumber" />
+            </nz-form-control>
+
+        </div>
+        <button nz-button nzType="primary" nzSearch (click)="getWhGoodsList()"><i nz-icon nzType="search"></i></button>
+        <button nz-button nzType="primary" (click)="slectGoods()">申请已选商品({{selectGoodsArr.length}})</button>
+    </div>
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="whgoodsTable?.records" [nzShowPagination]="false"
+        [nzPageSize]="whgoodsTable?.size" nzBordered>
+        <thead>
+            <tr>
+                <th [(nzChecked)]="checkedAll" (nzCheckedChange)="onAllChecked($event)"></th>
+                <th>商品编号</th>
+                <th>商品名称</th>
+                <th>商品规格</th>
+                <th>69码</th>
+                <th>实际库存</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of whgoodsTable?.records">
+                <td nzAlign="center" [nzChecked]="data.Checked" (nzCheckedChange)="onItemChecked(data.id, $event)">
+                </td>
+                <td>{{data.id}}</td>
+                <td>{{data.name}}</td>
+                <td>{{data.attr}}</td>
+                <td>{{data.code}}</td>
+                <td>{{data.stock}}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <p>&nbsp;</p>
+    <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+    <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]" nzShowSizeChanger nzShowQuickJumper
+        [nzPageIndex]="whgoodsTable?.current" [nzTotal]="whgoodsTable?.total" [nzShowTotal]="totalTemplate"
+        [nzPageSize]="whgoodsTable?.size" (nzPageIndexChange)="onPageIndexChange($event)"
+        (nzPageSizeChange)="onPageSizeChange($event)">
+    </nz-pagination>
+</nz-modal>

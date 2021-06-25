@@ -1,0 +1,349 @@
+<main>
+    <nz-skeleton *ngIf="skeletonActive" [nzActive]="true"></nz-skeleton>
+    <nz-skeleton *ngIf="skeletonActive" [nzActive]="true"></nz-skeleton>
+    <div class="formBox" *ngIf="!skeletonActive">
+        <h3>基础信息</h3>
+        <nz-form-item *ngIf="routeQueryParams.type">
+            <nz-form-label>入库单号</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input type="text" nz-input [(ngModel)]="warehousing.warehousingNumber" [disabled]="true">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item *ngIf="!routeQueryParams.entrance">
+            <nz-form-label nzRequired>采购单号</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <nz-select [(ngModel)]="warehousing.purchaseNumber" (ngModelChange)="selectPurchase($event)"
+                    nzAllowClear nzPlaceHolder="{{warehousing.purchaseNumber ? warehousing.purchaseNumber : '请输入'}}"
+                    [disabled]="warehousing.id > 0">
+                    <nz-option *ngFor="let data of PurchaseList" [nzValue]="data.purchaseNumber"
+                        [nzLabel]="data.purchaseNumber">
+                    </nz-option>
+                </nz-select>
+            </nz-form-control>
+            <p style="margin-left:10px;line-height: 32px;font-size: 12px;color: #8e8e8e;">重新选择以后，采购内容会被清空，申请单内容会重新加载</p>
+        </nz-form-item>
+        <nz-form-item *ngIf="routeQueryParams.entrance">
+            <nz-form-label nzRequired>入库类型</nz-form-label>
+            <nz-form-control>
+                <nz-radio-group [(ngModel)]="warehousing.type">
+                    <label nz-radio *ngFor="let item of storageTypeList" [nzValue]="item.value">{{item.text}}</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzRequired>入库仓库</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <nz-select [(ngModel)]="warehousing.whPutId" nzAllowClear nzPlaceHolder="请选择">
+                    <nz-option *ngFor="let data of WhList" [nzValue]="data.id" [nzLabel]="data.name">
+                    </nz-option>
+                </nz-select>
+
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item *ngIf="routeQueryParams.entrance">
+            <nz-form-label nzRequired>甲方</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <nz-select nzPlaceHolder="请选择" [(ngModel)]="warehousing.firstParty">
+                    <nz-option *ngFor="let data of supplierList" nzValue="{{data.id}}" nzLabel="{{data.name}}">
+                    </nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item *ngIf="routeQueryParams.entrance">
+            <nz-form-label nzRequired>乙方</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <nz-select nzPlaceHolder="请选择" [(ngModel)]="warehousing.partyB">
+                    <nz-option *ngFor="let data of supplierList" nzValue="{{data.id}}" nzLabel="{{data.name}}">
+                    </nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>
+                备注
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <textarea rows="3" nz-input placeholder="仅内部可见" ng-reflect-name="remark"
+                    [(ngModel)]="warehousing.remark" [maxlength]="100"></textarea>
+            </nz-form-control>
+        </nz-form-item>
+        <h3>入库详情</h3>
+
+        <nz-table *ngIf="!routeQueryParams.entrance" #groupingTable nzShowSizeChanger nzBordered
+            [nzData]="PurchaseTable?.list"
+            nzTitle=" {{PurchaseTable?.purchase.purchaseNumber ? '以下是申请单 ' + PurchaseTable?.purchase.purchaseNumber +' 的所有内容' : '请选择采购单号' }}"
+            [nzShowPagination]="false" nzSize="middle">
+            <a class="all" (click)="selectAll()">全部入库</a>
+            <thead>
+                <tr>
+                    <th colspan="5" nzAlign="center">商品信息</th>
+                    <th colspan="4" nzAlign="center">采购单单信息</th>
+                    <th colspan="3" nzAlign="center">本次入库信息</th>
+                </tr>
+                <tr>
+                    <th rowspan="3" nzAlign="center" style="width: 50px;">序号</th>
+                    <th rowspan="3" nzAlign="center" style="width: 62px;">商品编号</th>
+                    <th rowspan="3" nzAlign="center">商品名称</th>
+                    <th rowspan="3" nzAlign="center">商品69码</th>
+                    <th rowspan="3" nzAlign="center">标准采购价
+                        (含税)</th>
+                </tr>
+                <tr>
+                    <th rowspan="2" nzAlign="center">约定交货日期</th>
+                    <th rowspan="2" nzAlign="center">采购价(含税)</th>
+                    <th rowspan="2" nzAlign="center">采购数量</th>
+                    <th rowspan="2" nzAlign="center">冻结数量</th>
+                    <th rowspan="2" nzAlign="center">已入库数量</th>
+                </tr>
+                <tr>
+                    <th rowspan="4" nzAlign="center">入库数量</th>
+                    <th rowspan="4" nzAlign="center">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of PurchaseTable?.list; let i=index">
+                    <!-- 序号 -->
+                    <td nzAlign="center">{{i + 1}}</td>
+                    <!-- 商品编号 -->
+                    <td nzAlign="center">{{item.id}}</td>
+                    <!-- 商品名称 -->
+                    <td nzAlign="center">
+                        <div class="texTflow">
+                            {{item.name}}
+                        </div>
+                    </td>
+                    <!-- 商品69码 -->
+                    <td nzAlign="center">{{item.code}}</td>
+                    <!-- 标准采购价 (含税) -->
+                    <td nzAlign="center">
+                        {{ item.standardCostPrice ? '￥' + (item.standardCostPrice | number : '0.4-4') : '-'}}
+                    </td>
+                    <!-- 约定交货日期 -->
+                    <td nzAlign="center">{{item.deliveryTime | date: 'yyyy-MM-dd'}}</td>
+                    <!-- 采购价(含税) -->
+                    <td nzAlign="center">{{'￥' + (item.purchasePrice | number : '0.4-4')}}</td>
+                    <!-- 采购数量 -->
+                    <td nzAlign="center">{{item.purchaseNumber}}</td>
+                    <!-- 冻结数量 -->
+                    <td nzAlign="center">{{item.frozenNumber}}</td>
+                    <!-- 已入库数量 -->
+                    <td nzAlign="center">{{item.stockNumber}}</td>
+
+                    <!-- 入库数量 -->
+                    <td nzAlign="center">
+                        <div class="domBox">
+                            -
+                        </div>
+                    </td>
+                    <!-- 操作 -->
+                    <td nzAlign="center">
+                        <a nz-button nz-button-tdlink nzType="link" (click)="addBuyer(item)"
+                            *ngIf="item.state == 0 || item.state == 3"
+                            [disabled]="item.purchaseNumber - item.frozenNumber - item.stockNumber <= 0">
+                            {{item.isShow == 0 ? '入库' : '取消入库'}}</a>
+                        <a nz-button nz-button-tdlink nzType="link" [disabled]="item.state == 1 || item.state == 2"
+                            *ngIf="item.state == 1 || item.state == 2"> {{state_to_text(item.state) }}</a>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+        <br />
+        <nz-table #groupingTable nzShowSizeChanger nzBordered [nzData]="addPurchaseTable"
+            nzTitle="{{!routeQueryParams.entrance ? '以下是本次要采购的内容': ''}}" [nzShowPagination]="false" nzSize="middle"
+            *ngIf="addPurchaseTable.length != 0 || routeQueryParams.entrance">
+            <a *ngIf="!routeQueryParams.entrance" class="all" (click)="clearAll()">清空已选</a>
+            <thead>
+                <tr>
+                    <th colspan="5" nzAlign="center">商品信息</th>
+                    <th *ngIf="!routeQueryParams.entrance" colspan="4" nzAlign="center">采购单单信息</th>
+                    <th colspan="3" nzAlign="center">本次入库信息</th>
+                </tr>
+                <tr>
+                    <th rowspan="3" nzAlign="center" style="width: 50px;">序号</th>
+                    <th rowspan="3" nzAlign="center" style="width: 62px;">商品编号</th>
+                    <th rowspan="3" nzAlign="center">商品名称</th>
+                    <th rowspan="3" nzAlign="center">商品69码</th>
+                    <th rowspan="3" nzAlign="center">标准采购价
+                        (含税)</th>
+                </tr>
+                <tr *ngIf="!routeQueryParams.entrance">
+                    <th rowspan="2" nzAlign="center">约定交货日期</th>
+                    <th rowspan="2" nzAlign="center">采购价(含税)</th>
+                    <th rowspan="2" nzAlign="center">采购数量</th>
+                    <th rowspan="2" nzAlign="center">冻结数量</th>
+                    <th rowspan="2" nzAlign="center">已入库数量</th>
+                </tr>
+                <tr>
+                    <th rowspan="4" nzAlign="center">入库数量</th>
+                    <th *ngIf="routeQueryParams.entrance" rowspan="4" nzAlign="center">品质</th>
+                    <th rowspan="4" nzAlign="center">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let item of addPurchaseTable; let i=index">
+                    <tr *ngIf="item.isDelete == 0">
+                        <!-- 序号 -->
+                        <td nzAlign="center">{{i + 1}}</td>
+                        <!-- 商品编号 -->
+                        <td nzAlign="center">{{item.planDetailsId}}</td>
+                        <!-- 商品名称 -->
+                        <td nzAlign="center">
+                            <div class="texTflow">
+                                {{item.name}}
+                            </div>
+                        </td>
+                        <!-- 商品69码 -->
+                        <td nzAlign="center">{{item.code}}</td>
+                        <!-- 标准采购价 (含税) -->
+                        <td nzAlign="center">
+                            {{ item.standardCostPrice ? '￥' + (item.standardCostPrice| number : '0.4-4' ): '-'}}
+                        </td>
+                        <!-- 约定交货日期 -->
+                        <td *ngIf="!routeQueryParams.entrance" nzAlign="center">{{item.deliveryTime | date: 'yyyy-MM-dd' }}</td>
+                        <!-- 采购价(含税) -->
+                        <td *ngIf="!routeQueryParams.entrance" nzAlign="center">{{'￥' + (item.purchasePrice | number :
+                            '0.4-4')}}</td>
+                        <!-- 采购数量 -->
+                        <td *ngIf="!routeQueryParams.entrance" nzAlign="center">{{item.purchaseNumber}}</td>
+                        <!-- 冻结数量 -->
+                        <td *ngIf="!routeQueryParams.entrance" nzAlign="center">{{item.frozenNumber}}</td>
+                        <!-- 已入库数量 -->
+                        <td *ngIf="!routeQueryParams.entrance" nzAlign="center">{{item.stockNumber}}</td>
+                        <!-- 入库数量 -->
+                        <td nzAlign="center">
+                            <div class="domBox">
+                                <nz-input-number #inputElement [(ngModel)]="item.number" [nzMin]="1"
+                                    [nzMax]="item.maxStockNumber"
+                                    (nzBlur)="onBlurStoragenNum()" nzPlaceHolder="请输入入库数量">
+                                </nz-input-number>
+                            </div>
+                        </td>
+                        <!-- 品质 -->
+                        <td *ngIf="routeQueryParams.entrance" nzAlign="center">
+                            <nz-select [(ngModel)]="item.quality" nzAllowClear nzPlaceHolder="请选择品质"
+                                style="width: 130px;">
+                                <nz-option *ngFor="let item of qualityList" [nzValue]="item.value"
+                                    [nzLabel]="item.text"></nz-option>
+                            </nz-select>
+                        </td>
+                        <!-- 操作 -->
+                        <td nzAlign="center">
+                            <a *ngIf="routeQueryParams.entrance" nz-popconfirm nz-button nzType="link" nzDanger
+                                nzPopconfirmTitle="确认删除该商品？" (nzOnConfirm)="onDelete(i, item)">删除</a>
+                            <a *ngIf="!routeQueryParams.entrance" nz-button nz-button-tdlink nzType="link"
+                                (click)="delBuyer(item)">取消入库</a>
+                        </td>
+                    </tr>
+                </ng-container>
+                <ng-container *ngIf="routeQueryParams.entrance && addPurchaseTable && addPurchaseTable.length > 0">
+                    <tr>
+                        <td nzAlign="center">合计</td>
+                        <td nzAlign="center" colSpan="4">&nbsp;</td>
+                        <td nzAlign="center">{{warehousing.storageTotal}}</td>
+                        <td nzAlign="center" colSpan="2">&nbsp;</td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </nz-table>
+        <button *ngIf="routeQueryParams.entrance" nz-button class="products"
+            (click)="showModal()">+&nbsp;&nbsp;选择更多商品</button>
+    </div>
+
+    <div class="submit-box">
+        <nz-divider></nz-divider>
+        <div class="bt-box">
+            <button nz-button nzType="primary" (click)="save(0)">保存</button>
+            <app-bt-group [btType]="'default'" [btText]="'返回'"></app-bt-group>
+        </div>
+    </div>
+</main>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="选择采购商品" (nzOnCancel)="handleCancel()" [nzStyle]="{ width: '1600px' }"
+    [nzFooter]="null">
+    <div class="purchasePlanApply">
+        <div class="bt-box">
+            <button nz-button nzType="primary" (click)="sendRequest()">申请已选商品({{selectGoodsArr.length}})</button>
+            <p>仅显示审核通过并且同步成功的仓库商品</p>
+        </div>
+        <div class="bt-search">
+            <button nz-button nzType="primary" (click)="query()">查询</button>
+        </div>
+
+        <div class="search-box">
+            <!-- 超卖数量大于 -->
+            <div class="input3-box">
+                <nz-form-label [nzSpan]="10">超卖数量大于</nz-form-label>
+                <input type="text" nz-input placeholder="请输入" nzSize="default" name="oversoldNumber"
+                    [(ngModel)]="queryForm.oversoldNumber">
+            </div>
+            <!-- 实际库存小于 -->
+            <div class="input2-box">
+                <nz-form-label [nzSpan]="10">实际库存小于</nz-form-label>
+                <input type="text" nz-input placeholder="请输入" nzSize="default" name="stock"
+                    [(ngModel)]="queryForm.stock">
+            </div>
+            <!-- 排队数量大于 -->
+            <div class="input1-box">
+                <nz-form-label [nzSpan]="10">排队数量大于</nz-form-label>
+                <input type="text" nz-input placeholder="请输入" nzSize="default" name="lineupNumber"
+                    [(ngModel)]="queryForm.lineupNumber">
+            </div>
+
+            <!-- 商品 -->
+            <div class="input-box">
+                <nz-form-label [nzSpan]="4">商品</nz-form-label>
+                <input type="text" nz-input placeholder="69码、商品编码、名称" nzSize="default" name="whGood"
+                    [(ngModel)]="queryForm.whGood">
+            </div>
+        </div>
+    </div>
+
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="listOfData?.records" [nzShowPagination]="false"
+        [nzPageSize]="listOfData?.size" [nzLoading]="tableLoading" nzBordered>
+        <thead>
+            <tr>
+                <th [(nzChecked)]="checked" (nzCheckedChange)="onAllChecked($event)"></th>
+                <th nzAlign="center">商品编号</th>
+                <th nzAlign="center">商品名称</th>
+                <th nzAlign="center">商品规格</th>
+                <th nzAlign="center">69码</th>
+                <th nzAlign="center">标准采购价(含税)</th>
+                <th nzAlign="center">进货周期</th>
+                <th nzAlign="center">预警值</th>
+                <th nzAlign="center">良品库存</th>
+                <th nzAlign="center">不良品库存</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="searchHint && listOfData?.records">
+                <td class="searchHint" nzAlign="center" colspan="13">
+                    <span>搜索 “{{searchName}}”，找到&nbsp;{{ listOfData?.total }}&nbsp;条结果</span>
+                    <a (click)="backList()">返回原列表</a>
+                </td>
+            </tr>
+            <tr *ngFor="let data of rowSelectionTable.data">
+                <td nzAlign="center" [nzChecked]="data.checked" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+                <td nzAlign="center">{{ data.id }}</td>
+                <td nzAlign="center">{{ data.name }}</td>
+                <td nzAlign="center">{{ data.attr }}</td>
+                <td nzAlign="center">{{ data.code }}</td>
+                <td nzAlign="center">{{ data.standardCostPrice }}</td>
+                <td nzAlign="center">{{ data.purchaseDuration || '-' }} <font *ngIf="data.purchaseDuration"> 天</font>
+                </td>
+                <td nzAlign="center">{{ data.earlyWarning || '-' }}</td>
+                <td nzAlign="center">{{ data.stock || '-' }}</td>
+                <td nzAlign="center">{{ data.badStock || '-' }}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <div class="pagination-box">
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]" nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="1"
+                [nzTotal]="listOfData?.total" [nzShowTotal]="totalTemplate" [nzPageSize]="queryForm.pageSize"
+                [nzPageIndex]="queryForm.page" (nzPageIndexChange)="onPageIndexChange($event)"
+                (nzPageSizeChange)="onPageSizeChange($event)">
+            </nz-pagination>
+        </div>
+    </div>
+</nz-modal>

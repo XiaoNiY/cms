@@ -1,27 +1,30 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpParams } from "@angular/common/http";
+import { Observable } from "rxjs";
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
-
-  private serviceUrl = "http://47.105.179.3:8762";
-
-  /**
-   * 登录
-   */
-  public LOGIN_URL =  this.serviceUrl + "/login/in";
-
-
+  // 登录
+  public URL = "/sys/user/login";
   constructor(public httpClient: HttpClient) { }
-
+  /**
+  * 登录
+  * @param json 参数
+  */
+  public login(json: any | null): Observable<any> {
+    return this.httpClient.post(this.URL, json);
+  }
+  /**
+   * 菜单列表
+   */
+  public menuList_URL = "/sys/menu/menuQuery";
 
   /**
-   * 登录
-   */
-  public login(json: any | null): Observable<any> {
-    return this.httpClient.get(this.LOGIN_URL, { params: json });
+  * 查询菜单列表
+  * @param json 参数
+  */
+  public menuList(): Observable<any> {
+    return this.httpClient.post(this.menuList_URL, null);
   }
 }

@@ -1,0 +1,224 @@
+<main>
+    <div class="panelgroup">
+        <div class="panel-hd">
+            <h3>基础信息</h3>
+        </div>
+        <div class="panel-bd">
+            <ul>
+                <li>
+                    <div class="key">
+                        <span>出库单号</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.delivery?.deliveryNumber}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>出库类型</span>
+                    </div>
+                    <div class="val">
+                        <span>{{outType_to_Text(detailsData?.delivery?.type)}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>新建人员</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.delivery?.founder ? detailsData?.delivery?.founder : '-'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>新建时间</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.delivery?.createTime}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>状态</span>
+                    </div>
+                    <div class="val">
+                        <span>{{status_To_text(detailsData?.delivery?.state)}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>关联单号</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.delivery?.orderNum ? detailsData?.delivery?.orderNum : '-'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>出库仓库</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.delivery?.whPut}}</span>
+                    </div>
+                </li>
+            </ul>
+            <ul>
+                <li class="addLen">
+                    <div class="key">
+                        <span>备注</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.delivery?.remark ? detailsData?.delivery?.remark : '-'}}</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="panel-hd">
+            <h3>收货人信息</h3>
+        </div>
+        <div class="panel-bd">
+            <ul>
+                <li>
+                    <div class="key">
+                        <span>供应商</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.delivery?.supplier ? detailsData?.delivery?.supplier : '-'}}</span>
+                    </div>
+                </li>
+            </ul>
+            <ul>
+                <li  class="addLen">
+                    <div class="key">
+                        <span>收货人</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.delivery?.consignee}}</span>
+                    </div>
+                </li>
+            </ul>
+            <ul>
+                <li  class="addLen">
+                    <div class="key">
+                        <span>联系电话</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.delivery?.tel}}</span>
+                    </div>
+                </li>
+            </ul>
+            <ul>
+                <li class="addLen">
+                    <div class="key">
+                        <span>地区</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.delivery?.region}}</span>
+                    </div>
+                </li>
+            </ul>
+            <ul>
+                <li class="addLen">
+                    <div class="key">
+                        <span>详细地址</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.delivery?.address}}</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="panel-hd">
+            <h3>出库结果</h3>
+        </div>
+        <div class="panel-bd">
+            <ul>
+                <li>
+                    <div class="key">
+                        <span>物流公司</span>
+                    </div>
+                    <div class="val">
+                        <span>{{express_to_Text(detailsData?.delivery?.expressCode)}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>物流单号</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.delivery?.expressNo ? detailsData?.delivery?.expressNo : '-'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>实际出库时间</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.delivery?.deliveryTime ? detailsData?.delivery?.deliveryTime : '-'}}</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <br>
+        <div class="panel-hd">
+            <h3>出库明细</h3>
+        </div>
+        <div class="panel-bd">
+            <nz-table #colSpanTable nzBordered [nzShowPagination]="false" [nzData]="detailsData?.list">
+                <thead>
+                    <tr>
+                        <th nzAlign="center">序号</th>
+                        <th nzAlign="center">商品编号</th>
+                        <th nzAlign="center">商品名称</th>
+                        <th nzAlign="center">商品规格</th>
+                        <th nzAlign="center">69码</th>
+                        <th nzAlign="center">标准采购价(含税)</th>
+                        <th nzAlign="center">出库数量</th>
+                        <th nzAlign="center">出库单价</th>
+                        <th nzAlign="center">金额小计</th>
+                        <th nzAlign="center">实际出库数量</th>
+                        <th nzAlign="center">品质</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of detailsData?.list; let i=index">
+                        <!-- 序号 -->
+                        <td nzAlign="center">{{ i+ 1}}</td>
+                        <!-- 商品编号 -->
+                        <td nzAlign="center">{{ item.whGoodsId }}</td>
+                        <!-- 商品名称 -->
+                        <td nzAlign="left">{{ item.whGoodsName }}</td>
+                        <!-- 商品规格 -->
+                        <td nzAlign="center">{{ item.whGoodsAttr ? item.whGoodsAttr : '-' }}</td>
+                        <!-- 69码 -->
+                        <td nzAlign="center">{{ item.whGoodsCode }}</td>
+                        <!-- 标准采购价(含税) -->
+                        <td nzAlign="center">
+                            {{ item.standardCostPrice ?'￥' +  (item.standardCostPrice | number : '0.4-4') : '-'}}
+                        </td>
+                        <!-- 出库数量 -->
+                        <td nzAlign="center">{{ item.number }}</td>
+                        <!-- 出库单价 -->
+                        <td nzAlign="center">{{ item.price  ? item.price  : '-'}}</td>
+                        <!-- 金额小计 -->
+                        <td nzAlign="center">
+                            {{ item.price ? '￥' +  (item.number * item.price | number : '0.4-4')  : '-'}}
+                        </td>
+                        <!-- 实际出库数量 -->
+                        <td nzAlign="center">{{item.actualNumber ? item.actualNumber : '-'}}</td>
+                        <!-- 品质 -->
+                        <td nzAlign="center">{{quality_to_Text(item.quality)}}</td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+    <div class="submit-box">
+        <nz-divider></nz-divider>
+        <div class="bt-box">
+            <button nz-button nzType="primary" [routerLink]="['/stock/putSave', detailsData.id]"
+                *ngIf="detailsData?.delivery?.state == 0">编辑</button>
+            <app-bt-group [btType]="'default'" [btText]="'返回'"></app-bt-group>
+        </div>
+    </div>
+</main>

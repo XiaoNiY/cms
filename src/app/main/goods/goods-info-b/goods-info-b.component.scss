@@ -1,0 +1,76 @@
+.scrollBox{
+    width:620px;
+    height:788px;
+    overflow-y: auto;
+    border: 1px solid #d4d4d4;
+}
+#editorB{
+    width:600px;
+    height:786px;
+}
+.editBox{
+    margin-right: 50px;
+    float: left;
+}
+.viewBox{
+    float: left;
+    .view{
+        width:500px;height:676px;
+        padding: 10px;
+        border: 1px solid #d4d4d4;
+        img{
+            width: 100%;
+        }
+    }
+}
+.toolbars{
+    li{
+        margin-right: 10px;
+        line-height: 36px;
+        background: #f7f7f7;
+        display: inline-block;
+        cursor: pointer;
+        input{
+          display: none;
+        }
+        label{
+          width: 100%;
+          height: 100%;
+          display: block;
+          cursor: pointer;
+        }
+        span{
+          padding: 0 12px;
+        }
+    }
+}
+main{
+  width: 1500px;
+  margin: auto;
+  background: #fff;
+  position: relative;
+  .ImportGoods{
+    color: #006eff;
+    position: absolute;
+    right: 20px;
+    top: 24px;
+  }
+  .main-box{
+    padding: 40px 40px 0 40px;
+  }
+  .submit-box{
+    width:100%;
+    height: 70px;    
+    padding: 0 40px;
+    position: relative;
+    .bt-box{
+      position: absolute;
+      left: 40px;
+      bottom: 15px;
+      top: 18px;
+      >button{
+        margin-right: 10px;
+      }
+    }
+  }
+}

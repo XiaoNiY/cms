@@ -1,0 +1,130 @@
+<div class="hd">
+    <div class="bt-box">
+        <button nz-button nzType="primary" [routerLink]="['../outSave',0]">新建出库单</button>
+    </div>
+    <div class="search-box">
+        <!-- 包含商品 -->
+        <div class="input1-box">
+            <nz-form-label>包含商品</nz-form-label>
+            <input type="text" nz-input placeholder="69码商品编码或名称" nzSize="default" [(ngModel)]="queryForm.goods">
+        </div>
+        <!-- 出库单号 -->
+        <div class="input-box">
+            <nz-form-label>出库单号</nz-form-label>
+            <input type="text" nz-input placeholder="请输入" nzSize="default" [(ngModel)]="queryForm.deliveryNumber">
+        </div>
+        <!-- 关联单号 -->
+        <div class="input-box">
+            <nz-form-label>关联单号</nz-form-label>
+            <input type="text" nz-input placeholder="请输入" nzSize="default" [(ngModel)]="queryForm.orderNum">
+        </div>
+        <!-- 录单日期 -->
+        <div class="date-box">
+            <nz-form-label>新建日期</nz-form-label>
+            <nz-range-picker [nzFormat]="'yyyy-MM-dd'" [(ngModel)]="queryForm.dateFormat"></nz-range-picker>
+        </div>
+        <!-- 状态 -->
+        <div class="select-box">
+            <nz-form-label>状态</nz-form-label>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" [(ngModel)]="queryForm.state">
+                <nz-option nzLabel="全部" nzValue=""></nz-option>
+                <nz-option nzLabel="草稿" nzValue="1"></nz-option>
+                <nz-option nzLabel="已通知" nzValue="2"></nz-option>
+                <nz-option nzLabel="已完成" nzValue="3"></nz-option>
+                <nz-option nzLabel="已撤销" nzValue="4"></nz-option>
+            </nz-select>
+        </div>
+        <div class="bt-search">
+            <button nz-button nzType="primary" (click)="query()">查询</button>
+        </div>
+        <!-- 其他功能按钮 -->
+        <div class="bt-list">
+            <a class="refresh" nzTooltipTitle="刷新" nzTooltipPlacement="top" nz-tooltip (click)="refresh()"><i nz-icon
+                    nzType="sync" nzTheme="outline"></i></a>
+        </div>
+    </div>
+</div>
+
+<main>
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="listOfData?.records" [nzShowPagination]="false"
+        [nzPageSize]="listOfData?.size" [nzLoading]="tableLoading">
+        <thead>
+            <tr>
+                <th nzAlign="center">id</th>
+                <th nzAlign="center">出库单号</th>
+                <th nzAlign="center">关联单号</th>
+                <th nzAlign="center">出库内容</th>
+                <th nzAlign="center">实际出库</th>
+                <th nzAlign="center">出库类型</th>
+                <th nzAlign="center">收货人</th>
+                <th nzAlign="center"  style="width: 500px;">收货地址</th>
+                <th nzAlign="center">新建人员</th>
+                <th nzAlign="center">新建时间</th>
+                <th nzAlign="center">完成/关闭时间</th>
+                <th nzAlign="center"  style="width: 500px;">备注</th>
+                <th nzAlign="center">状态</th>
+                <th nzAlign="center"  style="width: 260px;">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="searchHint && listOfData?.records">
+                <td class="searchHint" nzAlign="center" colspan="13">
+                    <span>搜索 “{{searcName}}”，找到&nbsp;{{ listOfData?.total }}&nbsp;条结果</span>
+                    <a (click)="backList()">返回原列表</a>
+                </td>
+            </tr>
+            <tr *ngFor="let data of rowSelectionTable.data">
+                <!--  -->
+                <td nzAlign="center">{{ data.id }}</td>
+                <!-- 出库单号 -->
+                <td nzAlign="center">{{ data.deliveryNumber }}</td>
+                <!-- 关联单号 -->
+                <td nzAlign="center">{{ data.orderNum }}</td>
+                <!-- 出库内容 -->
+                <td nzAlign="center">{{ data.deliveryContent ? data.deliveryContent : '---' }}</td>
+                <!-- 实际出库 -->
+                <td nzAlign="center">{{ data.actualDeliveryContent ? data.actualDeliveryContent : '---' }}</td>
+                <!-- 出库类型 -->
+                <td nzAlign="center">{{ outType_to_Text(data.type)}}</td>
+                <!-- 收货人 -->
+                <td nzAlign="center">{{ data.consignee ? data.consignee : '---' }}</td>
+                <!-- 收货地址 -->
+                <td nzAlign="left">{{ data.address ? data.address : '---' }}</td>
+                <!-- 新建人员 -->
+                <td nzAlign="center">{{ data.founder ? data.founder : '---' }}</td>
+                <!-- 新建时间 -->
+                <td nzAlign="center">{{ data.createTime ? data.createTime : '---' }}</td>
+                <!-- 完成/关闭时间 -->
+                <td nzAlign="center">{{ data.deliveryTime ? data.deliveryTime : '---' }}</td>
+                <!-- 备注 -->
+                <td nzAlign="left">{{ data.remark ? data.remark : '---' }}</td>
+                <!-- 状态 -->
+                <td nzAlign="center">{{ status_To_text(data.state) }}</td>
+                <td nzAlign="center">
+                    <a nz-button nz-button-tdlink nzType="link" [routerLink]="['../outDetails', data.id]">查看</a>
+                    <a nz-button nz-button-tdlink nzType="link" [disabled]="data.state != 1"
+                        [routerLink]="['../outSave', data.id]">编辑</a>
+
+                    <a nz-popconfirm nzPopconfirmTitle="确认通知第三方进行出库操作？" (nzOnConfirm)="synchronize(data.id)" nz-button
+                        nz-button-tdlink nzType="link" [disabled]="data.state != 1">通知出库</a>
+
+                    <a nz-button nz-button-tdlink nzType="link" nzDanger nz-popconfirm nzPopconfirmTitle="确认删除吗?"
+                        [nzIcon]="iconTpl" (nzOnConfirm)="confirm(data.id)" [disabled]="data.state != 1">删除</a>
+                    <ng-template #iconTpl>
+                        <i nz-icon nzType="question-circle-o" style="color: red;"></i>
+                    </ng-template>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <div class="pagination-box">
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]" nzShowSizeChanger nzShowQuickJumper
+                [nzPageIndex]="listOfData?.current" [nzTotal]="listOfData?.total" [nzShowTotal]="totalTemplate"
+                [nzPageSize]="listOfData?.size"
+                (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)">
+            </nz-pagination>
+        </div>
+    </div>
+</main>

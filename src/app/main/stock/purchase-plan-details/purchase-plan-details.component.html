@@ -1,0 +1,254 @@
+<main>
+    <div class="panelgroup">
+        <div class="panel-hd">
+            <h3>基本信息</h3>
+        </div>
+        <div class="panel-bd">
+            <ul>
+                <li>
+                    <div class="key">
+                        <span>计划单号</span>
+                    </div>
+                    <div class="val">
+                        <span>{{ detailsData.billNo }}</span>
+                    </div>
+                    <a (click)="copy()">
+                        <i nz-icon nzType="copy" nzTheme="outline"></i>
+                    </a>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>附件</span>
+                    </div>
+                    <div class="val">
+                        <ul class="fileList" *ngIf="fileList.length">
+                            <li *ngFor="let data of fileList; index as i">
+                                <!-- <span>{{ data.name }}</span> -->
+                                <div class="fileBtn">
+                                    <a nz-button nz-button-tdlink nzType="link" (click)="fileDown(data.url)">下载</a>
+                                </div>
+                            </li>
+                        </ul>
+                        <span *ngIf="fileList.length == 0">-</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>计划人</span>
+                    </div>
+                    <div class="val">
+                        <span>{{ detailsData.planner }}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>计划时间</span>
+                    </div>
+                    <div class="val">
+                        <span>{{ detailsData.createTime }}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>状态</span>
+                    </div>
+                    <div class="val">
+                        <span [ngStyle]="{'color': detailsData.state == 0 ? 'black': detailsData.state == 1 ? 'orange' : detailsData.state == 2 ? 'green' : 
+                            detailsData.state == 3 ? 'gray' : detailsData.state == 4 ? 'black' : detailsData.state == 5 ? 'green' :
+                            detailsData.state == 6 ? 'gray' : 'black'}">
+                            {{ detailsData.stateText }}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>审核人</span>
+                    </div>
+                    <div class="val">
+                        <span>{{ detailsData.reviewer ? detailsData.reviewer : '-' }}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>审核时间</span>
+                    </div>
+                    <div class="val">
+                        <span>{{ detailsData.auditTime ? detailsData.auditTime : '-' }}</span>
+                    </div>
+                </li>
+                <li *ngIf="detailsData.state == 6">
+                    <div class="key">
+                        <span>关闭备注</span>
+                    </div>
+                    <div class="val">
+                        <span>{{ detailsData.closeRemark ? detailsData.closeRemark : '-' }}</span>
+                    </div>
+                </li>
+            </ul>
+            <ul>
+                <li  class="len">
+                    <div class="key">
+                        <span>备注</span>
+                    </div>
+                    <div class="val" >
+                        <span class="remark">{{ detailsData.remark }}</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="panel-hd">
+            <h3>申请详情</h3>
+        </div>
+        <div class="panel-bd">
+            <nz-table #rowSelectionTable nzShowSizeChanger [nzTemplateMode]="tableData.length > 0" [nzShowPagination]="false">
+                <thead>
+                    <tr>
+                        <th colspan="6" nzAlign="center">商品信息</th>
+                        <th colspan="8" nzAlign="center">计划采购信息</th>
+                    </tr>
+                    <tr>
+                        <th rowspan="2" nzAlign="center">序号</th>
+                        <th rowspan="2" nzAlign="center">商品编号</th>
+                        <th rowspan="2" nzAlign="center" style="width: 300px;">商品名称</th>
+                        <th rowspan="2" nzAlign="center">商品规格</th>
+                        <th rowspan="2" nzAlign="center">69码</th>
+                        <th rowspan="2" nzAlign="center">标准采购价
+                            (含税)</th>
+                    </tr>
+                    <tr>
+                        <th rowspan="2" nzAlign="center">计划数量</th>
+                        <th rowspan="2" nzAlign="center">冻结数量</th>
+                        <th rowspan="2" nzAlign="center">已采购数量</th>
+                        <th rowspan="2" nzAlign="center">入库仓库</th>
+                        <th rowspan="2" nzAlign="center">期望交货日期</th>
+                        <th rowspan="2" nzAlign="center">最迟交货日期</th>
+                        <th rowspan="2" nzAlign="center">状态</th>
+                        <th rowspan="2" nzAlign="center">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of tableData ; index as i">
+                        <td nzAlign="center">{{ (i + 1)}}</td>
+                        <td nzAlign="center">{{ data.whGoodsId }}</td>
+                        <td nzAlign="center">{{ data.name }}</td>
+                        <td nzAlign="center">{{ data.attr }}</td>
+                        <td nzAlign="center">{{ data.code ? data.code  : '-'}}</td>
+                        <td nzAlign="center">{{ data.standardCostPrice }}</td>
+                        <td nzAlign="center">{{ data.planNumber }}</td>
+                        <!-- 冻结数量 -->
+                        <td nzAlign="center">{{ data.frozenNumber ? data.frozenNumber : '-' }}</td>
+                        <td nzAlign="center">{{ data.purchasedNumber }}</td>
+                        <td nzAlign="center">{{ data.whPutName }}</td>
+                        <!-- 期望交货日期 -->
+                        <td nzAlign="center">{{ data.deliveryTime | date: 'yyyy-MM-dd' }}</td>
+                        <!-- 最迟交货日期 -->
+                        <td nzAlign="center">{{ data.endDeliveryTime | date: 'yyyy-MM-dd' }}</td>
+                        <td nzAlign="center" class="{{ data.state == 0 ? 'font_Yellow' : data.state == 1 ? 'font_red' : data.state ==
+                2 ? 'font_Green' : data.state == 3 ? 'font_Yellow' : 'font_Black'}}">
+                            {{ data.stateText1 }}
+                            <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline"
+                                [nzTooltipTitle]="titleTemplate" nzTooltipPlacement="right"
+                                *ngIf=" data.state == 1"></i>
+                            <ng-template #titleTemplate>
+                                <p>{{data.closeRemark}}</p>
+                            </ng-template>
+                        </td>
+                        <td nzAlign="center">
+                            <a nz-button nz-button-tdlink nzType="link" [disabled]="data.state != 0 && data.state != 3" (click)="showCloseVisible(data)">手动关闭</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td nzAlign="center">合计</td>
+                        <td nzAlign="center"></td>
+                        <td nzAlign="center"></td>
+                        <td nzAlign="center"></td>
+                        <td nzAlign="center"></td>
+                        <td nzAlign="center"></td>
+                        <!-- 计划数量总和 -->
+                        <td nzAlign="center">{{ planNumberSum == 0 ? '' : planNumberSum }}</td>
+                        <td nzAlign="center"> {{ totalFrozenNumber || ''}}</td>
+                        <!-- 已采购数量总和 -->
+                        <td nzAlign="center">{{ purchasedNumberSum == 0 ? '' : purchasedNumberSum }}</td>
+                        <td nzAlign="center"></td>
+                        <td nzAlign="center"></td>
+                        <td nzAlign="center"></td>
+                        <td nzAlign="center"></td>
+                        <td nzAlign="center"></td>
+                        
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+    <div class="submit-box">
+        <nz-divider></nz-divider>
+        <div class="bt-box">
+            <button nz-button nzType="primary" *ngIf="!(detailsData.state == 5 || detailsData.state == 6 || detailsData.state == 1 || detailsData.state == 2 || detailsData.state == 4)" [routerLink]="['../../purchasePlanApply', detailsData.id]">编辑</button>
+            <button nz-button nzType="primary" *ngIf="!(detailsData.state == 5 || detailsData.state == 6 || detailsData.state == 2 || detailsData.state == 3 || detailsData.state == 0 || detailsData.state == 4)" (click)="showModal()">审核</button>
+            <button nz-button nzType="primary" *ngIf="!(detailsData.state == 5 || detailsData.state == 6 || detailsData.state == 0 || detailsData.state == 1 || detailsData.state == 3)" (click)="close()">手动关闭</button>
+            <app-bt-group [btType]="'default'" [btText]="'返回'"></app-bt-group>
+        </div>
+    </div>
+</main>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="审核" (nzOnCancel)="handleCancel()" [nzStyle]="{ width: '600px' }" [nzFooter]="null">
+    <form nz-form>
+        <nz-form-item>
+            <nz-form-label [nzSm]="4">
+                审核意见
+            </nz-form-label>
+            <nz-form-control nzFlex="420px" [nzSpan]="64">
+                <nz-mention>
+                    <textarea rows="6" nz-input [maxlength]="100" [(ngModel)]="detailsData.auditDesc" name="auditDesc"></textarea>
+                </nz-mention>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-control [nzOffset]="12">
+            <button nz-button nzCentered nzType="primary" class="saveBtn" (click)="submitForm(2)">通过</button>
+            <button nz-button nzCentered nzType="primary" class="saveBtn" (click)="submitForm(3)">不通过</button>
+            <button nz-button nzCentered nzType="default" (click)="handleCancel()">取消</button>
+        </nz-form-control>
+    </form>
+</nz-modal>
+
+<!-- 表格内的手动关闭 -->
+<nz-modal [(nzVisible)]="closeVisible" nzTitle="手动关闭" (nzOnCancel)="handleCancel()" [nzStyle]="{ width: '600px' }" [nzFooter]="null">
+    <form nz-form>
+        <nz-form-item>
+            <nz-form-label [nzSm]="4">
+                关闭备注
+            </nz-form-label>
+            <nz-form-control nzFlex="420px" [nzSpan]="64">
+                <nz-mention>
+                    <textarea rows="6" nz-input [maxlength]="100" [(ngModel)]="remark" name="remark"></textarea>
+                </nz-mention>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-control [nzOffset]="14">
+            <button nz-button nzCentered nzType="primary" (click)="save()">确定关闭</button>
+            <button nz-button nzCentered nzType="default" (click)="handleCancel()">取消</button>
+        </nz-form-control>
+    </form>
+</nz-modal>
+
+<!-- 手动关闭 按钮 -->
+<nz-modal [(nzVisible)]="closeAllVisible" nzTitle="手动关闭" (nzOnCancel)="handleCancel()" [nzStyle]="{ width: '600px' }" [nzFooter]="null">
+    <form nz-form>
+        <nz-form-item>
+            <nz-form-label [nzSm]="4" nzRequired>
+                关闭备注
+            </nz-form-label>
+            <nz-form-control nzFlex="420px" [nzSpan]="64">
+                <nz-mention>
+                    <textarea rows="6" nz-input [maxlength]="100" [(ngModel)]="closeRemark" name="closeRemark"></textarea>
+                </nz-mention>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-control [nzOffset]="14">
+            <button nz-button nzCentered nzType="primary" (click)="saveAll()">确定关闭</button>
+            <button nz-button nzCentered nzType="default" (click)="handleCancel()">取消</button>
+        </nz-form-control>
+    </form>
+</nz-modal>

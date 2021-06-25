@@ -1,206 +1,147 @@
-<nz-layout class="app-layout">
-  <nz-sider class="menu-sidebar" nzCollapsible nzWidth="256px" nzBreakpoint="md" [(nzCollapsed)]="isCollapsed"
-    [nzTrigger]="null">
-    <div class="sidebar-logo">
-      <a target="_blank">
-        <img src="https://ng.ant.design/assets/img/logo.svg" alt="logo">
-        <h1>NG-ZORRO</h1>
-      </a>
+<header class="header-nav">
+    <div class="u-logo">
+        <img src="https://ng.ant.design/assets/img/logo.svg" alt="">
+        <span>爱思商城</span>
+    </div>
+    <div class="u-left-bt">
+        <a>总览</a>
     </div>
 
-    <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-      <li nz-submenu nzTitle="商品" nzIcon="shopping" nzTheme="outline">
-        <ul>
-          <li nz-menu-item>
-            <a [routerLink]="['./goods/goodsAll']">所有商品</a>
-          </li>
-          <li nz-menu-item>
-            <a [routerLink]="['./goods/goodsAdd']">新增商品</a>
-          </li>
-          <li nz-menu-item>
-            <a>商品规格组</a>
-          </li>
-          <li nz-menu-item>
-            <a [routerLink]="['./goods/goodsRecommend']">推荐商品配置</a>
-          </li>
+    <div class="u-user">
+        <div class="user-info">
+            <img nz-image src="{{userInfo?.img}}" alt="" [nzFallback]="fallback">
+            <span>{{userInfo?.realName}}</span>
+        </div>
+        <div class="user-menu">
+            <a (click)="showAccountModal(userInfo?.id)"><i nz-icon nzType="user" nzTheme="outline"></i>账号信息</a>
+            <a (click)="showRoleModal()"><i nz-icon nzType="edit" nzTheme="outline"></i>修改密码</a>
+            <span class="user-line"></span>
+            <a (click)="exit()">退出</a>
+        </div>
+    </div>
+    <div class="u-right-bt">
+        <a class="log" nzTooltipTitle="操作日志" nzTooltipPlacement="bottom" nz-tooltip><i nz-icon nzType="file-protect"
+                nzTheme="outline"></i></a>
+        <a class="message" nzTooltipTitle="消息中心" nzTooltipPlacement="bottom" nz-tooltip><i nz-icon nzType="message"
+                nzTheme="outline"></i></a>
+    </div>
+</header>
+<div class="container">
+    <div class="menu-box {{isCollapsed ? 'shrink' : ''}}">
+        <ul nz-menu nzMode="inline" nzTheme="dark">
+            <li nz-submenu *ngFor="let item of navData; let i=index" nzTitle="{{item.name}}" [nzOpen]="item.open"
+                nzIcon="{{item.icon}}" (nzOpenChange)="openMenu(item)">
+                <ul>
+                    <li nz-menu-item *ngFor="let items of item.children; let i=index" [nzSelected]="items.selected"
+                        (click)="toRouter(items.path)">
+                        {{items.name}}
+                    </li>
+                </ul>
+            </li>
         </ul>
-      </li>
-      <li nz-submenu nzTitle="订单" nzIcon="snippets" nzTheme="outline">
-        <ul>
-          <li nz-menu-item>
-            <a>配件订单</a>
-          </li>
-          <li nz-menu-item>
-            <a>回收订单</a>
-          </li>
-          <li nz-menu-item>
-            <a>二手机订单</a>
-          </li>
-        </ul>
-      </li>
-      <li nz-submenu nzTitle="客户" nzIcon="user" nzTheme="outline">
-        <ul>
-          <li nz-menu-item>
-            <a [routerLink]="['./customer/merchant']">商户管理</a>
-          </li>
-          <li nz-menu-item>
-            <a [routerLink]="['./customer/store']">门店管理</a>
-          </li>
-          <li nz-menu-item>
-            <a [routerLink]="['./customer/news']">客户消息</a>
-          </li>
-          <li nz-menu-item>
-            <a [routerLink]="['./customer/membershipRights']">会员权益</a>
-          </li>
-          <li nz-menu-item>
-            <a [routerLink]="['./customer/membershipLevel']">会员等级</a>
-          </li>
-          <li nz-menu-item>
-            <a [routerLink]="['./customer/browse']">客户浏览记录</a>
-          </li>
-          <li nz-menu-item>
-            <a [routerLink]="['./customer/collection']">客户收藏记录</a>
-          </li>
-          <li nz-menu-item>
-            <a [routerLink]="['./customer/search']">客户搜索记录</a>
-          </li>
-        </ul>
-      </li>
-      <li nz-submenu nzTitle="营销" nzIcon="meh" nzTheme="outline">
-        <ul>
-          <li nz-menu-item>
-            <a>优惠券管理</a>
-          </li>
-          <li nz-menu-item>
-            <a>用户优惠券</a>
-          </li>
-          <li nz-menu-item>
-            <a>广告管理</a>
-          </li>
-          <li nz-menu-item>
-            <a>广告位管理</a>
-          </li>
-          <li nz-menu-item>
-            <a>邀请有礼</a>
-          </li>
-        </ul>
-      </li>
-      <li nz-submenu nzTitle="售后" nzIcon="phone" nzTheme="outline">
-        <ul>
-          <li nz-menu-item>
-            <a>售后单管理</a>
-          </li>
-        </ul>
-      </li>
-      <li nz-submenu nzTitle="仓储" nzIcon="group" nzTheme="outline">
-        <ul>
-          <li nz-menu-item>
-            <a>供应商管理</a>
-          </li>
-          <li nz-menu-item>
-            <a>仓库管理</a>
-          </li>
-          <li nz-menu-item>
-            <a>仓库商品</a>
-          </li>
-          <li nz-menu-item>
-            <a>采购计划</a>
-          </li>
-          <li nz-menu-item>
-            <a>采购单</a>
-          </li>
-          <li nz-menu-item>
-            <a>入库单</a>
-          </li>
-          <li nz-menu-item>
-            <a>出库单</a>
-          </li>
-        </ul>
-      </li>
-      <li nz-submenu nzTitle="统计" nzIcon="bar-chart" nzTheme="outline">
-        <ul>
-          <li nz-menu-item>
-            <a>商品看板</a>
-          </li>
-          <li nz-menu-item>
-            <a>订单看板</a>
-          </li>
-          <li nz-menu-item>
-            <a>售后看板</a>
-          </li>
-          <li nz-menu-item>
-            <a>客户看板</a>
-          </li>
-          <li nz-menu-item>
-            <a>营销看板</a>
-          </li>
-          <li nz-menu-item>
-            <a>仓库看板</a>
-          </li>
-          <li nz-menu-item>
-            <a>统计看板</a>
-          </li>
-        </ul>
-      </li>
-      <li nz-submenu nzTitle="配置" nzIcon="setting" nzTheme="outline">
-        <ul>
-          <li nz-menu-item>
-            <a [routerLink]="['./config/address']">地址管理</a>
-          </li>
-          <li nz-menu-item>
-            <a [routerLink]="['./config/dictionaries']">字典管理</a>
-          </li>
-          <li nz-menu-item>
-            <a [routerLink]="['./config/goodsBrand']">商品品牌配置</a>
-          </li>
-          <li nz-menu-item>
-            <a>商品分类配置</a>
-          </li>
-          <li nz-menu-item>
-            <a>商品通用说明</a>
-          </li>
-          <li nz-menu-item>
-            <a>手机厂商配置</a>
-          </li>
-        </ul>
-      </li>
-      <li nz-submenu nzTitle="系统" nzIcon="appstore" nzTheme="outline">
-        <ul>
-          <li nz-menu-item>
-            <a [routerLink]="['./system/menu']">菜单管理</a>
-          </li>
-          <li nz-menu-item>
-            <a>角色管理</a>
-          </li>
-          <li nz-menu-item>
-            <a>员工管理</a>
-          </li>
-          <li nz-menu-item>
-            <a>服务器控制</a>
-          </li>
-          <li nz-menu-item>
-            <a>操作日志</a>
-          </li>
-          <li nz-menu-item>
-            <a>登陆日志</a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-    <!-- <router-outlet></router-outlet> -->
-  </nz-sider>
-  <nz-layout>
-    <nz-header>
-      <div class="app-header">
-        <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
-          <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
-        </span>
-      </div>
-    </nz-header>
-    <nz-content>
-      <div class="inner-content">
-        <router-outlet></router-outlet>
-      </div>
-    </nz-content>
-  </nz-layout>
-</nz-layout>
+        <!-- <button nz-button nzType="primary" (click)="toggleCollapsed()">
+      <i nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
+    </button> -->
+    </div>
+    <main #mainScroll class="{{isCollapsed ? 'shrink' : ''}}">
+        <div class="main_header">
+            <h2> <a (click)="breadcrumbsPaht(breadcrumbs.backPath)" *ngIf="breadcrumbs.backPath"><i nz-icon
+                        nzType="arrow-left" nzTheme="outline" style="color: #006eff;margin-right: 10px;"></i></a>
+                {{breadcrumbs.breadcrumb}}
+            </h2>
+        </div>
+        <div class="main_content">
+            <router-outlet></router-outlet>
+        </div>
+    </main>
+</div>
+
+
+<nz-modal [(nzVisible)]="passwordModal" nzTitle="修改密码" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+    <nz-form-item>
+        <nz-form-label nz-col nzFlex="100px" nzRequired>
+            原密码
+        </nz-form-label>
+        <nz-form-control nz-col nzFlex="200px">
+            <input nz-input placeholder="请输入原密码" [(ngModel)]="entityParam.oldPwd" />
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+        <nz-form-label nz-col nzFlex="100px" nzRequired>
+            新密码
+        </nz-form-label>
+        <nz-form-control nz-col nzFlex="200px">
+            <input nz-input placeholder="请输入新密码" [(ngModel)]="entityParam.passWord" />
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+        <nz-form-label nz-col nzFlex="100px" nzRequired>
+            确认密码
+        </nz-form-label>
+        <nz-form-control nz-col nzFlex="200px">
+            <input nz-input placeholder="请输入确认密码" [(ngModel)]="entityParam.affirmPassWord" />
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+        <nz-form-control [nzSpan]="8" [nzOffset]="5">
+            <button nz-button nzType="primary" style="margin-right: 10px;" (click)="revisePwd()">保存</button>
+            <button nz-button nzType="default" (click)="handleCancel()">取消</button>
+        </nz-form-control>
+    </nz-form-item>
+</nz-modal>
+
+<!-- 账号信息 -->
+<nz-modal [(nzVisible)]="accountModal" nzTitle="我的资料" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+    <nz-form-item>
+        <nz-form-label nz-col nzFlex="100px" nzRequired>姓名</nz-form-label>
+        <nz-form-control nz-col nzFlex="200px">
+            <input nz-input type="text" [maxLength]="32" name="realName" [(ngModel)]="accountParam.realName"
+                placeholder="请输入姓名" autocomplete="off">
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label nz-col nzFlex="100px">联系方式</nz-form-label>
+        <nz-form-control nz-col nzFlex="200px">
+            <input nz-input type="text" [maxlength]="11" name="phoneNumber" [(ngModel)]="accountParam.phoneNumber" placeholder="请输入联系方式"
+                autocomplete="off">
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label nz-col nzFlex="100px">昵称</nz-form-label>
+        <nz-form-control nz-col nzFlex="200px">
+            <input nz-input type="text" name="nickName" [(ngModel)]="accountParam.name" placeholder="请输入昵称"
+                autocomplete="off">
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label nz-col nzFlex="100px">头像</nz-form-label>
+        <nz-form-control nz-col nzFlex="200px">
+            <label for="resFile" class="upFile" *ngIf="!accountParam.img">
+                <i nz-icon nzType="plus"></i>
+                <span>上传图片</span>
+                <input id="resFile" type="file" name="img" [(ngModel)]="fileVal" multiple="multiple" accept="image/*"
+                    (change)="handleFileInput($event)">
+            </label>
+            <div class="videoImg" *ngIf="accountParam.img">
+                <img nz-image nzSrc="{{accountParam?.img}}" [nzFallback]="fallback" />
+                <a (click)="deleteImg()">删除</a>
+            </div>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control [nzSpan]="8" [nzOffset]="5">
+            <button nz-button nzType="primary" (click)="accountSave()">确定</button>
+            &nbsp;
+            <button nz-button nzType="default" (click)="handleCancel()">取消</button>
+        </nz-form-control>
+    </nz-form-item>
+
+</nz-modal>
+
+<!-- <a class="refreshCache" (click)="refreshCache()">
+  <i nz-icon nzType="sync" [nzSpin]="CacheLoadingOne" nzTheme="outline"></i>
+  <span class="text">刷新缓存</span>
+</a> -->

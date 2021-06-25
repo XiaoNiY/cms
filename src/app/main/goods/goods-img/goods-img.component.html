@@ -1,0 +1,76 @@
+<main>
+    <div class="main-box">
+        <h3>图片信息<em style="color: #b7b7b7;font-weight: lighter;font-size: 12px;">（拖动可以调整顺序）</em></h3>
+        <br>
+        <ul class="imgList" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)">
+            <li *ngFor="let item of fileList; index as i" cdkDrag>
+                <img nz-image nzSrc="{{item.url}}" [nzFallback]="fallback" />
+                <div>
+                    <a (click)="setMainImg(i)"
+                        class="{{item.isMain == 0 ? '' : 'active'}}">{{item.isMain == 0 ? '设为主图' : '商品主图'}}</a>
+                    <a (click)="deleteImg(i)">删除</a>
+                </div>
+            </li>
+        </ul>
+        <label for="file" class="upFile" *ngIf="fileList.length != 10">
+            <i nz-icon nzType="plus"></i>
+            <span>上传图片</span>
+            <input id="file" type="file" multiple="multiple" accept="image/*" [(ngModel)]="inputVal" (change)="handleFileInput($event,1)">
+        </label>
+        <div style="clear: both;"></div>
+        <br>
+        <h3><em style="color: #b7b7b7;font-weight: lighter;font-size: 12px;">PS：最多上传10张图片，建议尺寸800px * 800px；</em></h3>
+        <br>
+        <h3>视频信息</h3>
+        <br>
+        <div class="videoBox">
+            <div class="video">
+                <span>视频文件</span>
+                <div class="video-text" *ngIf="json.videoUrl">
+                    <span style="margin-left:24px">{{json.videoUrl}}</span>
+                    <a style="margin-left:10px;color: #006eff;" href="{{json.videoUrl}}">下载</a>
+                    <a style="margin-left:10px;color: #f00;" (click)="deleteVideo()">删除</a>
+                </div>
+                <label for="video" class="upFile" *ngIf="!json.videoUrl">
+                    <i nz-icon nzType="plus"></i>
+                    <span>选择视频</span>
+                    <input id="video" type="file" multiple="multiple" accept="video/*"  [(ngModel)]="inputVal"
+                        (change)="handleFileInput($event,2)">
+                </label>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="video">
+                <span>视频封面</span>
+                <div class="videoImg" *ngIf="json.videoImg">
+                    <img nz-image nzSrc="{{json.videoImg}}" [nzFallback]="fallback" />
+                    <a (click)="deleteVideoImg()">删除</a>
+                </div>
+                <label for="videoImg" class="upFile" *ngIf="!json.videoImg">
+                    <i nz-icon nzType="plus"></i>
+                    <span>上传视频封面</span>
+                    <input id="videoImg" type="file" multiple="multiple" accept="image/*"  [(ngModel)]="inputVal"
+                        (change)="handleFileInput($event,3)">
+                </label>
+                <div style="line-height:1;padding-top: 46px;padding-left: 20px;float: left;" *ngIf="json.videoUrl && !json.videoImg">
+                    <nz-radio-group [(ngModel)]="json.videoImgType">
+                        <label style="display: block;" nz-radio nzValue="1">使用商品主图作为视频封面</label>
+                        <label style="display: block;" nz-radio nzValue="2">由播放器选择一帧作为封面</label>
+                    </nz-radio-group>
+                    <!-- <span nz-checkbox [(ngModel)]="videoImgChecked">使用商品主图作为封面</span>
+                    <br>
+                    <span nz-checkbox style="margin-top: 10px;">由播放器选择一帧作为封面</span> -->
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="submit-box">
+        <nz-divider></nz-divider>
+        <div class="bt-box">
+            <button nz-button nzType="primary" (click)="submit()">保存</button>
+            &nbsp;
+            <app-bt-group [btType]="'default'" [btText]="'返回'"></app-bt-group>
+        </div>
+    </div>
+    <button class="ImportGoods" nz-button nzType="default">从其他商品复制</button>
+</main>

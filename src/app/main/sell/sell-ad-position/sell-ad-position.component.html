@@ -1,0 +1,74 @@
+<div class="adPosition">
+    <div class="bt-box">
+        <button nz-button nzType="primary" [routerLink]="['../adPositionSave']">新增广告位</button>
+    </div>
+    <!-- 查询 -->
+    <div class="bt-search">
+        <button nz-button nzType="primary">查询</button>
+    </div>
+    <div class="search-box">
+        <!-- 状态 -->
+        <div class="select-box">
+            <nz-form-label>状态</nz-form-label>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="全部">
+                <nz-option nzLabel="启用" nzValue="启用"></nz-option>
+                <nz-option nzLabel="禁用" nzValue="禁用"></nz-option>
+            </nz-select>
+        </div>
+
+        <!-- 广告 -->
+        <div class="input1-box">
+            <nz-form-label>广告</nz-form-label>
+            <input nz-input placeholder="请输入广告ID" nzSize="default" />
+        </div>
+
+        <!-- 广告位 -->
+        <div class="input-box">
+            <nz-form-label>广告位</nz-form-label>
+            <input nz-input placeholder="请输入名称" nzSize="default" />
+        </div>
+    </div>
+</div>
+
+<main>
+    <nz-table #rowSelectionTable nzShowSizeChanger>
+        <thead>
+            <tr>
+                <th nzAlign="center">id</th>
+                <th nzAlign="center">状态</th>
+                <th nzAlign="center">所属平台</th>
+                <th nzAlign="center">所属业务</th>
+                <th nzAlign="center">所属页面</th>
+                <th nzAlign="center">名称</th>
+                <th nzAlign="center">内容预设</th>
+                <th nzAlign="center">广告数量</th>
+                <th nzAlign="center">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td nzAlign="center">000</td>
+                <td nzAlign="center">111</td>
+                <td nzAlign="center">222</td>
+                <td nzAlign="center">333</td>
+                <td nzAlign="center">444</td>
+                <td nzAlign="center">555</td>
+                <td nzAlign="center">666</td>
+                <td nzAlign="center">777</td>
+                <td nzAlign="center">
+                    <a nz-button nz-button-tdlink nzType="link">编辑</a>
+                    <a nz-button nz-button-tdlink nzType="link" nzDanger nz-popconfirm nzPopconfirmTitle="确认删除吗?">删除</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+
+    <div class="pagination-box">
+        <span>共 <strong>0</strong> 条</span>
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]"nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="1">
+            </nz-pagination>
+        </div>
+    </div>
+</main>

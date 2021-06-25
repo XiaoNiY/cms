@@ -1,0 +1,106 @@
+<main>
+    <div class="panelgroup">
+        <div class="panel-bd">
+            <h3>基本信息</h3>
+        </div>
+        <ul>
+            <li>
+                <div class="key">
+                    <span>头像</span>
+                </div>
+                <div class="val">
+                    <span>
+                        <img style="width: 34px;" nz-image nzSrc="{{detailsData?.userImg}}" [nzFallback]="fallback" />
+                    </span>
+                </div>
+            </li>
+            <!-- <li>
+                <div class="key">
+                    <span>阶段</span>
+                </div>
+                <div class="val">
+                    <span><nz-tag [nzColor]="'#108ee9'">新客期</nz-tag></span>
+                </div>
+            </li>
+            <li>
+                <div class="key">
+                    <span>等级</span>
+                </div>
+                <div class="val">
+                    <span><nz-tag [nzColor]="'green'">VIP3</nz-tag></span>
+                </div>
+            </li> -->
+            <li>
+                <div class="key">
+                    <span>ID</span>
+                </div>
+                <div class="val">
+                    <span>{{detailsData?.id ? detailsData?.id : '-'}}</span>
+                </div>
+            </li>
+            <li>
+                <div class="key">
+                    <span>手机号</span>
+                </div>
+                <div class="val">
+                    <span>{{detailsData?.phone ? detailsData?.phone : '-'}}</span>
+                </div>
+            </li>
+            <li>
+                <div class="key">
+                    <span>用户名</span>
+                </div>
+                <div class="val">
+                    <span>{{detailsData?.nickname ? detailsData?.nickname : '-'}}</span>
+                </div>
+            </li>
+            <li>
+                <div class="key">
+                    <span>昵称</span>
+                </div>
+                <div class="val">
+                    <span>{{detailsData?.nickname ? detailsData?.nickname : '-'}}</span>
+                </div>
+            </li>
+            <li>
+                <div class="key">
+                    <span>微信openId</span>
+                </div>
+                <div class="val">
+                    <span>{{detailsData?.openid ? detailsData?.openid : '-'}}</span>
+                </div>
+            </li>
+            <li>
+                <div class="key">
+                    <span>账号状态</span>
+                </div>
+                <div class="val">
+                    <span>{{state_To_text(detailsData?.status)}}</span>
+                </div>
+            </li>
+            <li>
+                <div class="key">
+                    <span>注册时间</span>
+                </div>
+                <div class="val">
+                    <span>{{detailsData?.regTime ? detailsData?.regTime : '-'}}</span>
+                </div>
+            </li>
+            <li>
+                <div class="key">
+                    <span>最近登录时间</span>
+                </div>
+                <div class="val">
+                    <span>{{detailsData?.lastLoginTime ? detailsData?.lastLoginTime : '-'}}</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="submit-box">
+        <nz-divider></nz-divider>
+        <div class="bt-box">
+            <!-- <button nz-button nzType="primary" >跟进</button> -->
+            <app-bt-group [btType]="'default'" [btText]="'返回'"></app-bt-group>
+        </div>
+    </div>
+</main>

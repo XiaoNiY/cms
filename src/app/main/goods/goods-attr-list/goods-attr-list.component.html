@@ -1,0 +1,103 @@
+<div class="bt-search">
+    <div class="bt-box">
+        <button nz-button nzType="primary" (click)="showModal()">新增数据</button>
+    </div>
+</div>
+<main>
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="listOfData?.records" [nzShowPagination]="false"
+        nzBordered>
+        <thead>
+            <tr>
+                <th nzAlign="center">ID</th>
+                <th nzAlign="center">属性名称</th>
+                <th nzAlign="center">可选值列表</th>
+                <th nzAlign="center">排序</th>
+                <th nzAlign="center">是否多选</th>
+                <th nzAlign="center">检索方式</th>
+                <th nzAlign="center">手动输入</th>
+                <th nzAlign="center">类型</th>
+                <th [nzWidth]="'180px'" nzAlign="center">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of rowSelectionTable.data; let i=index">
+                <td nzAlign="center">{{data.id}}</td>
+                <!-- 属性名称 -->
+                <td nzAlign="center">{{data.name}}</td>
+                <!-- 可选值列表 -->
+                <td nzAlign="center">
+                    <nz-tag nzMode="default" *ngFor="let item of data.content.split(','); let i=index">{{item}}
+                    </nz-tag>
+                </td>
+                <!-- 排序 -->
+                <td nzAlign="center">{{data.sort}}</td>
+                <!-- 是否多选 -->
+                <td nzAlign="center">{{data.selectType==1 ? '否':'是'}}</td>
+                <!-- 检索方式 -->
+                <td nzAlign="center">{{data.searchType == 1 ? '是' : '否'}}</td>
+                <!-- 手动输入 -->
+                <td nzAlign="center">{{data.canWrite == 1 ? '是' : '否'}}</td>
+                <!-- 类型 -->
+                <td nzAlign="center">{{data.type==1 ? '参数':'规格'}}</td>
+                <td nzAlign="center">
+                    <a nz-button nz-button-tdlink nzType="link" (click)="showModal(data.id)">编辑</a>
+                    <a nz-button nz-button-tdlink nzType="link" nzDanger nz-popconfirm nzPopconfirmTitle="确认删除吗?"
+                        [nzIcon]="iconTpl" (nzOnConfirm)="confirm(data.id)">删除</a>
+                    <ng-template #iconTpl>
+                        <i nz-icon nzType="question-circle-o" style="color: red;"></i>
+                    </ng-template>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</main>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="属性设置" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+    <form nz-form [formGroup]="modalForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">名称</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input placeholder="" formControlName="name" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">排序</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input placeholder="" formControlName="sort" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">手动输入</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <nz-radio-group formControlName="canWrite">
+                    <label nz-radio nzValue="1">允许</label>
+                    <label nz-radio nzValue="0">不允许</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">属性值</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+                    <input type="text" nz-input placeholder="输入回车即可快速添加" formControlName="content"
+                        (keyup)="keyup($event)" />
+                </nz-input-group>
+                <ng-template #suffixIconButton>
+                    <button nz-button nzType="default" (click)="keyup($event)">添加</button>
+                </ng-template>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item *ngIf="attrArr.length >0">
+            <nz-form-control [nzSpan]="14" [nzOffset]="4">
+                <nz-tag nzMode="closeable" *ngFor="let item of attrArr; let i=index" (nzOnClose)="onClose(i)">{{item}}
+                </nz-tag>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-control [nzSpan]="8" [nzOffset]="4">
+                <button nz-button nzType="primary" [nzLoading]="modalLoading">保存</button>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+
+</nz-modal>

@@ -1,0 +1,222 @@
+<main>
+    <form nz-form [formGroup]="validateForm">
+        <h3>基础信息</h3>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3" nzFor="abbreviation" nzRequired>
+                简称
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input type="text" nz-input placeholder="请输入" [maxlength]="20" formControlName="abbreviation">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3"  >全称</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input type="text" nz-input placeholder="请输入" [maxlength]="50" formControlName="name">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3"   nzFor="type" nzRequired>
+                类型
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <nz-select nzPlaceHolder="请选择" formControlName="type">
+                    <nz-option *ngFor="let item of supplier_type" nzValue="{{item.value}}" nzLabel="{{item.label}}">
+                    </nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3"   nzFor="state" nzRequired>
+                状态
+            </nz-form-label>
+            <nz-form-control>
+                <a nz-tooltip nzTooltipTitle="{{stateInfo()}}" nzTooltipPlacement="topRight">
+                    <nz-radio-group [(ngModel)]="state" formControlName="state">
+                        <label nz-radio nzValue="0" [nzDisabled]="draft">草稿</label>
+                        <label nz-radio nzValue="1" [nzDisabled]="normal">正常</label>
+                        <label nz-radio nzValue="2" [nzDisabled]="frozen">冻结</label>
+                        <label nz-radio nzValue="3" [nzDisabled]="endOfCooperation">合作结束</label>
+                        <label nz-radio nzValue="4" [nzDisabled]="contractExpired">合同过期</label>
+                    </nz-radio-group>
+                </a>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3"  >
+                联系人
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input nz-input type="text" placeholder="请输入" [maxlength]="20" formControlName="contacts">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3"  >
+                联系方式
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input nz-input type="text" placeholder="请输入" [maxlength]="20" formControlName="phoneNumber">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3" [nzXs]="6">
+                备注
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <textarea rows="4" nz-input="" placeholder="仅内部可见" [maxlength]="100" ng-reflect-name="remark"
+                    formControlName="remark"></textarea>
+            </nz-form-control>
+        </nz-form-item>
+        <h3>合同信息</h3>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3"  >合同文件</nz-form-label>
+            <nz-form-control nzFlex="150px">
+                <label for="contractFile" class="contractFile">
+                    <span>选择文件</span>
+                    <input id="contractFile" type="file" accept="/*" (change)="handleFileInput($event,1)">
+                </label>
+            </nz-form-control>
+            <p>请选择图片、office文件、PDF文件</p>
+            <br/>
+            <!-- <ul class="fileList" *ngIf="fileList.length">
+                <li *ngFor="let data of fileList; index as i">
+                    <span>{{ data.name }}</span>
+                    <div class="fileBtn">
+                        <a nz-button nz-button-tdlink nzType="link" (click)="contractFileDown(data.url)">下载</a>
+                        <a nz-button nz-button-tdlink nzType="link" (click)="deleteContractFile(data.id)">删除</a>
+                    </div>
+                </li>
+            </ul> -->
+        </nz-form-item>
+        <nz-form-item  *ngIf="fileList.length">
+            <nz-form-label [nzSm]="3"></nz-form-label>
+            <nz-form-control >
+                <ul class="fileList">
+                    <li *ngFor="let data of fileList; index as i">
+                        <span>{{ data.name }}</span>
+                        <div class="fileBtn">
+                            <a nz-button nz-button-tdlink nzType="link" (click)="contractFileDown(data.url)">下载</a>
+                            <a nz-button nz-button-tdlink nzType="link" (click)="deleteContractFile(data.id)">删除</a>
+                        </div>
+                    </li>
+                </ul>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="3"  >合同生效日期</nz-form-label>
+            <nz-form-control nzFlex="150px">
+                <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="createTime"
+                    formControlName="createTime">
+                </nz-date-picker>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3"  >合同失效日期</nz-form-label>
+            <nz-form-control nzFlex="150px">
+                <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="time"
+                    formControlName="endTime">
+                </nz-date-picker>
+            </nz-form-control>
+            <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline" [nzTooltipTitle]="endTime"
+                nzTooltipPlacement="right"></i>
+            <ng-template #endTime>
+                <span>当到达该日期的时候，供应商状态会自动改变</span>
+            </ng-template>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3">附件</nz-form-label>
+            <nz-form-control nzFlex="150px">
+                <label for="file" class="upFile">
+                    <span>选择文件</span>
+                    <input id="file" type="file" multiple="multiple" accept="/*" (change)="handleFileInput($event,2)">
+                </label>
+            </nz-form-control>
+            <p>请选择图片、office文件、PDF文件，可多个文件</p>
+        </nz-form-item>
+        
+        <nz-form-item  *ngIf="fileList2.length">
+            <nz-form-label [nzSm]="3"></nz-form-label>
+            <nz-form-control >
+                <ul class="fileList">
+                    <li *ngFor="let data of fileList2; index as i">
+                        <span>{{ data.name }}</span>
+                        <div class="fileBtn">
+                            <a nz-button nz-button-tdlink nzType="link" (click)="fileDown(data.url)">下载</a>
+                            <a nz-button nz-button-tdlink nzType="link" (click)="deleteFile(data.id)">删除</a>
+                        </div>
+                    </li>
+                </ul>
+            </nz-form-control>
+        </nz-form-item>
+
+        <h3>发票信息</h3>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3"  >
+                结算方式
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <nz-select nzPlaceHolder="请选择" formControlName="settlementType">
+                    <nz-option *ngFor="let item of supplier_settlement_type" nzValue="{{item.value}}" nzLabel="{{item.label}}">
+                    </nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3"  >公司名称</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input type="text" nz-input placeholder="请输入" [maxlength]="50" formControlName="companyName">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3"  >
+                税号
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input nz-input type="text" placeholder="请输入" [maxlength]="20" formControlName="tax">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3"  >
+                单位地址
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input nz-input type="text" placeholder="请输入" [maxlength]="100" formControlName="address">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3"  >
+                电话
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input nz-input type="text" placeholder="请输入" [maxlength]="20" formControlName="telephone">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3"  >
+                开户行
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input nz-input type="text" placeholder="请输入" [maxlength]="20" formControlName="bank">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3"  >
+                银行账号
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input nz-input type="text" placeholder="请输入" [maxlength]="20" formControlName="bankAccount">
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+
+
+    <div class="submit-box">
+        <nz-divider></nz-divider>
+        <div class="bt-box">
+            <button nz-button nzType="primary" (click)="submitForm()">保存</button>
+            &nbsp;
+            <app-bt-group [btType]="'default'" [btText]="'返回'"></app-bt-group>
+        </div>
+    </div>
+</main>

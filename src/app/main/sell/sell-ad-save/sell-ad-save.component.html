@@ -1,0 +1,190 @@
+<main>
+    <form>
+        <h3>基础信息</h3>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3" [nzXs]="4">
+                <font>*</font>状态
+            </nz-form-label>
+            <nz-form-control>
+                <nz-radio-group>
+                    <label nz-radio nzValue="启用">启用</label>
+                    <label nz-radio nzValue="禁用">禁用</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3" [nzXs]="4">
+                <font>*</font>类型
+            </nz-form-label>
+            <nz-form-control>
+                <nz-checkbox-wrapper>
+                    <label nz-checkbox nzValue="活动类">活动类</label>
+                    <label nz-checkbox nzValue="商品类">商品类</label>
+                    <label nz-checkbox nzValue="资讯类">资讯类</label>
+                    <label nz-checkbox nzValue="其他">其他</label>
+                </nz-checkbox-wrapper>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3" [nzXs]="4">
+                <font>*</font>标题
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input nz-input type="text" placeholder="请输入">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3" [nzXs]="4">标题颜色</nz-form-label>
+            <nz-form-control nzFlex="100px">
+                <input nz-input type="text" placeholder="请输入">
+            </nz-form-control>
+            <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline" nzTooltipPlacement="right"></i>
+            <ng-template>
+                <span>通常用于标题悬浮在图片的时候的颜色</span>
+            </ng-template>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3" [nzXs]="4">有效时间</nz-form-label>
+            <nz-form-control>
+                <nz-date-picker>请选择开始时间</nz-date-picker>
+                <nz-date-picker>请选择结束时间</nz-date-picker>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3" [nzXs]="6">
+                优先级
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input nz-input type="text" placeholder="请输入">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3" [nzXs]="6">
+                <font>*</font>备注说明
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <textarea rows="4" nz-input="" placeholder="仅内部可见"
+                    ng-reflect-name="remark"></textarea>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+
+    <form>
+        <h3>资源配置</h3>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3" [nzXs]="2">
+                链接1
+            </nz-form-label>
+            <nz-form-control>
+                <nz-input-group [nzSize]="'large'">
+                    <div nz-row [nzGutter]="8">
+                        <nz-form-control nzFlex="200px">
+                            <input nz-input type="text" placeholder="请输入链接名">
+                        </nz-form-control>
+                        <nz-form-control nzFlex="400px">
+                            <input nz-input type="text" placeholder="请输入链接地址">
+                        </nz-form-control>
+                    </div>
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3" [nzXs]="2">
+                链接2
+            </nz-form-label>
+            <nz-form-control>
+                <nz-input-group [nzSize]="'large'">
+                    <div nz-row [nzGutter]="8">
+                        <nz-form-control nzFlex="200px">
+                            <input nz-input type="text" placeholder="请输入链接名">
+                        </nz-form-control>
+                        <nz-form-control nzFlex="400px">
+                            <input nz-input type="text" placeholder="请输入链接地址">
+                        </nz-form-control>
+                    </div>
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3" [nzXs]="2">
+                链接3
+            </nz-form-label>
+            <nz-form-control>
+                <nz-input-group [nzSize]="'large'">
+                    <div nz-row [nzGutter]="8">
+                        <nz-form-control nzFlex="200px">
+                            <input nz-input type="text" placeholder="请输入链接名">
+                        </nz-form-control>
+                        <nz-form-control nzFlex="400px">
+                            <input nz-input type="text" placeholder="请输入链接地址">
+                        </nz-form-control>
+                    </div>
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3" [nzXs]="4">图片填充色</nz-form-label>
+            <nz-form-control nzFlex="100px">
+                <input nz-input type="text" placeholder="请输入">
+            </nz-form-control>
+            <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline" nzTooltipPlacement="right"></i>
+            <ng-template>
+                <span>通常用于图片尺寸和广告位尺寸有出入的时候进行同色填充，以保证整体美观性</span>
+            </ng-template>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="3" [nzXs]="4">图片信息</nz-form-label>
+            <div class="icon clearfix">
+                <div>
+                    <nz-form-label>图片1</nz-form-label>
+                    <br />
+                    <nz-form-control nzFlex="100px">
+                        <input nz-input type="text" placeholder="请输入">
+                    </nz-form-control>
+                    <nz-upload nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76" nzListType="picture-card">
+                        <div>
+                            <i nz-icon nzType="plus"></i>
+                        </div>
+                    </nz-upload>
+                    <img style="width: 100%" />
+                </div>
+                <div class="images-box">
+                    <nz-form-label>图片2</nz-form-label>
+                    <br />
+                    <nz-form-control nzFlex="100px">
+                        <input nz-input type="text" placeholder="请输入">
+                    </nz-form-control>
+                    <nz-upload nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76" nzListType="picture-card">
+                        <div>
+                            <i nz-icon nzType="plus"></i>
+                        </div>
+                    </nz-upload>
+                    <img style="width: 100%" />
+                </div>
+                <div class="images-box">
+                    <nz-form-label>图片3</nz-form-label>
+                    <br />
+                    <nz-form-control nzFlex="100px">
+                        <input nz-input type="text" placeholder="请输入">
+                    </nz-form-control>
+                    <nz-upload nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76" nzListType="picture-card">
+                        <div>
+                            <i nz-icon nzType="plus"></i>
+                        </div>
+                    </nz-upload>
+                    <img style="width: 100%" />
+                </div>
+            </div>
+        </nz-form-item>
+    </form>
+
+    <div class="submit-box">
+        <div class="bt-box">
+            <button nz-button nzType="primary">保存</button>
+            &nbsp;
+            <button nz-button nzType="primary">数据</button>
+            &nbsp;
+            <button nz-button nzType="primary">返回</button>
+        </div>
+    </div>
+</main>

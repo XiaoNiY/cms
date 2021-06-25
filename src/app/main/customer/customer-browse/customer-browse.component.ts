@@ -12,11 +12,4 @@ export class CustomerBrowseComponent implements OnInit {
   ngOnInit() {
   }
 
-  onPageIndexChange(index: number) {
-    console.log(index);
-  }
-
-  onPageSizeChange(index: number) {
-    console.log(index);
-  }
 }

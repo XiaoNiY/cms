@@ -1,0 +1,68 @@
+i {
+    margin-top: 9px;
+    // margin-left: 10px;
+}
+
+main {
+    // width: 1900px;
+    margin: auto;
+    background: #fff;
+    form {
+        h3 {
+            padding-top: 20px;
+            padding-left: 20px;
+        }
+        nz-form-item {
+            margin-bottom: 10px;
+        }
+        nz-form-control {
+            padding-left: 10px;
+        }
+        nz-date-picker {
+            &:nth-child(2) {
+                margin-left: 10px;
+            }
+        }
+
+        nz-upload {
+            margin-top: 8px;
+            margin-left: 10px;
+        }
+
+        .icon {
+            display: flex;
+            nz-form-label {
+                margin-left: 10px;
+            }
+
+            .images-box {
+                margin-left: 110px;
+            }
+        }
+
+        .radio-box {
+            width: 100px;
+            display: block;
+            height: 32px;
+            line-height: 32px;
+        }
+
+        .icon {
+            margin-top: 66px;
+            margin-left: 10px;
+        }
+    }
+    .submit-box {
+        height: 600px;
+        position: relative;
+        left: 120px;
+        .bt-box {
+            position: absolute;
+            left: 25px;
+            bottom: 40px;
+            button {
+                width: 100px;
+            }
+        }
+    }
+}

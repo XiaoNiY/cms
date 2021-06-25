@@ -1,0 +1,104 @@
+<main>
+    <div class="form-box">
+        <h3>库存设置</h3>
+        <nz-form-item>
+            <nz-form-label nz-col nzRequired>
+                销售库存
+            </nz-form-label>
+            <nz-form-control nz-col nzFlex="200px">
+                <nz-input-number [nzMin]="1" nzPlaceHolder="请输入库存" [(ngModel)]="entityParam.stockNum">
+                </nz-input-number>
+            </nz-form-control>
+            <span style="margin-left:10px;line-height: 32px;color: #b7b7b7;font-size: 12px;">根据关联商品计算后，目前实际库存为
+                {{detailsData?.stockNum}} 件</span>
+        </nz-form-item>
+        <h3>仓库商品关联设置 <em
+                style="color: #b7b7b7;font-weight: lighter;font-size: 12px;">（本SPU每次售出以后，会对应扣减下方的商品和对应数量）</em><a
+                (click)="showModal()"><i nz-icon nzType="plus-circle" nzTheme="outline"></i></a>
+        </h3>
+        <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="entityParam.whGoodsList" [nzShowPagination]="false"
+            nzBordered>
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>商品编码</th>
+                    <th>商品名称</th>
+                    <th>69码</th>
+                    <th>商品属性</th>
+                    <th>关联数量</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of entityParam.whGoodsList; let i = index">
+                    <td>{{ i + 1}}</td>
+                    <td>{{data.whGoodsId}}</td>
+                    <td nzLeft>{{data.name}}</td>
+                    <td>{{data.code}}</td>
+                    <td>{{data.attr}}</td>
+                    <td>
+                        <nz-input-number [(ngModel)]="data.count" (ngModelChange)="statistics()" [nzMin]="0"
+                            nzPlaceHolder="请输入数量">
+                        </nz-input-number>
+                    </td>
+                    <td>
+                        <a nz-button nz-button-tdlink nzType="link" nzDanger nz-popconfirm nzPopconfirmTitle="确认删除吗?"
+                            [nzIcon]="iconTpl" (nzOnConfirm)="delete(data)" class="font2">删除</a>
+                        <ng-template #iconTpl>
+                            <i nz-icon nzType="question-circle-o" style="color: red;"></i>
+                        </ng-template>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+    <div class="submit-box">
+        <nz-divider></nz-divider>
+        <div class="bt-box">
+            <button nz-button nzType="primary" (click)="submitForm()">保存</button>
+            <app-bt-group [btType]="'default'" [btText]="'返回'"></app-bt-group>
+        </div>
+    </div>
+</main>
+
+<nz-modal [(nzVisible)]="showGoods" nzTitle="选择仓库商品" (nzOnCancel)="handleCancel()" [nzFooter]="null" [nzWidth]="1050">
+    <div class="search-box">
+        <div class="label-box">
+            <nz-form-label>商品</nz-form-label>
+            <input type="text" nz-input placeholder="69码、商品编码、名称" [(ngModel)]="queryForm.whGood" />
+        </div>
+        <button nz-button nzType="primary" nzSearch (click)="getGoodsList()"><i nz-icon nzType="search"></i></button>
+        <button nz-button nzType="primary" (click)="slectGoods()">关联已选商品({{selectGoodsArr.length}})</button>
+    </div>
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="goodsListData?.records" [nzShowPagination]="false"
+        [nzPageSize]="goodsListData?.size" nzBordered>
+        <thead>
+            <tr>
+                <th [(nzChecked)]="checkedAll" (nzCheckedChange)="onAllChecked($event)"></th>
+                <th>商品编号</th>
+                <th>商品名称</th>
+                <th>商品规格</th>
+                <th>69码</th>
+                <th>实际库存</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of goodsListData?.records">
+                <td nzAlign="center" [nzChecked]="data.Checked" (nzCheckedChange)="onItemChecked(data.id, $event)">
+                </td>
+                <td>{{data.id}}</td>
+                <td>{{data.name}}</td>
+                <td>{{data.attr}}</td>
+                <td>{{data.code}}</td>
+                <td>{{data.stock}}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <p>&nbsp;</p>
+    <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+    <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]" nzShowSizeChanger nzShowQuickJumper
+        [nzPageIndex]="goodsListData?.current" [nzTotal]="goodsListData?.total" [nzShowTotal]="totalTemplate"
+        [nzPageSize]="goodsListData?.size" (nzPageIndexChange)="onPageIndexChange($event)"
+        (nzPageSizeChange)="onPageSizeChange($event)">
+    </nz-pagination>
+</nz-modal>

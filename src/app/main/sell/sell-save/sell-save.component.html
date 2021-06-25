@@ -1,0 +1,502 @@
+<!-- <div class="explain-box">
+    <i nz-icon nzType="info-circle" nzTheme="outline"></i>
+    <span>说明：数据操作完成，请刷新缓存(右下角按钮)</span>
+</div> -->
+<main>
+    <nz-skeleton *ngIf="skeletonActive" [nzActive]="true"></nz-skeleton>
+    <nz-skeleton *ngIf="skeletonActive" [nzActive]="true"></nz-skeleton>
+
+    <div class="form-box" *ngIf="!skeletonActive">
+        <h3>基础信息</h3>
+        <nz-form-item>
+            <nz-form-label nz-col nzRequired>优惠券类型</nz-form-label>
+            <nz-form-control nz-col nzFlex="400px">
+                <nz-radio-group [(ngModel)]="entityParam.type" (ngModelChange)="typeCall()"
+                    [nzDisabled]="entityParam.id > 0 && !funCopy">
+                    <label nz-radio nzValue="1">满减券</label>
+                    <label nz-radio nzValue="2">折扣券</label>
+                    <label nz-radio nzValue="3">随机券</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzRequired>优惠券名称</nz-form-label>
+            <nz-form-control nz-col nzFlex="322px">
+                <input nz-input [(ngModel)]="entityParam.name" placeholder="请输入" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col>备注</nz-form-label>
+            <nz-form-control nz-col nzFlex="322px">
+                <textarea rows="4" nz-input [(ngModel)]="entityParam.remark" placeholder="仅内部可见"
+                    [maxlength]="100"></textarea>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzRequired>发放总量</nz-form-label>
+            <nz-form-control nz-col nzFlex="126px">
+                <nz-input-group nzAddOnAfter="张">
+                    <nz-input-number [(ngModel)]="entityParam.total" [nzMin]="1" [nzMax]="100" [nzStep]="1">
+                    </nz-input-number>
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzRequired>使用门槛</nz-form-label>
+            <nz-form-control placeholder="请输入">
+                <nz-radio-group [(ngModel)]="entityParam.orderLimitMoneyGroup">
+                    <label nz-radio radio-vertical nzValue="1">订单满 <nz-input-number style="width: 100px;" [nzMin]="0"
+                            [(ngModel)]="entityParam.orderLimitMoney" [nzPrecision]="2" nzPlaceHolder="请输入">
+                        </nz-input-number> 元可用</label>
+                </nz-radio-group>
+
+                <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline" [nzTooltipTitle]="orderLimitMoney"
+                    nzTooltipPlacement="right"></i>
+                <ng-template #orderLimitMoney>
+                    <span>1. 如果填写0的话,表示该优惠券无适用门槛</span>
+                    <br>
+                    <span>2. 如果优惠券的额度>=订单金额,则订单金额会自动扣减至0元,此时提交订单会直接变成"待发货(已付款)"状态,请谨慎操作;</span>
+                </ng-template>
+
+                <label *ngIf="entityParam.orderLimitMoney == '0'" nz-checkbox
+                    [(ngModel)]="entityParam.orderLimitMoneyCheck">我已知晓无门槛优惠券可能带来的风险</label>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item *ngIf="entityParam.type == 1">
+            <nz-form-label nz-col nzRequired>减免额度</nz-form-label>
+            <nz-form-control nz-col nzFlex="126px">
+                <nz-input-group nzAddOnAfter="元">
+                    <nz-input-number [(ngModel)]="entityParam.limitSmall" [nzMin]="1" [nzPrecision]="2"
+                        nzPlaceHolder="请输入">
+                    </nz-input-number>
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item *ngIf="entityParam.type == 2">
+            <nz-form-label nz-col>折扣力度</nz-form-label>
+            <nz-form-control nz-col nzFlex="162px">
+                <nz-input-group nzAddOnBefore="打" nzAddOnAfter="折">
+                    <nz-input-number [(ngModel)]="entityParam.limitSmall" [nzMin]="1"  [nzMax]="99" [nzPrecision]="0"
+                        nzPlaceHolder="请输入">
+                    </nz-input-number>
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item *ngIf="entityParam.type == 2">
+            <nz-form-label nz-col>最高减免金额</nz-form-label>
+            <nz-form-control nz-col nzFlex="126px">
+                <nz-input-group nzAddOnAfter="元">
+                    <nz-input-number [(ngModel)]="entityParam.limitBig" [nzMin]="1" [nzPrecision]="2"
+                        nzPlaceHolder="请输入">
+                    </nz-input-number>
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item *ngIf="entityParam.type == 3">
+            <nz-form-label nz-col>优惠金额</nz-form-label>
+            <nz-form-control nz-col nzFlex="322px">
+                <nz-input-group nzCompact nzAddOnBefore="范围内随机" nzAddOnAfter="元">
+
+                    <nz-input-number style="width:66px; text-align: center;float: left;" [nzMin]="0"
+                        [(ngModel)]="entityParam.limitSmall" [nzPrecision]="2" nzPlaceHolder="请输入">
+                    </nz-input-number>
+
+                    <input type="text" disabled nz-input placeholder="至" class="demo-input-split"
+                        style="width: 60px; border-left: 0px; text-align: center;border-right: 0px; pointer-events: none; background-color: rgb(255, 255, 255);" />
+
+
+                    <nz-input-number class="demo-input-right" style="width:66px; text-align: center;"
+                        [(ngModel)]="entityParam.limitBig" [nzMin]="0" [nzPrecision]="2" nzPlaceHolder="请输入">
+                    </nz-input-number>
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+
+
+        <h3>领取设置</h3>
+        <nz-form-item>
+            <nz-form-label nz-col nzRequired>前端展示</nz-form-label>
+            <nz-form-control nz-col nzFlex="400px">
+                <nz-radio-group [(ngModel)]="entityParam.isShowWeb">
+                    <label nz-radio nzValue="1">展示</label>
+                    <label nz-radio nzValue="0">不展示</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item *ngIf="entityParam.isShowWeb == 1">
+            <nz-form-label nz-col nzRequired>可领取时间</nz-form-label>
+            <nz-form-control nz-col nzFlex="322px">
+                <nz-range-picker [(ngModel)]="entityParam.getTime" [nzShowTime]="{ nzFormat: 'HH:mm' }"
+                    nzFormat="yyyy-MM-dd HH:mm" (nzOnOk)="onChange($event)">
+                </nz-range-picker>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item *ngIf="entityParam.isShowWeb == 1">
+            <nz-form-label nz-col nzRequired>领取人限制</nz-form-label>
+            <nz-form-control nz-col nzFlex="400px">
+                <nz-radio-group [(ngModel)]="entityParam.userType" [nzDisabled]="entityParam.id > 0 && !funCopy">
+                    <label nz-radio nzValue="0">不限制</label>
+                    <label nz-radio nzValue="2">B端用户</label>
+                    <label nz-radio nzValue="1">C端用户</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+        <!-- <nz-form-item *ngIf="entityParam.isShowWeb == 1">
+            <nz-form-label nz-col nzRequired>每人限领次数</nz-form-label>
+            <nz-form-control nz-col nzFlex="220px">
+                <nz-radio-group [(ngModel)]="entityParam.userLimitNumGroup">
+                    <label nz-radio radio-vertical nzValue="1">每人限领 <nz-input-number style="width: 100px;" [nzMin]="1"
+                            [(ngModel)]="entityParam.userLimitNum"></nz-input-number> 次</label>
+                    <label nz-radio radio-vertical nzValue="0">不限制</label>
+                </nz-radio-group>
+            </nz-form-control>
+
+            <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline" [nzTooltipTitle]="orderLimitMoney"
+                nzTooltipPlacement="right"></i>
+            <ng-template #orderLimitMoney>
+                <span>1. 主动发放的不计入该值;</span>
+                <br>
+                <span>2. 如果限制次数不为1,则要求领取的券使用以后才可以再次领取;</span>
+            </ng-template>
+        </nz-form-item> -->
+
+        <h3>使用设置</h3>
+        <nz-form-item>
+            <nz-form-label nz-col nzRequired>限制使用时间</nz-form-label>
+            <nz-form-control nz-col nzFlex="400px">
+                <nz-radio-group [(ngModel)]="entityParam.limitTimeNumGroup" [nzDisabled]="entityParam.id > 0 && !funCopy">
+                    <label nz-radio radio-vertical nzValue="1">领取当日起 <nz-input-number style="width: 100px;" [nzMin]="0"
+                            [(ngModel)]="entityParam.limitTimeNum"[nzDisabled]="entityParam.id > 0 && !funCopy"></nz-input-number> 内可用
+                        <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline"
+                            [nzTooltipTitle]="limitTimeNumGroup" nzTooltipPlacement="right"></i></label>
+                    <label nz-radio radio-vertical nzValue="0" style="margin-top: 10px;">
+                        <nz-range-picker [(ngModel)]="entityParam.useTime" [nzShowTime]="{ nzFormat: 'HH:mm' }"
+                            nzFormat="yyyy-MM-dd HH:mm" (nzOnOk)="onUseChange($event)"[nzDisabled]="entityParam.id > 0 && !funCopy">
+                        </nz-range-picker>
+                    </label>
+                </nz-radio-group>
+            </nz-form-control>
+            <ng-template #limitTimeNumGroup>
+                <span>0表示当天;</span>
+                <br>
+                <span>1表示明天;</span>
+            </ng-template>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzRequired>使用说明</nz-form-label>
+            <nz-form-control nz-col nzFlex="322px">
+                <textarea rows="4" nz-input [(ngModel)]="entityParam.useDesc" placeholder="建议填写优惠券的具体使用信息"
+                    [maxlength]="100"></textarea>
+            </nz-form-control>
+        </nz-form-item>
+
+        <h3>适用商品<em style="color: #b7b7b7; font-weight: lighter; font-size: 12px;">（默认所有商品都不可用，请在下方添加可用的内容）</em></h3>
+
+        <!-- <nz-form-item>
+            <nz-form-label nz-col nzRequired>适用分类</nz-form-label>
+            <nz-form-control>
+                <label nz-checkbox formControlName="allCheckedA" [(ngModel)]="allCheckedA"
+                    (ngModelChange)="updateAllChecked()" [nzIndeterminate]="indeterminateA"
+                    [nzDisabled]="id > 0 && !funCopy">全部</label>
+                <nz-checkbox-group formControlName="goodsTypesList" [(ngModel)]="goodsTypesList"
+                    (ngModelChange)="onGoodsTypes()" [nzDisabled]="id > 0 && !funCopy">
+                </nz-checkbox-group>
+            </nz-form-control>
+        </nz-form-item> -->
+
+        <!-- <nz-form-item>
+            <nz-form-label nz-col nzRequired>适用品牌</nz-form-label>
+            <nz-form-control placeholder="请输入">
+                <label nz-checkbox formControlName="allCheckedB" [(ngModel)]="allCheckedB"
+                    (ngModelChange)="updateAllBrandList()" [nzIndeterminate]="indeterminateB"
+                    [nzDisabled]="id > 0 && !funCopy">全部</label>
+                <nz-checkbox-group formControlName="brandList" [(ngModel)]="brandList" [nzDisabled]="id > 0 && !funCopy"
+                    (ngModelChange)="onbrandList()">
+                </nz-checkbox-group>
+            </nz-form-control>
+        </nz-form-item> -->
+
+        <!-- <nz-form-item>
+            <nz-form-label nz-col nzRequired>适用商品</nz-form-label>
+            <nz-form-control placeholder="请输入">
+                <nz-radio-group formControlName="applyGoods" [(ngModel)]="applyGoods" [nzDisabled]="id > 0 && !funCopy">
+                    <label nz-radio radio-vertical nzValue="0">所有商品可用</label>
+                    <label nz-radio radio-vertical nzValue="1">指定商品可用</label>
+                    <label nz-radio radio-vertical nzValue="2">指定商品不可用</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="applyGoods != 0">
+            <nz-form-control style="margin-left: 100px;">
+                <a nz-button nzType="link" (click)="showGoodsModal()">已选 {{GoodsArr.length}} 个商品，点击查看</a>
+                <a nz-button nzType="link" (click)="showModal()" [disabled]="id > 0 && !funCopy ">选择更多</a>
+            </nz-form-control>
+        </nz-form-item>
+         -->
+
+
+        <nz-form-item>
+            <nz-form-label nz-col nzRequired>指定分类</nz-form-label>
+            <nz-form-control style="width: 500px;">
+                <div style="margin-bottom: 10px;padding-bottom: 10px;border-bottom: 1px solid rgb(233, 233, 233);">
+
+                    <label nz-checkbox [(ngModel)]="entityParam.classSelect" (ngModelChange)="classSelect(0)"
+                        [nzDisabled]="entityParam.brandNoSelect || entityParam.classNoSelect">全选</label>
+                    <label nz-checkbox [(ngModel)]="entityParam.classNoSelect"
+                        (ngModelChange)="classSelect(-1)">全不选</label>
+                </div>
+                <nz-checkbox-group [(ngModel)]="entityParam.goodsTypesList" (ngModelChange)="onGoodsTypes()"
+                    [nzDisabled]="entityParam.brandNoSelect || entityParam.classNoSelect">
+                </nz-checkbox-group>
+            </nz-form-control>
+        </nz-form-item>
+
+
+        <nz-form-item>
+            <nz-form-label nz-col nzRequired>指定品牌</nz-form-label>
+            <nz-form-control style="width: 500px;">
+                <div style="margin-bottom: 10px;padding-bottom: 10px;border-bottom: 1px solid rgb(233, 233, 233);">
+                    <label nz-checkbox [(ngModel)]="entityParam.brandSelect" (ngModelChange)="brandSelect(0)"
+                        [nzDisabled]="entityParam.brandNoSelect || entityParam.classNoSelect">全选</label>
+                    <label nz-checkbox [(ngModel)]="entityParam.brandNoSelect"
+                        (ngModelChange)="brandSelect(-1)">全不选</label>
+                </div>
+                <nz-checkbox-group [(ngModel)]="entityParam.brandList" (ngModelChange)="onbrandList()"
+                    [nzDisabled]="entityParam.brandNoSelect || entityParam.classNoSelect">
+                </nz-checkbox-group>
+            </nz-form-control>
+        </nz-form-item>
+
+
+        <nz-form-item>
+            <nz-form-label nz-col>追加可用商品</nz-form-label>
+            <nz-form-control>
+                <span>已选 {{modalParam.assignGoodsArr.length}} 个商品</span>&nbsp;&nbsp;
+                <a nz-button nzType="link" (click)="showGoodsModal(0)">点击查看</a>
+                &nbsp;&nbsp;
+                <a nz-button nzType="link" (click)="showModal(0)">选择更多</a>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label nz-col>排除可用商品</nz-form-label>
+            <nz-form-control>
+                <span>已选 {{modalParam.excludeGoodsArr.length}} 个商品</span>&nbsp;&nbsp;
+                <a nz-button nzType="link" (click)="showGoodsModal(1)">点击查看</a>
+                &nbsp;&nbsp;
+                <a nz-button nzType="link" (click)="showModal(1)">选择更多</a>
+            </nz-form-control>
+        </nz-form-item>
+        <!-- <nz-form-item>
+            <nz-form-label nz-col nzRequired>可使用时间</nz-form-label>
+            <nz-form-control nz-col nzFlex="322px">
+                <nz-range-picker formControlName="useTime" [nzShowTime]="{ nzFormat: 'HH:mm' }"
+                    nzFormat="yyyy-MM-dd HH:mm" [(ngModel)]="useTime" (nzOnOk)="onUseChange($event)">
+                </nz-range-picker>
+            </nz-form-control>
+        </nz-form-item> -->
+
+        <!-- <nz-form-item>
+            <nz-form-label nz-col  >过期提醒</nz-form-label>
+            <nz-form-control nz-col nzFlex="400px">
+                <nz-radio-group formControlName="remindGroup">
+                    <label nz-radio radio-vertical nzValue="0">不提醒</label>
+                    <label nz-radio radio-vertical nzValue="1">过期前 <input type="text" style="width: 100px;" nz-input
+                            placeholder="请输入" formControlName="remind" /> 天提醒</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label nz-col  >自动发放</nz-form-label>
+            <nz-form-control nz-col nzFlex="400px">
+                <nz-radio-group formControlName="autoReverseGroup">
+                    <label nz-radio radio-vertical nzValue="0">不自动发放</label>
+                    <label nz-radio radio-vertical nzValue="1">每 <input type="text" style="width: 100px;" nz-input
+                            placeholder="请输入" formControlName="autoReverse" /> 天首次进店自动发放</label>
+                    <label nz-radio radio-vertical nzValue="-1">新人</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item> -->
+
+        <nz-form-item>
+            <nz-form-label nz-col>状态</nz-form-label>
+            <nz-form-control nz-col>
+
+                <nz-badge *ngIf="entityParam.id == 0" nzStatus="default" nzText="未开始"></nz-badge>
+
+                <nz-badge *ngIf="detail?.status == 3|| detail?.status == 4" nzStatus="error"
+                    nzText="{{status_To_text(detail?.status)}}"></nz-badge>
+                <nz-badge *ngIf="detail?.status == 1 || detail?.status == 5" nzStatus="default"
+                    nzText="{{status_To_text(detail?.status)}}"></nz-badge>
+                <nz-badge *ngIf="detail?.status == 2" nzStatus="success" nzText="{{status_To_text(detail?.status)}}">
+                </nz-badge>
+            </nz-form-control>
+        </nz-form-item>
+
+        <!-- <nz-form-item>
+            <nz-form-control style="margin-left: 100px;">
+                <button nz-button nzType="primary" [nzLoading]="modalLoading"
+                    (click)="save()">{{id == 0 || goodsCopy ? '发布' : '保存'}}</button>&nbsp;
+                <button nz-button nzType="primary" [nzLoading]="draftLoading" (click)="draftClick()"
+                    *ngIf="id == 0 || goodsCopy">保存(草稿)</button>&nbsp;
+                <button nz-button nzType="primary" (click)="Back()">返回</button>
+            </nz-form-control>
+        </nz-form-item> -->
+    </div>
+
+
+    <div class="submit-box">
+        <nz-divider></nz-divider>
+        <div class="bt-box">
+            <!-- <button nz-button nzType="primary" (click)="submitForm(1)">保存</button> -->
+            <!-- <button nz-button nzType="dashed"(click)="submitForm(5)"
+                *ngIf="id == 0 || funCopy">保存(草稿)</button> -->
+
+            <app-bt-group [btType]="'primary'" (btClick)="submitForm(1)" [btText]="'保存(发布)'"></app-bt-group>
+            <app-bt-group [btType]="'dashed'" (btClick)="submitForm(5)" [btText]="'保存(草稿)'"
+                *ngIf="entityParam.id == 0 || funCopy||  detail?.status == 5">
+            </app-bt-group>
+            <app-bt-group [btType]="'default'" [btText]="'返回'"></app-bt-group>
+        </div>
+    </div>
+    <!-- 
+    <div class="submit-box">
+        <div class="bt-box">
+            <button nz-button nzType="primary" [nzLoading]="modalLoading" (click)="save()">保存</button>
+            &nbsp;
+            <button nz-button nzType="dashed" [nzLoading]="draftLoading" (click)="draftClick()"
+                *ngIf="id == 0 || funCopy">保存(草稿)</button>
+            &nbsp;
+            <button nz-button nzType="default">返回</button>
+        </div>
+    </div> -->
+</main>
+
+
+<nz-modal [(nzVisible)]="selectGoods" nzTitle="选择商品" (nzOnCancel)="handleCancel()" [nzFooter]="null" [nzWidth]="1050">
+    <div class="search-box">
+        <div class="label-box">
+            <nz-form-label>商品</nz-form-label>
+            <input type="text" nz-input placeholder="请输入商品编号或名称" [(ngModel)]="queryForm.name" />
+        </div>
+        <button nz-button nzType="primary" nzSearch (click)="query()"><i nz-icon nzType="search"></i></button>
+        <button nz-button nzType="primary" (click)="slectGoods()">关联已选商品({{modalParam.selectGoodsArr.length}})</button>
+    </div>
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="listOfData?.records" [nzShowPagination]="false"
+        [nzPageSize]="listOfData?.size" nzBordered>
+        <thead>
+            <tr>
+                <th [(nzChecked)]="checked" (nzCheckedChange)="onAllChecked($event)"></th>
+                <th>id</th>
+                <th class="goodsName">商品</th>
+                <th>销量</th>
+                <th>销售库存</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of rowSelectionTable.data">
+                <td nzAlign="center" [nzChecked]="data.Checked" (nzCheckedChange)="onItemChecked(data.id, $event)"
+                    [nzDisabled]="data.disabled">
+                </td>
+                <td nzAlign="center">{{data.id}}</td>
+                <td nzAlign="left">{{data.name}}</td>
+                <td nzAlign="center">{{data.salesVolume}}</td>
+                <td nzAlign="center">{{data.stockNum}}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <p>&nbsp;</p>
+    <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+    <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]" nzShowSizeChanger nzShowQuickJumper
+        [nzPageIndex]="listOfData?.current" [nzTotal]="listOfData?.total" [nzShowTotal]="totalTemplate"
+        [nzPageSize]="listOfData?.size" (nzPageIndexChange)="onPageIndexChange($event)"
+        (nzPageSizeChange)="onPageSizeChange($event)">
+    </nz-pagination>
+</nz-modal>
+
+<!-- <nz-modal [(nzVisible)]="selectGoods" nzTitle="选择" (nzOnCancel)="handleCancel()" [nzFooter]="null" [nzWidth]="1050">
+    <form nz-form [nzLayout]="'inline'" [formGroup]="queryForm">
+        <nz-form-item>
+            <nz-form-label>商品</nz-form-label>
+            <nz-form-control>
+                <nz-input-group>
+                    <input nz-input placeholder="请输入商品编号或名称" formControlName="name" />
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-control>
+                <button nz-button nzType="primary" (click)="query()" [nzLoading]="isLoadingOne">查询</button>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+    <p>&nbsp;</p>
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="listOfData?.records" [nzShowPagination]="false"
+        [nzPageSize]="listOfData?.size" nzBordered>
+        <thead>
+            <tr>
+                <th [nzWidth]="'10px'" [(nzChecked)]="checked" (nzCheckedChange)="onAllChecked($event)"></th>
+                <th [nzWidth]="'10px'" nzAlign="center">id</th>
+                <th [nzWidth]="'180px'" nzAlign="center">商品</th>
+                <th nzAlign="center">销量</th>
+                <th nzAlign="center">库存</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of rowSelectionTable.data">
+                <td nzAlign="center" [nzChecked]="data.Checked" (nzCheckedChange)="onItemChecked(data.id, $event)">
+                </td>
+                <td nzAlign="center">{{data.id}}</td>
+                <td nzAlign="center" table-name>{{data.name}}</td>
+                <td nzAlign="center">{{data.salesVolume}}</td>
+                <td nzAlign="center">{{data.skuNum}}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <p>&nbsp;</p>
+    <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+    <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]"nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="1" [nzTotal]="listOfData?.total"
+        [nzShowTotal]="totalTemplate" [nzPageSize]="listOfData?.size" (nzPageIndexChange)="onPageIndexChange($event)"
+        (nzPageSizeChange)="onPageSizeChange($event)"></nz-pagination>
+    <p>&nbsp;</p>
+    <button nz-button nzType="primary" (click)="slectGoods()">确认选择</button>
+</nz-modal> -->
+
+<nz-modal [(nzVisible)]="showGoods" nzTitle="查看已选商品" (nzOnCancel)="handleCancel()" [nzFooter]="null" [nzWidth]="1050">
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="selectGoodsTable?.records" [nzShowPagination]="false"
+        [nzPageSize]="selectGoodsTable?.size" nzBordered>
+        <thead>
+            <tr>
+                <th>id</th>
+                <th class="goodsName">商品</th>
+                <th>销量</th>
+                <th>销售库存</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of selectGoodsTable?.records">
+                <td nzAlign="center">{{data.id}}</td>
+                <td nzAlign="left">{{data.name}}</td>
+                <td nzAlign="center">{{data.salesVolume}}</td>
+                <td nzAlign="center">{{data.stockNum}}</td>
+                <td nzAlign="center">
+                    <a nz-button nz-button-tdlink nzType="link" nzDanger nz-popconfirm nzPopconfirmTitle="确认删除吗?"
+                        [nzIcon]="iconTpl" (nzOnConfirm)="confirm(data.id)">删除</a>
+                    <ng-template #iconTpl>
+                        <i nz-icon nzType="question-circle-o" style="color: red;"></i>
+                    </ng-template>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <p>&nbsp;</p>
+    <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+    <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]" nzShowSizeChanger nzShowQuickJumper
+        [nzPageIndex]="selectGoodsTable?.current" [nzTotal]="selectGoodsTable?.total" [nzShowTotal]="totalTemplate"
+        [nzPageSize]="selectGoodsTable?.size" (nzPageIndexChange)="onPageIndexChange_Select($event)"
+        (nzPageSizeChange)="onPageSizeChange_Select($event)">
+    </nz-pagination>
+</nz-modal>

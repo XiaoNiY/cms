@@ -1,0 +1,80 @@
+<div class="bt-search">
+    <!-- 搜索 -->
+    <div class="search-box">
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+            <input type="text" nz-input placeholder="请输入登陆人姓名账号" [(ngModel)]="queryForm.realName" />
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+            <button nz-button nzType="primary" nzSearch (click)="query()"><i nz-icon nzType="search"></i></button>
+        </ng-template>
+    </div>
+    <!-- 其他功能按钮 -->
+    <div class="bt-list">
+        <a class="refresh" nzTooltipTitle="刷新" nzTooltipPlacement="top" nz-tooltip (click)="refresh()"><i nz-icon
+                nzType="sync" nzTheme="outline"></i></a>
+        <!-- <a class="export" nzTooltipTitle="导出" nzTooltipPlacement="top" nz-tooltip><i nz-icon nzType="download"
+                nzTheme="outline"></i></a> -->
+    </div>
+</div>
+
+<main>
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="listOfData?.records" [nzShowPagination]="false"
+        [nzPageSize]="queryForm.pageSize" [nzLoading]="tableLoading" nzBordered>
+        <thead>
+            <tr>
+                <!-- <th [(nzChecked)]="checked" (nzCheckedChange)="onAllChecked($event)"></th> -->
+                <th nzAlign="center">id</th>
+                <th nzAlign="center">登录人ID</th>
+                <th nzAlign="center">姓名</th>
+                <th nzAlign="center">登陆账号</th>
+                <th nzAlign="center">IP地址</th>
+                <th nzAlign="center">操作系统</th>
+                <th nzAlign="center">浏览器</th>
+                <th nzAlign="center">登陆结果</th>
+                <th nzAlign="center">登陆信息</th>
+                <th nzAlign="center">登陆时间</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="searchHint && listOfData?.records">
+                <td class="searchHint" nzAlign="center" colspan="13">
+                    <span>搜索 “{{searchName}}”，找到&nbsp;{{ listOfData?.total }}&nbsp;条结果</span>
+                    <a (click)="backList()">返回原列表</a>
+                </td>
+            </tr>
+            <tr *ngFor="let data of rowSelectionTable.data">
+                <!-- <td nzAlign="center" [nzChecked]="data.Checked" (nzCheckedChange)="onItemChecked(data.id, $event)">
+                </td> -->
+                <!-- id -->
+                <td nzAlign="center">{{data.id}}</td>
+                <!-- 登录人ID -->
+                <td nzAlign="center">{{data.userId}}</td>
+                <!-- 姓名 -->
+                <td nzAlign="center">{{data.realName}}</td>
+                <!-- 登陆账号 -->
+                <td nzAlign="center">{{data.phoneNumber}}</td>
+                <!-- IP地址 -->
+                <td nzAlign="center">{{data.ip ? data.ip: '-'}}</td>
+                <!-- 操作系统 -->
+                <td nzAlign="center">{{data.system ? data.system : '-'}}</td>
+                <!-- 浏览器 -->
+                <td nzAlign="center">{{data.browser ? data.browser : '-'}}</td>
+                <!-- 登陆结果 -->
+                <td nzAlign="center">{{data.result == 0 ? '成功' : '失败'}}</td>
+                <!-- 登陆信息 -->
+                <td nzAlign="center">{{data.content ? data.content : '-'}}</td>
+                <!-- 登陆时间 -->
+                <td nzAlign="center">{{data.createTime}}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <div class="pagination-box">
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]"nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="listOfData?.current"
+                [nzTotal]="listOfData?.total" [nzShowTotal]="totalTemplate" [nzPageSize]="listOfData?.size"
+                (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)">
+            </nz-pagination>
+        </div>
+    </div>
+</main>

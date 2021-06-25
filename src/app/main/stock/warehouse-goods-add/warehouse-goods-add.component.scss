@@ -1,0 +1,153 @@
+i {
+    margin-top: 8px;
+    margin-left: 10px;
+}
+
+main {
+    width: 1180px;
+    margin: auto;
+    background: #fff;
+    form {
+        padding:0 40px 40px 40px;
+        h3 {    
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+        nz-form-item {
+            margin-bottom: 10px;
+        }
+        nz-form-control {
+            padding-left: 10px;
+        }
+        nz-checkbox-wrapper {
+            padding-left: 10px;
+            label {
+                margin-top: 6px;
+                color: #ff8000;
+            }
+        }
+
+        .icon {
+            display: flex;
+            nz-form-label {
+                margin-left: 10px;
+            }
+
+            .images-box {
+                margin-left: 110px;
+            }
+        }
+
+        p {
+            height: 32px;
+            line-height: 32px;
+            margin-left: 10px;
+        }
+
+        .radio-box {
+            width: 100px;
+            display: block;
+            height: 32px;
+            line-height: 32px;
+        }
+
+        .icon {
+            // margin-top: 66px;
+            margin-left: 10px;
+        }
+
+        a {
+            color: #118ee9;
+        }
+        .p {
+            margin-top: 15px;
+            margin-left: -28px;
+            color: #ccc;
+        }
+    }
+    .submit-box{
+      width:100%;
+      height: 70px;    
+      padding: 0 40px;
+      position: relative;
+      .bt-box{
+        position: absolute;
+        left: 40px;
+        bottom: 15px;
+        top: 18px;
+      }
+    }
+    nz-form-label{    
+      width: 116px;
+    }
+}
+nz-input-number{
+    width: 100%;
+}
+::ng-deep .ant-modal-footer {
+    display: none;
+}
+
+[nz-button] {
+    margin-right: 8px;
+}
+
+:host ::ng-deep .avatar-uploader > .ant-upload {
+    width: 128px;
+    height: 128px;
+}
+
+.upFile {    
+    width: 130px;
+    height: 130px;
+    line-height: initial;
+    padding: 44px 12px;
+    position: relative;
+    display: inline-block;
+    text-align: center;
+    border: 1px dashed #bfbfbf;
+    cursor: pointer;
+    span{
+        display: block;
+    }
+    input {
+        display: none;
+    }
+}
+.videoImg{
+    width: 132px;
+    height: 132px;
+    padding: 10px;
+    line-height: initial;
+    float: left;
+    text-align: center;
+    border: 1px solid #eee;
+    img{
+        width: 84px;
+        height: auto;
+        margin-bottom: 6px;
+    }
+    a{
+        display: block;
+    }
+}
+:host ::ng-deep .ant-form-item-label > label{
+  padding-right: 14px;
+  color: #b7b7b7 !important;
+}
+:host ::ng-deep .ant-form-item-label{
+  text-align: left;
+}
+:host ::ng-deep.ant-form-item-label > label::after{
+  display: none;
+}
+
+:host ::ng-deep.ant-form-item-label > label::before{
+      margin-right: 4px;
+      font-size: 12px !important;
+      font-family:auto !important;
+      line-height: inherit !important;
+      position: absolute;
+      right: 0;
+      top: 8px;
+}

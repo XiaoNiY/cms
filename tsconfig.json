@@ -14,18 +14,18 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2017",
+    "allowJs":true,
+    "target": "es5",
     "module": "es2020",
     "lib": [
       "es2018",
       "dom"
-    ],
-    "skipLibCheck": true
+    ]
   },
   "angularCompilerOptions": {
-    "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "strictTemplates": true,
+    "trace":true
   }
 }

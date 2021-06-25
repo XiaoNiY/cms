@@ -1,38 +1,159 @@
-<div class="menu">
-  <div class="bt-box">
-    <button nz-button nzType="primary">新增菜单</button>
-  </div>
+<div class="bt-search">
+    <div class="bt-box">
+        <button nz-button nz-button-add nzType="primary" (click)="showModal()">新增</button>
+    </div>
 </div>
-
 <main>
-  <nz-table #basicTable [nzData]="listOfData?.info">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>菜单标识</th>
-        <th>菜单图标</th>
-        <th>菜单名称</th>
-        <th>请求地址</th>
-        <th>上级ID</th>
-        <th>可见</th>
-        <th>排序</th>
-        <th>操作</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let data of basicTable.data">
-        <td>{{ data.id }}</td>
-        <td>{{ data.menuCode }}</td>
-        <td>{{ data.menuImg }}</td>
-        <td>{{ data.menuName }}</td>
-        <td>{{ data.menuUrl }}</td>
-        <td>{{ data.parentId }}</td>
-        <td>{{ data.pinyinCode }}</td>
-        <td>{{ data.sort }}</td>
-        <td>
-          <a>Delete</a>
-        </td>
-      </tr>
-    </tbody>
-  </nz-table>
+    <div class="hd">
+        <ul>
+            <li>菜单名称</li>
+            <li>图标</li>
+            <li>排序</li>
+            <li>请求地址</li>
+            <li>类型</li>
+            <li>可见</li>
+            <li>权限表示</li>
+            <li>备注</li>
+            <li>操作</li>
+        </ul>
+    </div>
+    <nz-tree [nzData]="listOfData" [nzTreeTemplate]="nzTreeTemplate"></nz-tree>
+    <ng-template #nzTreeTemplate let-node let-origin="origin">
+        <span class="custom-node">
+            <span *ngIf="!node.isLeaf">
+                <!-- 菜单名称 -->
+                <span class="node-icon"><i nz-icon
+                        [nzType]="node.isExpanded ? 'folder-open' : 'folder'"></i>{{ origin.name }}</span>
+                <div class="text-box">
+                    <!-- 图标 -->
+                    <span class="node-class node-PId">{{origin.icon ? origin.icon : '-'}}</span>
+                    <!-- 排序 -->
+                    <span class="node-class node-url">{{origin.sort ? origin.sort : '-'}}</span>
+                    <!-- 请求地址 -->
+                    <span class="node-class node-sort">{{origin.path ? origin.path : '-'}}</span>
+                    <!-- 类型 -->
+                    <span class="node-class node-status">{{origin.type ? origin.type : '-'}}</span>
+                    <!-- 可见 -->
+                    <span class="node-class node-createTime">{{origin.isHide == 1? '显示' : '隐藏' }}</span>
+                    <!-- 权限表示 -->
+                    <span class="node-class node-createTime">{{origin.keyword ? origin.keyword : '-'}}</span>
+                    <!-- 备注 -->
+                    <span class="node-class node-createTime">{{origin.remarks ? origin.remarks : '-'}}</span>
+                    <div class="node-class">
+                        <a nz-button nz-button-tdlink nzType="link" (click)="showModal(origin.id)">编辑</a>
+                        <a nz-button nz-button-tdlink nzType="link" nzDanger nz-popconfirm nzPopconfirmTitle="确认删除吗?"
+                            [nzIcon]="iconTpl" (nzOnConfirm)="confirm(origin)">删除</a>
+                        <ng-template #iconTpl>
+                            <i nz-icon nzType="question-circle-o" style="color: red;"></i>
+                        </ng-template>
+                    </div>
+                </div>
+            </span>
+            <span *ngIf="node.isLeaf">
+                <span class="node-icon"><i nz-icon nzType="file"></i>{{ origin.name }}</span>
+                <div class="text-box">
+                    <!-- 图标 -->
+                    <span class="node-class node-PId">{{origin.icon ? origin.icon : '-'}}</span>
+                    <!-- 排序 -->
+                    <span class="node-class node-url">{{origin.sort ? origin.sort : '-'}}</span>
+                    <!-- 请求地址 -->
+                    <span class="node-class node-sort">{{origin.path ? origin.path : '-'}}</span>
+                    <!-- 类型 -->
+                    <span class="node-class node-status">{{origin.type ? origin.type : '-'}}</span>
+                    <!-- 可见 -->
+                    <span class="node-class node-createTime">{{origin.isHide == 1? '显示' : '隐藏' }}</span>
+                    <!-- 权限表示 -->
+                    <span class="node-class node-createTime">{{origin.keyword ? origin.keyword : '-'}}</span>
+                    <!-- 备注 -->
+                    <span class="node-class node-createTime">{{origin.remarks ? origin.remarks : '-'}}</span>
+                    <div class="node-class">
+                        <a nz-button nz-button-tdlink nzType="link" (click)="showModal(origin.id)">编辑</a>
+                        <a nz-button nz-button-tdlink nzType="link" nzDanger nz-popconfirm nzPopconfirmTitle="确认删除吗?"
+                            [nzIcon]="iconTpl" (nzOnConfirm)="confirm(origin)">删除</a>
+                        <ng-template #iconTpl>
+                            <i nz-icon nzType="question-circle-o" style="color: red;"></i>
+                        </ng-template>
+                    </div>
+                </div>
+            </span>
+        </span>
+    </ng-template>
 </main>
+
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="title" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+    <form nz-form [formGroup]="modalForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">上级菜单</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <nz-tree-select style="width: 250px" [nzNodes]="SelectNodes" nzShowSearch nzPlaceHolder="请选择分类"formControlName="cId" [nzDefaultExpandAll]="true">
+                </nz-tree-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">菜单名称</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="name" [maxLength]="20" placeholder="" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">icon</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="icon" placeholder="" />
+            </nz-form-control>
+        </nz-form-item>
+        <!-- <nz-form-item>
+            <nz-form-label [nzSpan]="4">Icon</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+            </nz-form-control>
+        </nz-form-item> -->
+        <!-- <nz-form-item>
+            <nz-form-label [nzSpan]="4">分类方式</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <nz-radio-group formControlName="type" id="type">
+                    <label nz-radio nzValue="0">内部ID</label>
+                    <label nz-radio nzValue="1">第三方链接</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item> -->
+
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">请求地址</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="path" [maxLength]="50" placeholder="" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">权限标识</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="keyword" [maxLength]="20" placeholder="" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">显示排序</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="sort" [maxLength]="20" placeholder="" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">状态</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <nz-radio-group formControlName="isHide">
+                    <label nz-radio nzValue="1">显示</label>
+                    <label nz-radio nzValue="0">隐藏</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">备注</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <textarea rows="4" nz-input [maxLength]="100" formControlName="remarks"></textarea>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-control [nzSpan]="8" [nzOffset]="4">
+                <button nz-button nzType="primary">保存</button>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+</nz-modal>

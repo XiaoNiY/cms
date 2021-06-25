@@ -1,0 +1,106 @@
+<div class="bt-search">
+    <div class="bt-box">
+        <button nz-button nzType="primary" (click)="showModal()">新增</button>
+    </div>
+    <!-- 其他功能按钮 -->
+    <div class="bt-list">
+        <a class="refresh" nzTooltipTitle="刷新" nzTooltipPlacement="top" nz-tooltip  (click)="refresh()" ><i nz-icon nzType="sync"
+                nzTheme="outline"></i></a>
+        <!-- <a class="export" nzTooltipTitle="导出" nzTooltipPlacement="top" nz-tooltip><i nz-icon nzType="download"
+                nzTheme="outline"></i></a> -->
+    </div>
+    <!-- 搜索 -->
+    <div class="search-box">
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+            <input type="text" nz-input placeholder="请输入名称或编码" [(ngModel)]="query_params_Json.name" />
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+            <button nz-button nzType="primary" nzSearch (click)="query()"><i nz-icon nzType="search"></i></button>
+        </ng-template>
+    </div>
+</div>
+<main>
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="listOfData?.records" [nzShowPagination]="false"
+        [nzPageSize]="query_params_Json.size" [nzLoading]="tableLoading" nzBordered>
+        <thead>
+            <tr>
+                <th nzAlign="center">ID</th>
+                <th nzAlign="center">名称</th>
+                <th nzAlign="center">名称(EN)</th>
+                <th nzAlign="center">编码</th>
+                <th nzAlign="center">排序</th>
+                <th nzAlign="center">创建时间</th>
+                <th nzAlign="center">修改时间</th>
+                <th nzAlign="center">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="searchHint && rowSelectionTable.data">
+                <td class="searchHint"nzAlign="center" colspan="13">
+                    <span>搜索 “{{searcName}}”，找到&nbsp;{{ listOfData?.total }}&nbsp;条结果</span>
+                    <a (click)="backList()">返回原列表</a>
+                </td>
+            </tr>
+
+            <tr *ngFor="let data of rowSelectionTable.data; let i=index">
+                <td nzAlign="center">{{data.id}}</td>
+                <td nzAlign="center">{{data.name}}</td>
+                <td nzAlign="center">{{data.nameEn}}</td>
+                <td nzAlign="center">{{data.code}}</td>
+                <td nzAlign="center">{{data.sort ? data.sort : '-'}}</td>
+                <td nzAlign="center">{{data.createTime}}</td>
+                <td nzAlign="center">{{data.updateTime}}</td>
+                <td nzAlign="center">
+                    <a nz-button nz-button-tdlink nzType="link" (click)="showModal(data.id)">编辑</a>
+                    <a nz-button nz-button-tdlink nzType="link" nzDanger nz-popconfirm nzPopconfirmTitle="确认删除吗?"
+                        [nzIcon]="iconTpl" (nzOnConfirm)="confirm(data.id)">删除</a>
+                    <ng-template #iconTpl>
+                        <i nz-icon nzType="question-circle-o" style="color: red;"></i>
+                    </ng-template>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <div class="pagination-box">
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]"nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="listOfData?.current"
+                [nzTotal]="listOfData?.total" [nzShowTotal]="totalTemplate" [nzPageSize]="query_params_Json.size"
+                (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)">
+            </nz-pagination>
+        </div>
+    </div>
+</main>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="属性设置" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+    <form nz-form [formGroup]="modalForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">名称</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="name" [maxLength]="20" placeholder="" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">名称(EN)</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="nameEn" [maxLength]="20" placeholder="" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">编码</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="code" [maxLength]="20" placeholder="" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">排序</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="sort" [maxLength]="20" placeholder="" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-control [nzSpan]="8" [nzOffset]="4">
+                <button nz-button nzType="primary" [nzLoading]="modalLoading">保存</button>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+</nz-modal>

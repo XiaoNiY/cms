@@ -1,243 +1,71 @@
 <div class="adPosition">
-  <div class="bt-box">
-    <button nz-button nzType="primary" [routerLink]="['../newsSend']">发送客户消息</button>
-  </div>
-  <div class="search-box">
-    <!-- 标题 -->
-    <div class="label-box">
-      <nz-form-label>标题</nz-form-label>
-      <input nz-input placeholder="请输入" nzSize="default" />
+    <div class="bt-box">
+        <button nz-button nzType="primary" [routerLink]="['../newsSend']">发送客户消息</button>
     </div>
-    <!-- 关联单号 -->
-    <div class="label-box">
-      <nz-form-label>关联单号</nz-form-label>
-      <input nz-input placeholder="请输入" nzSize="default" />
+    <!-- 查询 -->
+    <div class="bt-search">
+        <button nz-button nzType="primary">查询</button>
     </div>
+    <div class="search-box">
+        <!-- 状态 -->
+        <div class="select-box">
+            <nz-form-label>状态</nz-form-label>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择">
+                <nz-option nzLabel="已读" nzValue="已读"></nz-option>
+                <nz-option nzLabel="未读" nzValue="未读"></nz-option>
+                <nz-option nzLabel="撤回" nzValue="撤回"></nz-option>
+            </nz-select>
+        </div>
 
-    <!-- 状态 -->
-    <div class="label-box">
-      <nz-form-label>状态</nz-form-label>
-      <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择">
-        <nz-option nzLabel="已读" nzValue="已读"></nz-option>
-        <nz-option nzLabel="未读" nzValue="未读"></nz-option>
-        <nz-option nzLabel="撤回" nzValue="撤回"></nz-option>
-      </nz-select>
+        <!-- 名称 -->
+        <div class="input-box">
+            <nz-form-label>名称</nz-form-label>
+            <input nz-input placeholder="请输入" nzSize="default" />
+        </div>
     </div>
-
-    <!-- 发送时间 -->
-    <div class="date-box">
-      <nz-form-label>发送时间</nz-form-label>
-      <nz-range-picker [nzFormat]="'yyyy-MM-dd'"></nz-range-picker>
-    </div>
-    <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
-  </div>
 </div>
 
 <main>
-  <nz-table #rowSelectionTable nzShowSizeChanger>
-    <thead>
-      <tr>
-        <th nzAlign="center">ID</th>
-        <th nzAlign="center">状态</th>
-        <th nzAlign="center">客户</th>
-        <th nzAlign="center">类型</th>
-        <th nzAlign="center">关联单号</th>
-        <th nzAlign="center">标题</th>
-        <th nzAlign="center">发送渠道</th>
-        <th nzAlign="center">发送时间</th>
-        <th nzAlign="center">自动过期时间</th>
-        <th nzAlign="center">列表阅读时间</th>
-        <th nzAlign="center">详情阅读时间</th>
-        <th nzAlign="center">撤回时间</th>
-        <th nzAlign="center">操作</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td nzAlign="center">000</td>
-        <td nzAlign="center">111</td>
-        <td nzAlign="center">222</td>
-        <td nzAlign="center">333</td>
-        <td nzAlign="center">444</td>
-        <td nzAlign="center">555</td>
-        <td nzAlign="center">666</td>
-        <td nzAlign="center">777</td>
-        <td nzAlign="center">888</td>
-        <td nzAlign="center">999</td>
-        <td nzAlign="center">000</td>
-        <td nzAlign="center">000</td>
-        <td nzAlign="center">
-          <a nz-button nz-button-tdlink nzType="link" (click)="detailsModal()">详情</a>
-          <a nz-button nz-button-tdlink nzType="link" nzDanger nz-popconfirm nzPopconfirmTitle="确认撤回该消息?">撤回</a>
-          <a nz-button nz-button-tdlink nzType="link">重发</a>
-        </td>
-      </tr>
-    </tbody>
-  </nz-table>
-  <div class="pagination-box">
-    <div class="pagination-template">
-      <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
-      <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]" nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="1"
-        [nzTotal]="1" [nzShowTotal]="totalTemplate" [nzPageSize]="1" (nzPageIndexChange)="onPageIndexChange($event)"
-        (nzPageSizeChange)="onPageSizeChange($event)">
-      </nz-pagination>
+    <nz-table #rowSelectionTable nzShowSizeChanger>
+        <thead>
+            <tr>
+                <th nzAlign="center">ID</th>
+                <th nzAlign="center">状态</th>
+                <th nzAlign="center">客户</th>
+                <th nzAlign="center">关联ID</th>
+                <th nzAlign="center">标题</th>
+                <th nzAlign="center">交互形式</th>
+                <th nzAlign="center">发送人</th>
+                <th nzAlign="center">发送时间</th>
+                <th nzAlign="center">过期时间</th>
+                <th nzAlign="center">阅读时间</th>
+                <th nzAlign="center">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td nzAlign="center">000</td>
+                <td nzAlign="center">111</td>
+                <td nzAlign="center">222</td>
+                <td nzAlign="center">333</td>
+                <td nzAlign="center">444</td>
+                <td nzAlign="center">555</td>
+                <td nzAlign="center">666</td>
+                <td nzAlign="center">777</td>
+                <td nzAlign="center">888</td>
+                <td nzAlign="center">999</td>
+                <td nzAlign="center">
+                    <a nz-button nz-button-tdlink nzType="link" nzDanger nz-popconfirm nzPopconfirmTitle="确认撤回该消息?">撤回</a>
+                    <a nz-button nz-button-tdlink nzType="link">复制消息</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <div class="pagination-box">
+        <span>共 <strong>0</strong> 条</span>
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有 1 条 </ng-template>
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]"nzShowSizeChanger></nz-pagination>
+        </div>
     </div>
-  </div>
 </main>
-
-<nz-modal [(nzVisible)]="isVisible" nzTitle="详情" [nzFooter]="null" [nzStyle]="{width: '1000px'}"
-  (nzOnCancel)="handleCancel()">
-
-  <div class="panelgroup">
-    <div class="panel-bd">
-      <ul>
-        <li>
-          <div class="key">
-            <span>ID</span>
-          </div>
-          <div class="val">
-            <span>111</span>
-          </div>
-        </li>
-        <li>
-          <div class="key">
-            <span>状态</span>
-          </div>
-          <div class="val">
-            <span>222</span>
-          </div>
-        </li>
-        <li>
-          <div class="key">
-            <span>类型</span>
-          </div>
-          <div class="val">
-            <span>333</span>
-          </div>
-        </li>
-        <li>
-          <div class="key">
-            <span>客户</span>
-          </div>
-          <div class="val">
-            <span>444</span>
-          </div>
-        </li>
-        <li>
-          <div class="key">
-            <span>联系方式</span>
-          </div>
-          <div class="val">
-            <span>555</span>
-          </div>
-        </li>
-        <li>
-          <div class="key">
-            <span>关联单号</span>
-          </div>
-          <div class="val">
-            <span>666</span>
-          </div>
-        </li>
-      </ul>
-    </div>
-    <div class="panel-bd">
-      <ul>
-        <li>
-          <div class="key">
-            <span>标题</span>
-          </div>
-          <div class="val">
-            <span>777</span>
-          </div>
-        </li>
-      </ul>
-      <ul>
-        <li>
-          <div class="key">
-            <span>链接</span>
-          </div>
-          <div class="val">
-            <span>888</span>
-          </div>
-        </li>
-      </ul>
-      <ul>
-        <li>
-          <div class="key">
-            <span>图片</span>
-          </div>
-          <div class="val">
-            <span>999</span>
-          </div>
-        </li>
-      </ul>
-      <ul>
-        <li>
-          <div class="key">
-            <span>摘要</span>
-          </div>
-          <div class="val">
-            <span>000</span>
-          </div>
-        </li>
-      </ul>
-    </div>
-    <div class="panel-bd">
-      <ul>
-        <li>
-          <div class="key">
-            <span>发送渠道</span>
-          </div>
-          <div class="val">
-            <span>111</span>
-          </div>
-        </li>
-        <li>
-          <div class="key">
-            <span>发送时间</span>
-          </div>
-          <div class="val">
-            <span>222</span>
-          </div>
-        </li>
-        <li>
-          <div class="key">
-            <span>撤回时间</span>
-          </div>
-          <div class="val">
-            <span>333</span>
-          </div>
-        </li>
-      </ul>
-    </div>
-    <div class="panel-bd">
-      <ul>
-        <li>
-          <div class="key">
-            <span>列表阅读时间</span>
-          </div>
-          <div class="val">
-            <span>444</span>
-          </div>
-        </li>
-        <li>
-          <div class="key">
-            <span>详情阅读时间</span>
-          </div>
-          <div class="val">
-            <span>555</span>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="submit-box">
-    <nz-divider></nz-divider>
-    <div class="bt-box">
-        <button nz-button nzType="primary">确定</button>
-        <button nz-button nzType="default" (click)="handleCancel()">取消</button>
-    </div>
-</div>
-</nz-modal>

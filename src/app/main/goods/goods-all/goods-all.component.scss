@@ -1,4 +1,4 @@
-.goodsAll{
+.bt-search{
   .bt-box{
     float: left;
   }
@@ -34,64 +34,112 @@
   }
   &:after {content: ' ';display: block;clear: both;height: 0;visibility: hidden;}
 }
-
-main {
+main{
   margin-top: 10px;
   background: #fff;
-  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2);
-  .pagination-box {
+  box-shadow: 0 2px 3px 0 rgba(0,0,0,.2);
+  .pagination-box{    
     height: 56px;
     line-height: 56px;
     padding: 0 18px;
     font-size: 12px;
-    .pagination-template {
+    .pagination-template{
       float: left;
     }
-    &:after {
-      content: " ";
-      display: block;
-      clear: both;
-      height: 0;
-      visibility: hidden;
-    }
+    &:after {content: ' ';display: block;clear: both;height: 0;visibility: hidden;}
   }
 }
-nz-pagination {
+nz-pagination{
   margin-top: 12px;
 }
 
-nz-table {
-  th {
+nz-table{
+  th{
     height: 38px;
-    padding: 0;
+    padding:0;
     color: #888;
     background: #fff !important;
     border-right: none !important;
     border-bottom: 1px solid #ddd;
     font-size: 14px;
     position: relative;
+    &:nth-child(1){
+      width: 46px;
+    }
+    &:nth-child(2){
+      width: 58px;
+    }
+    &:nth-child(3){
+      width: 400px;
+    }
+    // &:nth-child(12){
+    //   width: 260px;
+    // }
+    &:nth-child(13){
+      width: 150px;
+    }
   }
-  td {
+  td{
     height: 56px;
-    padding: 0;
+    padding:0;
     font-size: 12px;
     border-right: none !important;
     border-bottom: 1px solid rgb(229, 229, 229) !important;
-    &.searchHint {
-      a {
-        margin-left: 10px;
-        color: #006eff;
-        display: inline-block;
-      }
-    }
-    &.font1 {
-      color: #008000;
-    }
-    &.font2 {
-      color: #f00;
-    }
-    &.font0 {
-      color: #999;
+  }
+  .font1{
+    color: #008000;
+  }
+  .font2{
+    color: #f00;
+  }
+  .font0{
+    color: #999;
+  }
+}
+.searchHint{
+  a{
+    margin-left: 10px;
+    color: #006eff;
+    display: inline-block;
+  }
+}
+
+.ant-table-tbody > tr.ant-table-row:hover > td{
+  background: #f2f2f2;
+}
+
+// 表格商品样式
+.goodsName{
+  // width: 300px;
+  img{
+    width: 44px;
+    height: 44px;
+    margin-left: 12px;
+    margin-top: 2px;
+    float: left;
+  }
+  .goodsText{
+    margin-top: 2px;
+    margin-left: 6px;
+    text-align: left;
+    float: left;
+    span{    
+      width: 316px;
+      font-size: 14px;
+      color: #1890ff;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      line-clamp: 1;
+      -webkit-box-orient: vertical;
     }
   }
+}
+[nz-button] {
+  margin-right: 8px;
+}
+[nz-button-tdlink]{
+  margin-right: 6px;
+  padding: 0;
 }

@@ -1,0 +1,10 @@
+<div class="tabset">
+    <nz-tabset [(nzSelectedIndex)]="selectedIndex" >
+        <nz-tab nzTitle="{{data.name}}" *ngFor="let data of tabArr; let i = index"  (nzClick)="toTabs(data.path)"
+            [nzDisabled]="data.disabled">
+        </nz-tab>
+    </nz-tabset>
+</div>
+<main>
+    <router-outlet></router-outlet>
+</main>

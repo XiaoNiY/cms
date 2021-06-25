@@ -1,0 +1,200 @@
+<main>
+    <div class="panelgroup">
+        <div class="panel-bd">
+            <h3>店铺状态</h3>
+        </div>
+        <ul>
+            <li>
+                <div class="key">
+                    <span>认证状态</span>
+                </div>
+                <div class="val">
+                    <span>{{status_to_text(detailsData?.status)}}</span>
+                </div>
+            </li>
+            <li>
+                <div class="key">
+                    <span>审核时间</span>
+                </div>
+                <div class="val">
+                    <span>{{detailsData?.auditTime ? detailsData?.auditTime : '-'}}</span>
+                </div>
+            </li>
+            <li>
+                <div class="key">
+                    <span>审核人</span>
+                </div>
+                <div class="val">
+                    <span>{{detailsData?.auditor ? detailsData?.auditor : '-'}}</span>
+                </div>
+            </li>
+            <li>
+                <div class="key">
+                    <span>审核备注</span>
+                </div>
+                <div class="val">
+                    <span>{{detailsData?.auditReason ? detailsData?.auditReason : '-'}}</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="panelgroup">
+        <div class="panel-bd">
+            <h3>联系人信息</h3>
+        </div>
+        <ul>
+            <li>
+                <div class="key">
+                    <span>联系人姓名</span>
+                </div>
+                <div class="val">
+                    <span>{{detailsData?.orderPerson ? detailsData?.orderPerson : '-'}}</span>
+                </div>
+            </li>
+            <li>
+                <div class="key">
+                    <span>手机号</span>
+                </div>
+                <div class="val">
+                    <span>{{detailsData?.juridicalPhone ? detailsData?.juridicalPhone : '-'}}</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="panelgroup">
+        <div class="panel-bd">
+            <h3>门店信息</h3>
+        </div>
+        <ul>
+            <li>
+                <div class="key">
+                    <span>门店名称</span>
+                </div>
+                <div class="val">
+                    <span>{{detailsData?.storeName ? detailsData?.storeName : '-'}}</span>
+                </div>
+            </li>
+            <li>
+                <div class="key">
+                    <span>经营范围</span>
+                </div>
+                <div class="val">
+                    <span><nz-tag [nzColor]="'geekblue'" *ngFor="let item of detailsData?.service">{{item}}</nz-tag> </span>
+                </div>
+            </li>
+            <li>
+                <div class="key">
+                    <span>地址</span>
+                </div>
+                <div class="val">
+                    <span>{{detailsData?.businessArea ? detailsData?.businessArea + ' ' + detailsData?.businessAddress: '-'}}</span>
+                </div>
+            </li>
+            <li>
+                <div class="key">
+                    <span>门店照片</span>
+                </div>
+                <div class="val">
+                    <span>
+                        <img *ngFor="let data of detailsData?.companyImgs" nz-image nzSrc="{{data}}"
+                            [nzFallback]="fallback" />
+                    </span>
+                </div>
+            </li>
+            <!-- <li>
+                <div class="key">
+                    <span>法人身份证照片</span>
+                </div>
+                <div class="val">
+                    <span>
+                        <img nz-image nzSrc="{{detailsData?.juridicalIdcardImgBack}}" [nzFallback]="fallback"
+                            *ngIf="detailsData?.juridicalIdcardImgBack" />
+                        <img nz-image nzSrc="{{detailsData?.juridicalIdcardImgFront}}" [nzFallback]="fallback"
+                            *ngIf="detailsData?.juridicalIdcardImgFront" />
+                    </span>
+                </div>
+            </li> -->
+            <li>
+                <div class="key">
+                    <span>营业执照照片</span>
+                </div>
+                <div class="val">
+                    <span>
+                        <img nz-image nzSrc="{{detailsData?.businessImg}}" [nzFallback]="fallback"
+                            *ngIf="detailsData?.businessImg" />
+                    </span>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <!-- <nz-divider></nz-divider>
+    <div class="panelgroup">
+        <div class="panel-bd">
+            <h3>资料提交审核记录</h3>
+        </div>
+
+        <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="detailsData?.whGoodsList" [nzShowPagination]="false"
+            nzBordered>
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>提交日期</th>
+                    <th>审核时间</th>
+                    <th>审核人</th>
+                    <th>审核结果</th>
+                    <th>审核备注</th>
+                    <th>变更内容</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of detailsData?.whGoodsList; let i = index">
+                    <td>{{ i + 1}}</td>
+                    <td>{{data.whGoodsId}}</td>
+                    <td>{{data.code}}</td>
+                    <td>{{data.name}}</td>
+                    <td>{{data.attr}}</td>
+                    <td>{{data.attr}}</td>
+                    <td>{{data.attr}}</td>
+                    <td>
+                        <a nz-button nzType="link">查看该版本</a>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div> -->
+    <div class="submit-box">
+        <nz-divider></nz-divider>
+        <div class="bt-box">
+            <button nz-button nzType="primary" [disabled]="!detailsData || detailsData?.status != '2' "
+                (click)="showAuditModal()">门店信息审核</button>
+
+            <app-bt-group [btType]="'default'" [btText]="'返回'"></app-bt-group>
+        </div>
+    </div>
+</main>
+
+<nz-modal [(nzVisible)]="auditVisible" nzTitle="审核" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+
+    <nz-form-item>
+        <nz-form-label [nzSpan]="4">审核结果</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+            <nz-radio-group [(ngModel)]="auditParams.status">
+                <label nz-radio nzValue="3">通过</label>
+                <label nz-radio nzValue="4">不通过</label>
+            </nz-radio-group>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="4">备注</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+            <textarea rows="6" nz-input [(ngModel)]="auditParams.auditReason" nzPlaceHolder="请输入备注"></textarea>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control [nzSpan]="12" [nzOffset]="4">
+            <button nz-button nzType="primary" (click)="closeFun()">确定</button>
+            <button nz-button nzType="primary" (click)="handleCancel()">取消</button>
+        </nz-form-control>
+    </nz-form-item>
+</nz-modal>

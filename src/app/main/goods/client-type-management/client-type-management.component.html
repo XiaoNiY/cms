@@ -1,0 +1,254 @@
+<div class="client">
+    <div class="bt-One">
+        <button nz-button nzType="primary" (click)="showOneModal()">新增一级分类</button>
+    </div>
+    <div class="bt-Two">
+        <button nz-button nzType="primary" (click)="showTwoModal()">新增二级分类</button>
+    </div>
+    <div class="bt-Three">
+        <button nz-button nzType="primary" (click)="showThreeModal()">新增三级分类</button>
+    </div>
+</div>
+
+<main>
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="listOfData" [nzFrontPagination]="false"
+        [nzShowPagination]="false" [nzLoading]="tableLoading" nzBordered>
+        <thead>
+            <tr>
+                <th nzAlign="center">名称</th>
+                <th nzAlign="center">状态</th>
+                <th nzAlign="center">适用用户</th>
+                <th nzAlign="center">跳转方式</th>
+                <th nzAlign="center">链接/值</th>
+                <th nzAlign="center">图标</th>
+            </tr>
+        </thead>
+        <tbody cdkDropList (cdkDropListDropped)="drop($event)">
+            <tr *ngFor="let data of listOfData" cdkDrag>
+                <!-- 名称 -->
+                <td nzAlign="center">
+                    <i nz-icon nzType="caret-right" nzTheme="outline"></i>
+                    {{ data.name }}
+                </td>
+                <!-- 状态 -->
+                <td nzAlign="center"
+                    class="{{data.status == 1 ? 'font_Green' : data.status == 2 ? 'font_red' : 'font_Black'}}">
+                    {{ status_To_Text(data.status) }}</td>
+                <!-- 适用用户 -->
+                <td nzAlign="center"
+                    class="{{ data.userType == 1 ? 'font_Green' : data.userType == 2 ? 'font_blue' : 'font_Black' }}">
+                    {{ userType_To_Text(data.userType) }}</td>
+                <!-- 跳转方式 -->
+                <td nzAlign="center">{{ data.mode }}</td>
+                <!-- 链接/值 -->
+                <td nzAlign="center">{{ data.value }}</td>
+                <!-- 图标 -->
+                <td nzAlign="center">
+                    <img nz-image nzSrc="{{data.icon}}" [nzFallback]="fallback" />
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</main>
+
+<!-- 一级分类 -->
+<nz-modal [(nzVisible)]="isVisibleOne" nzTitle="一级分类" [nzFooter]="null" (nzOnCancel)="handleCancel()">
+    <form>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px" nzRequired>名称</nz-form-label>
+            <nz-form-control nzFlex="300px">
+                <input nz-input type="text" [maxLength]="8" placeholder="请输入">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px">顶部图片</nz-form-label>
+            <nz-form-control nz-col nzFlex="300px">
+                <label for="resFile" class="upFile">
+                    <i nz-icon nzType="plus"></i>
+                    <span>上传图片</span>
+                    <input id="resFile" type="file" name="icon" multiple="multiple" accept="image/*">
+                </label>
+                <div class="videoImg">
+                    <img nz-image nzSrc="111" [nzFallback]="fallback" />
+                    <a (click)="deleteImg()">删除</a>
+                </div>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px">
+                跳转方式
+            </nz-form-label>
+            <nz-form-control nzFlex="300px">
+                <nz-radio-group>
+                    <label nz-radio nzValue="0">商品ID</label>
+                    <label nz-radio nzValue="1">链接</label>
+                    <label nz-radio nzValue="3">搜索</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px">链接/值</nz-form-label>
+            <nz-form-control nzFlex="300px">
+                <input nz-input type="text" placeholder="请输入">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px" nzRequired>
+                适用用户
+            </nz-form-label>
+            <nz-form-control nzFlex="300px">
+                <nz-radio-group>
+                    <label nz-radio nzValue="2">b端商家</label>
+                    <label nz-radio nzValue="1">c端用户</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px" nzRequired>
+                状态
+            </nz-form-label>
+            <nz-form-control nzFlex="300px">
+                <nz-radio-group>
+                    <label nz-radio nzValue="0">启用</label>
+                    <label nz-radio nzValue="1">禁用</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-control [nzSpan]="8" [nzOffset]="5">
+                <button nz-button nzType="primary">确定</button>
+                &nbsp;
+                <button nz-button nzType="default" (click)="handleCancel()">取消</button>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+</nz-modal>
+
+<!-- 二级分类 -->
+<nz-modal [(nzVisible)]="isVisibleTwo" nzTitle="二级分类" [nzFooter]="null" (nzOnCancel)="handleCancel()">
+    <form>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px" nzRequired>上级分类</nz-form-label>
+            <nz-form-control nzFlex="300px">
+                <!-- <input nz-input type="text" placeholder="请输入"> -->
+                <nz-select nzPlaceHolder="请选择">
+                    <nz-option nzValue="" nzLabel="1">
+                    </nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px" nzRequired>名称</nz-form-label>
+            <nz-form-control nzFlex="300px">
+                <input nz-input type="text" [maxLength]="8" placeholder="请输入">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px" nzRequired>
+                适用用户
+            </nz-form-label>
+            <nz-form-control nzFlex="300px">
+                <nz-radio-group>
+                    <label nz-radio nzValue="2">b端商家</label>
+                    <label nz-radio nzValue="1">c端用户</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px" nzRequired>
+                状态
+            </nz-form-label>
+            <nz-form-control nzFlex="300px">
+                <nz-radio-group>
+                    <label nz-radio nzValue="0">启用</label>
+                    <label nz-radio nzValue="1">禁用</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-control [nzSpan]="8" [nzOffset]="5">
+                <button nz-button nzType="primary">确定</button>
+                &nbsp;
+                <button nz-button nzType="default" (click)="handleCancel()">取消</button>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+</nz-modal>
+
+<!-- 三级分类 -->
+<nz-modal [(nzVisible)]="isVisibleThree" nzTitle="三级分类" [nzFooter]="null" (nzOnCancel)="handleCancel()">
+    <form>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px" nzRequired>上级分类</nz-form-label>
+            <nz-form-control nzFlex="300px">
+                <!-- <input nz-input type="text" placeholder="请输入"> -->
+                <nz-select nzPlaceHolder="请选择">
+                    <nz-option nzValue="" nzLabel="1">
+                    </nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px" nzRequired>名称</nz-form-label>
+            <nz-form-control nzFlex="300px">
+                <input nz-input type="text" [maxLength]="8" placeholder="请输入">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px" nzRequired>
+                图标
+            </nz-form-label>
+            <nz-form-control nzFlex="300px">
+                <!-- <input nz-input type="text" placeholder="请输入"> -->
+                <nz-form-control nz-col nzFlex="300px">
+                    <label for="resFile" class="upFile">
+                        <i nz-icon nzType="plus"></i>
+                        <span>上传图片</span>
+                        <input id="resFile" type="file" name="icon" multiple="multiple" accept="image/*">
+                    </label>
+                    <div class="videoImg">
+                        <img nz-image nzSrc="111" [nzFallback]="fallback" />
+                        <a (click)="deleteImg()">删除</a>
+                    </div>
+                </nz-form-control>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px" nzRequired>
+                跳转方式
+            </nz-form-label>
+            <nz-form-control nzFlex="300px">
+                <nz-radio-group>
+                    <label nz-radio nzValue="0">商品ID</label>
+                    <label nz-radio nzValue="1">链接</label>
+                    <label nz-radio nzValue="2">搜索</label>
+                    <label nz-radio nzValue="3">分类</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px" nzRequired>链接/值</nz-form-label>
+            <nz-form-control nzFlex="300px">
+                <input nz-input type="text" placeholder="请输入">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px" nzRequired>
+                状态
+            </nz-form-label>
+            <nz-form-control nzFlex="300px">
+                <nz-radio-group>
+                    <label nz-radio nzValue="0">启用</label>
+                    <label nz-radio nzValue="1">禁用</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-control [nzSpan]="8" [nzOffset]="5">
+                <button nz-button nzType="primary">确定</button>
+                &nbsp;
+                <button nz-button nzType="default" (click)="handleCancel()">取消</button>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+</nz-modal>

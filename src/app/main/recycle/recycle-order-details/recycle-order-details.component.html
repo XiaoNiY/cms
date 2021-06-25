@@ -1,0 +1,475 @@
+<main>
+    <div class="form-box">
+
+        <!-- 流转步骤 -->
+        <div class="panelgroup">
+            <div class="panel-bd">
+                <nz-steps [nzCurrent]="stepsLength" nzProgressDot>
+                    <nz-step *ngFor="let item of detailsData?.steps" nzTitle="{{item.text}}">
+                    </nz-step>
+                </nz-steps>
+            </div>
+        </div>
+        <!-- 订单信息 -->
+        <div class="panelgroup">
+            <div class="panel-hd">
+                <h3>订单信息</h3>
+            </div>
+            <div class="panel-bd">
+                <ul>
+                    <li>
+                        <div class="key">
+                            <span>订单编号</span>
+                        </div>
+                        <div class="val">
+                            <span>{{ detailsData?.orderInfo.okey }}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key">
+                            <span>订单状态</span>
+                        </div>
+                        <div class="val">
+                            <span>{{ ostat_to_text(detailsData?.orderInfo.ostat) }}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key">
+                            <span>回收方式</span>
+                        </div>
+                        <div class="val">
+                            <span>{{ detailsData?.orderInfo.expname ? detailsData?.orderInfo.expname: '-' }}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key">
+                            <span>下单方式</span>
+                        </div>
+                        <div class="val">
+                            <span>{{ detailsData?.orderInfo.orderWay == 1 ? '估价下单' : '批量下单' }}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key">
+                            <span>下单时间</span>
+                        </div>
+                        <div class="val">
+                            <span>{{ detailsData?.orderInfo.otime11 ? detailsData?.orderInfo.otime11 : '-' }}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key">
+                            <span>订单完成时间</span>
+                        </div>
+                        <div class="val">
+                            <span>{{ detailsData?.orderInfo.otime19 ?detailsData?.orderInfo.otime19 : '-' }}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key">
+                            <span>更新时间</span>
+                        </div>
+                        <div class="val">
+                            <span>{{ detailsData?.orderInfo.updateTime ?detailsData?.orderInfo.updateTime : '-' }}</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 订单跟踪 -->
+        <div class="panelgroup">
+            <div class="panel-hd">
+                <h3>订单跟踪</h3>
+            </div>
+            <div class="panel-bd">
+                <nz-timeline>
+                    <nz-timeline-item *ngFor="let item of detailsData?.dynamic; let i=index;">
+                        <p style="margin-top:8px;font-size: 12px;">
+                            {{item.content}}
+                            <a nz-button nzType="link" *ngIf="item.type == 2" (click)="toDeviceList()">查看设备验机列表</a>
+                            <a nz-button nzType="link" *ngIf="item.type == 1"
+                                (click)="showLogisticsModal(item.value)">查看物流详情</a>
+                        </p>
+                        <p style="padding-top:2px;font-size: 12px;color: #888;">{{item.wtime}}</p>
+                    </nz-timeline-item>
+                </nz-timeline>
+            </div>
+        </div>
+
+        <!-- 用户信息 -->
+        <div class="panelgroup">
+            <div class="panel-hd">
+                <h3>用户信息</h3>
+            </div>
+            <div class="panel-bd">
+                <ul>
+                    <li>
+                        <div class="key">
+                            <span>用户身份</span>
+                        </div>
+                        <div class="val">
+                            <span>{{ detailsData?.userInfo && detailsData?.userInfo.id > 0 ? '爱思用户' : '游客' }}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key">
+                            <span>id</span>
+                        </div>
+                        <div class="val">
+                            <span>{{ detailsData?.userInfo &&  detailsData?.userInfo.id }}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key">
+                            <span>手机号</span>
+                        </div>
+                        <div class="val">
+                            <span>{{ detailsData?.userInfo &&  detailsData?.userInfo.phone }}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key">
+                            <span>用户名</span>
+                        </div>
+                        <div class="val">
+                            <span>{{ detailsData?.userInfo &&  detailsData?.userInfo.username ? detailsData?.userInfo.username : '-' }}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key">
+                            <span>昵称</span>
+                        </div>
+                        <div class="val">
+                            <span>{{ detailsData?.userInfo &&  detailsData?.userInfo.nickname ?detailsData?.userInfo.nickname : '-' }}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key">
+                            <span>微信openid</span>
+                        </div>
+                        <div class="val">
+                            <span>{{ detailsData?.userInfo &&  detailsData?.userInfo.openid ? detailsData?.userInfo.openid : '-' }}</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- 寄件信息 -->
+        <div class="panelgroup">
+            <div class="panel-hd">
+                <h3>寄件信息</h3>
+            </div>
+            <div class="panel-bd">
+                <ul>
+                    <li>
+                        <div class="key">
+                            <span>寄件人</span>
+                        </div>
+                        <div class="val">
+                            <span>{{ detailsData?.sendInfo.expdtl }}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key">
+                            <span>联系电话</span>
+                        </div>
+                        <div class="val">
+                            <span>{{ detailsData?.sendInfo.lnktel }}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key">
+                            <span>上门时间</span>
+                        </div>
+                        <div class="val">
+                            <span>{{ detailsData?.sendInfo.apptime }}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key">
+                            <span>物流单号</span>
+                        </div>
+                        <div class="val">
+                            <span>{{ detailsData?.sendInfo.expno ? detailsData?.sendInfo.expno : '-' }}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key">
+                            <span>物流公司</span>
+                        </div>
+                        <div class="val">
+                            <span>{{ detailsData?.sendInfo.expname ? detailsData?.sendInfo.expname : '-' }}</span>
+                        </div>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="addLen">
+                        <div class="key">
+                            <span>收件地址</span>
+                        </div>
+                        <div class="val">
+                            <span>{{ detailsData?.sendInfo.recdtl }}</span>
+                        </div>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="addLen">
+                        <div class="key">
+                            <span>取件地址</span>
+                        </div>
+                        <div class="val">
+                            <span>{{ detailsData?.sendInfo.recdtl }}</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 收款信息 -->
+        <div class="panelgroup">
+            <div class="panel-hd">
+                <h3>收款信息</h3>
+            </div>
+            <div class="panel-bd">
+                <ul>
+                    <li>
+                        <div class="key">
+                            <span>付款方式</span>
+                        </div>
+                        <div class="val">
+                            <span>{{ detailsData?.payInfo.payway == 111 ? '微信' : detailsData?.payInfo.payway == 121 ? '支付宝'
+                            : '-'}}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key">
+                            <span>收款人</span>
+                        </div>
+                        <div class="val">
+                            <span>{{ detailsData?.payInfo.payname ? detailsData?.payInfo.payname : '-' }}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key">
+                            <span>收款账号</span>
+                        </div>
+                        <div class="val">
+                            <span>{{ detailsData?.payInfo.payacc ? detailsData?.payInfo.payacc : '-' }}</span>
+                        </div>
+                    </li>
+                    <li *ngIf="detailsData?.payInfo.payState">
+                        <div class="key">
+                            <span>打款状态</span>
+                        </div>
+                        <div class="val">
+                            <span>{{ detailsData?.payInfo.payState }}</span>
+                        </div>
+                    </li>
+                    <li *ngIf="detailsData?.payInfo.payTotal">
+                        <div class="key">
+                            <span>合计</span>
+                        </div>
+                        <div class="val">
+                            <span>￥{{ detailsData?.payInfo.payTotal }}</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 退货物流信息 -->
+        <div class="panelgroup" *ngIf="detailsData?.sendInfo.expno">
+            <div class="panel-hd">
+                <h3>退货物流信息</h3>
+            </div>
+            <div class="panel-bd">
+                <ul>
+                    <li>
+                        <div class="key">
+                            <span>物流单号</span>
+                        </div>
+                        <div class="val">
+                            <span>{{ detailsData?.sendInfo.expno }}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key">
+                            <span>物流公司</span>
+                        </div>
+                        <div class="val">
+                            <span>{{ detailsData?.sendInfo.expname }}</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- 设备评估详情 -->
+        <div class="panelgroup" *ngIf="detailsData?.evalDetails.umname">
+            <div class="panel-hd">
+                <h3>设备评估详情</h3>
+            </div>
+            <div class="panel-bd">
+
+                <div class="deviceBox">
+                    <div class="ct">
+                        <img nz-image nzSrc="{{ detailsData?.evalDetails.umimgsrc }}" [nzFallback]="fallback" />
+                        <div class="ct-text">
+                            <p>评估机型 <a nz-button nzType="link"
+                                    (click)="showDeviceModal(0,1)">{{ detailsData?.evalDetails.umname }}</a>
+                            </p>
+                            <p>
+                                <nz-tag *ngFor="let item of detailsData?.evalDetails.ueval" let i=index;
+                                    nzColor="success">
+                                    <i nz-icon nzType="check-circle"></i>
+                                    <span> {{item.oname}}</span>
+                                </nz-tag>
+
+                                <!-- <nz-tag nzColor="error">
+                                <i nz-icon nzType="close-circle"></i>
+                                <span>error</span>
+                            </nz-tag> -->
+                            </p>
+                        </div>
+                    </div>
+                    <div class="bt">
+                        <p>
+                            <em>评估价 <font>¥{{ detailsData?.evalDetails.uprc }}</font></em>
+                        </p>
+                        <p>
+                            <em>活动加价 <font>¥{{ detailsData?.evalDetails.orderAprc }}</font></em>
+                        </p>
+                        <p><em>合计 <font>¥{{ detailsData?.evalDetails.uprc + detailsData?.evalDetails.orderAprc }}</font>
+                            </em>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 设备验机列表 -->
+        <div #deviceList class="panelgroup" *ngIf="detailsData?.sosoInfo ? detailsData?.sosoInfo.length != 0 : false">
+            <div class="panel-hd">
+                <h3>设备验机列表</h3>
+            </div>
+            <div class="panel-bd">
+                <div class="deviceBox">
+                    <div class="ct">
+                        <dl>
+                            <dd *ngFor="let item of detailsData?.sosoInfo">
+                                <a nz-button nzType="link" (click)="showDeviceModal(item.gid,2)">{{item.rmname}}</a>
+                                <span> {{item.gid}}</span>
+                                <a nz-button nzType="link" (click)="showReportModal(item.gid)">查看验机报告</a>
+                                <em>￥{{item.bprc}}</em>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="bt">
+                        <p>
+                            <em>验机价 <font>¥{{ detailsData?.checkDetails.bprc }}</font></em>
+                        </p>
+                        <p>
+                            <em>活动加价 <font>¥{{ detailsData?.checkDetails.aprc }}</font></em>
+                        </p>
+                        <p><em>合计 <font>¥{{ detailsData?.checkDetails.bprc + detailsData?.checkDetails.aprc }}</font>
+                            </em>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="submit-box">
+        <nz-divider></nz-divider>
+        <div class="bt-box">
+            <app-bt-group [btType]="'default'" [btText]="'返回'"></app-bt-group>
+        </div>
+    </div>
+</main>
+
+<!-- 设备详情 -->
+<nz-modal [(nzVisible)]="deviceVisible" nzTitle="设备详情" (nzOnCancel)="handleCancel()" [nzFooter]="null" [nzWidth]="1000">
+    <div class="panelgroup">
+        <div class="panel-bd">
+            <ul class="modalUl">
+                <h3>评估详情</h3>
+                <li *ngFor="let item of deviceDetails?.data">
+                    <div class="key">
+                        <span>{{item.cname}}</span>
+                    </div>
+                    <div class="val">
+                        <span *ngFor="let opts of item.opts" >{{ opts.oname ? opts.oname : '-'}}</span>
+                    </div>
+                </li>
+            </ul>
+            <ul class="modalUl">
+                <h3>验机详情</h3>
+                <li *ngFor="let item of deviceDetails?.data">
+                    <div class="key">
+                        <span>{{item.cname}}</span>
+                    </div>
+                    <div class="val">
+                        <span *ngFor="let opts of item.opts"
+                            class="{{opts.normal == -1 ? 'anomaly' : ''}}">{{opts.rname ? opts.rname : '-'}}
+                            <a nz-button nzType="link" *ngIf="opts.normal == -1" [disabled]="opts.imgsrcs.length == 0"
+                                (click)="showImg(opts.imgsrcs)">查看图片</a></span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nz-modal>
+<!-- 验机报告 -->
+<nz-modal [(nzVisible)]="reportVisible" nzTitle="爱思回收质检报告" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+    <div class="panel-bd panelgroup ">
+        <ul class="modalUl">
+            <li>
+                <div class="key">
+                    <span>检测机型</span>
+                </div>
+                <div class="val">
+                    <span>{{reportDetails?.rmname}}</span>
+                </div>
+            </li>
+            <li>
+                <div class="key">
+                    <span>检测结果</span>
+                </div>
+                <div class="val">
+                    <span>{{reportDetails?.restypeTxt}}</span>
+                </div>
+            </li>
+        </ul>
+        <div style="clear: both;"></div>
+        <dl class="reportDl">
+            <dd *ngFor="let item of reportDetails?.items">
+                <span>{{item.label}}</span>
+                <ul>
+                    <li *ngFor="let ctgs of item.ctgs">
+                        <span class="key">{{ctgs.cname}}</span>
+                        <span class="val">
+                            <font *ngFor="let opts of ctgs.opts" class="{{opts.normal == -1 ? 'anomaly' : ''}}">
+                                {{opts.oname}}<a nz-button nzType="link" *ngIf="opts.normal == -1"
+                                    [disabled]="opts.imgsrcs.length == 0" (click)="showImg(opts.imgsrcs)">查看图片</a>
+                            </font>
+                        </span>
+                    </li>
+                </ul>
+            </dd>
+        </dl>
+    </div>
+</nz-modal>
+
+<!-- 订单物流 -->
+<nz-modal [(nzVisible)]="logisticsVisible" nzTitle="订单物流" (nzOnCancel)="handleCancel()" [nzStyle]="{ width: '1000px' }"
+    [nzFooter]="null">
+    <div class="panel-bd">
+        <nz-timeline>
+            <nz-timeline-item *ngFor="let item of logisticDetails; let i=index;">
+                <p style="margin-top:8px;font-size: 12px;">
+                    {{item.remark}}
+                </p>
+                <p style="padding-top:2px;font-size: 12px;color: #888;"> {{item.accept_time}}</p>
+            </nz-timeline-item>
+        </nz-timeline>
+    </div>
+</nz-modal>

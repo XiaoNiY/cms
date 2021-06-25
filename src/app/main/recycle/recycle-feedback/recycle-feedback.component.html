@@ -1,0 +1,264 @@
+<div class="feedback">
+    <div class="search-box">
+        <!-- 用户身份 -->
+        <div class="select-box">
+            <nz-form-label>用户身份</nz-form-label>
+            <nz-select [(ngModel)]="queryForm.userType">
+                <nz-option nzLabel="全部" nzValue=""></nz-option>
+                <nz-option nzLabel="游客" nzValue="0"></nz-option>
+                <nz-option nzLabel="爱思用户" nzValue="1"></nz-option>
+            </nz-select>
+        </div>
+
+        <!-- 用户 -->
+        <div class="input-box">
+            <nz-form-label>用户</nz-form-label>
+            <input nz-input style="width: 200px;" placeholder="请输入游客udid/联系电话/爱思手机号/爱思用户名"
+                [(ngModel)]="queryForm.keyword">
+        </div>
+
+        <!-- 状态 -->
+        <div class="select1-box">
+            <nz-form-label>状态</nz-form-label>
+            <nz-select [(ngModel)]="queryForm.state">
+                <nz-option nzLabel="全部" nzValue=""></nz-option>
+                <nz-option nzLabel="已处理" nzValue="1"></nz-option>
+                <nz-option nzLabel="待处理" nzValue="0"></nz-option>
+            </nz-select>
+        </div>
+
+        <!-- 渠道 -->
+        <div class="select1-box">
+            <nz-form-label>渠道</nz-form-label>
+            <nz-select [(ngModel)]="queryForm.platform">
+                <nz-option nzLabel="全部" nzValue=""></nz-option>
+                <nz-option nzLabel="H5" nzValue="1"></nz-option>
+                <nz-option nzLabel="PC" nzValue="2"></nz-option>
+                <nz-option nzLabel="APP" nzValue="3"></nz-option>
+            </nz-select>
+        </div>
+        <!-- 业务 -->
+        <div class="select1-box">
+            <nz-form-label>业务</nz-form-label>
+            <nz-select [(ngModel)]="queryForm.business">
+                <nz-option nzLabel="全部" nzValue=""></nz-option>
+                <nz-option nzLabel="配件" nzValue="1"></nz-option>
+                <nz-option nzLabel="回收" nzValue="2"></nz-option>
+            </nz-select>
+        </div>
+        <!-- 意见分类 -->
+        <div class="select1-box">
+            <nz-form-label>意见分类</nz-form-label>
+            <nz-select [(ngModel)]="queryForm.option">
+                <nz-option nzLabel="全部" nzValue=""></nz-option>
+                <nz-option nzLabel="订单相关" nzValue="200"></nz-option>
+                <nz-option nzLabel="物流相关" nzValue="201"></nz-option>
+                <nz-option nzLabel="商品相关" nzValue="202"></nz-option>
+                <nz-option nzLabel="活动优惠" nzValue="203"></nz-option>
+                <nz-option nzLabel="售后相关" nzValue="204"></nz-option>
+                <nz-option nzLabel="回收价格" nzValue="100"></nz-option>
+                <nz-option nzLabel="回收打款" nzValue="101"></nz-option>
+                <nz-option nzLabel="设备验机" nzValue="102"></nz-option>
+                <nz-option nzLabel="活动加价" nzValue="103"></nz-option>
+                <nz-option nzLabel="物流相关" nzValue="104"></nz-option>
+                <nz-option nzLabel="使用建议" nzValue="105"></nz-option>
+                <nz-option nzLabel="其他问题" nzValue="106"></nz-option>
+            </nz-select>
+        </div>
+
+        <!-- 提交时间 -->
+        <div class="date-box">
+            <nz-form-label>提交时间</nz-form-label>
+            <nz-range-picker [(ngModel)]="queryForm.createFormat"></nz-range-picker>
+        </div>
+
+        <!-- 处理时间 -->
+        <div class="date1-box">
+            <nz-form-label>处理时间</nz-form-label>
+            <nz-range-picker [(ngModel)]="queryForm.processFormat"></nz-range-picker>
+        </div>
+    </div>
+
+    <div class="bt-search">
+        <button nz-button nzType="primary" (click)="query()">查询</button>
+    </div>
+
+    <div class="bt-reset">
+        <button nz-button nzType="default" (click)="reset()">重置</button>
+    </div>
+</div>
+
+<main>
+    <nz-table #basicTable [nzData]="listOfData?.records" [nzShowPagination]="false" [nzPageSize]="listOfData?.size"
+        [nzLoading]="tableLoading" nzBordered>
+        <thead>
+            <tr>
+                <th nzAlign="center">ID</th>
+                <th nzAlign="center">渠道</th>
+                <th nzAlign="center">业务</th>
+                <th nzAlign="center">意见分类</th>
+                <th nzAlign="center">用户身份</th>
+                <th nzAlign="center">联系电话</th>
+                <th nzAlign="center">提交时间</th>
+                <th nzAlign="center">处理人</th>
+                <th nzAlign="center">处理时间</th>
+                <th nzAlign="center">状态</th>
+                <th nzAlign="center">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="searchHint && listOfData?.records">
+                <td class="searchHint" nzAlign="center" colspan="13">
+                    <span>搜索 “{{searchName}}”，找到&nbsp;{{ listOfData?.total }}&nbsp;条结果</span>
+                    <a (click)="backList()">返回原列表</a>
+                </td>
+            </tr>
+            <tr *ngFor="let data of basicTable.data let i = index">
+                <td nzAlign="center">{{ data.id }}</td>
+                <td nzAlign="center">{{ platform_to_text(data.platform) }}</td>
+                <td nzAlign="center">{{ data.business == 1 ? '配件' : data.business == 2 ? '回收' : '-' }}</td>
+                <td nzAlign="center">{{ option_to_Text(data.options) }}</td>
+                <td nzAlign="center" class="{{data.userType == 1 ? 'userType' : ''}}" (click)="i4show(data)">
+                    {{ userType_to_text(data.userType) }}
+                </td>
+                <td nzAlign="center">{{ data.mobile ? data.mobile : '-' }}</td>
+                <td nzAlign="center">{{ data.createTime }}</td>
+                <td nzAlign="center">{{ data.processUser ? data.processUser : '-' }}</td>
+                <td nzAlign="center">{{ data.processTime ? data.processTime : '-' }}</td>
+                <td nzAlign="center">{{ data.processResult == 0 ? '待处理' : '已处理' }}</td>
+                <td nzAlign="center">
+                    <a nz-button nzType="link" (click)="showModal(data, i)">查看</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <div class="pagination-box">
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]" nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="1"
+                [nzTotal]="listOfData?.total" [nzShowTotal]="totalTemplate" [nzPageSize]="queryForm.pageSize"
+                [nzPageIndex]="queryForm.pageNum" (nzPageIndexChange)="onPageIndexChange($event)"
+                (nzPageSizeChange)="onPageSizeChange($event)">
+            </nz-pagination>
+        </div>
+    </div>
+</main>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="查看" (nzOnCancel)="handleCancel()">
+    <!-- <form nz-form [formGroup]="modalForm"> -->
+        <nz-form-item>
+            <nz-form-label>渠道</nz-form-label>
+            <nz-form-control>
+                {{ platform_to_text(processInfo?.platform) }}
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>业务</nz-form-label>
+            <nz-form-control>
+                {{ processInfo?.business == 1 ? '配件' : processInfo?.business == 2 ? '回收' : '-' }}
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>意见类型</nz-form-label>
+            <nz-form-control>
+                {{ option_to_Text(processInfo?.options)}}
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>意见描述</nz-form-label>
+            <nz-form-control>
+                {{ processInfo?.content }}
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item *ngIf="processInfo?.originalPhotos">
+            <nz-form-label>图片</nz-form-label>
+            <nz-form-control>
+                <ul class="fileList" *ngIf="originalPhotos.length">
+                    <li *ngFor="let data of originalPhotos; index as i">
+                        <img nz-image nzSrc="{{data.url}}" [nzFallback]="fallback" />
+                    </li>
+                </ul>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>联系方式</nz-form-label>
+            <nz-form-control>
+                {{ processInfo?.mobile ? processInfo?.mobile : '---' }}
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>处理备注</nz-form-label>
+            <nz-form-control>
+                <textarea rows="4" nz-input placeholder="备注仅供内部查看"
+                    [(ngModel)]="modalForm.processContent"></textarea>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-control [nzOffset]="12">
+                <label nz-checkbox [(ngModel)]="nextChecked">继续处理下一条</label>
+                <!-- <button nz-button nzType="default" (click)="handleCancel()">取消</button> -->
+                &nbsp;
+                <button nz-button nzType="primary" (click)="submitForm()">确定</button>
+            </nz-form-control>
+        </nz-form-item>
+    <!-- </form> -->
+</nz-modal>
+
+
+<!-- 爱思用户 -->
+<nz-modal [(nzVisible)]="i4UserVisible" nzTitle="爱思用户信息" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+    <div class="panelgroup">
+        <div class="panel-bd">
+            <ul>
+                <li>
+                    <div class="key">
+                        <span>用户身份</span>
+                    </div>
+                    <div class="val">
+                        <span>爱思用户</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>ID</span>
+                    </div>
+                    <div class="val">
+                        <span>{{ UserDetails?.userId ? UserDetails?.userId :'-'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>手机号</span>
+                    </div>
+                    <div class="val">
+                        <span>{{ UserDetails?.phone ? UserDetails?.phone : '-' }}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>用户名</span>
+                    </div>
+                    <div class="val">
+                        <span>{{ UserDetails?.username ? UserDetails?.username : '-'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>昵称</span>
+                    </div>
+                    <div class="val">
+                        <span>{{ UserDetails?.nickname ? UserDetails?.nickname : '-' }}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>微信openid</span>
+                    </div>
+                    <div class="val">
+                        <span>{{ UserDetails?.openid ? UserDetails?.openid : '-' }}</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nz-modal>

@@ -1,0 +1,146 @@
+<div class="bt-search">
+    <div class="bt-box">
+        <button nz-button nz-button-add nzType="primary" (click)="showModal()">新增</button>
+    </div>
+</div>
+<main>
+    <div class="hd">
+        <ul>
+            <li>名称</li>
+            <li>PID</li>
+            <li>分类方式</li>
+            <li>第三方链接</li>
+            <li>排序</li>
+            <li>状态</li>
+            <li>创建时间</li>
+            <li>操作</li>
+        </ul>
+    </div>
+    <nz-tree [nzData]="listOfData" [nzTreeTemplate]="nzTreeTemplate"></nz-tree>
+    <ng-template #nzTreeTemplate let-node let-origin="origin">
+        <span class="custom-node">
+            <span *ngIf="!node.isLeaf">
+                <span class="node-icon"> <i nz-icon
+                        [nzType]="node.isExpanded ? 'folder-open' : 'folder'"></i>{{ origin.name }}</span>
+
+                <div class="text-box">
+                    <!-- PID -->
+                    <span class="node-class node-PId">{{origin.pid}}</span>
+                    <!-- 分类方式 -->
+                    <span class="node-class node-type"
+                        *ngIf="origin.type == 0">{{origin.type==0 ? '内部ID':'第三方链接'}}</span>
+                    <!-- 第三方链接 -->
+                    <span class="node-class node-url">{{origin.url ? origin.url : '-'}}</span>
+                    <!-- 排序 -->
+                    <span class="node-class node-sort">{{origin.sort}}</span>
+                    <!-- 状态 -->
+                    <span class="node-class node-status">{{origin.status == 1 ?'有效':'无效'}}</span>
+                    <!-- 创建时间 -->
+                    <span class="node-class node-createTime">{{origin.createTime ?origin.createTime  : '-'}}</span>
+                    <div class="node-class">
+                        <a nz-button nz-button-tdlink nzType="link" (click)="showModal(origin.id)">编辑</a>
+                        <a nz-button nz-button-tdlink nzType="link" nzDanger nz-popconfirm nzPopconfirmTitle="确认删除吗?"
+                            [nzIcon]="iconTpl" (nzOnConfirm)="confirm(origin.id)">删除</a>
+                        <ng-template #iconTpl>
+                            <i nz-icon nzType="question-circle-o" style="color: red;"></i>
+                        </ng-template>
+                    </div>
+                </div>
+            </span>
+            <span *ngIf="node.isLeaf">
+                <span class="node-icon"><i nz-icon nzType="file"></i>{{ origin.name }}</span>
+                <div class="text-box">
+                    <span class="node-class node-PId">{{origin.pid}}</span>
+                    <span class="node-class node-type">{{origin.type==0 ? '内部ID':'第三方链接'}}</span>
+                    <span class="node-class node-url">{{origin.url ? origin.url : '-'}}</span>
+                    <span class="node-class node-sort">{{origin.sort}}</span>
+                    <span class="node-class node-status">{{origin.status == 1 ?'有效':'无效'}}</span>
+                    <span class="node-class node-createTime">{{origin.createTime?origin.createTime : '-'}}</span>
+                    <div class="node-class">
+                        <a nz-button nz-button-tdlink nzType="link" (click)="showModal(origin.id)">编辑</a>
+                        <a nz-button nz-button-tdlink nzType="link" nzDanger nz-popconfirm nzPopconfirmTitle="确认删除吗?"
+                            [nzIcon]="iconTpl" (nzOnConfirm)="confirm(origin.id)">删除</a>
+                        <ng-template #iconTpl>
+                            <i nz-icon nzType="question-circle-o" style="color: red;"></i>
+                        </ng-template>
+                    </div>
+
+                </div>
+            </span>
+        </span>
+    </ng-template>
+</main>
+<!-- <nz-layout>
+    <nz-content>
+        <button nz-button nz-button-add nzType="primary" (click)="showModal()">新增</button>
+        <br>
+    </nz-content>
+</nz-layout> -->
+
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="title" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+    <form nz-form [formGroup]="modalForm" (ngSubmit)="submitForm()">
+        <nz-form-item *ngIf="!modalForm.get('id')?.value || modalForm.get('pid')?.value > 0">
+            <nz-form-label [nzSpan]="4">上一级分类</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <nz-tree-select style="width: 250px" [nzNodes]="SelectNodes" nzShowSearch nzPlaceHolder="请选择分类"
+                    [(ngModel)]="value" formControlName="pid">
+                </nz-tree-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">当前分类</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="name" [maxLength]="20" placeholder="" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">Icon</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+
+                <nz-upload [(nzFileList)]="fileList" [nzBeforeUpload]="beforeUpload">
+                    <button nz-button nzType="default" (click)="onUpload($event)"><i nz-icon
+                            nzType="upload"></i>本地图片</button>
+                </nz-upload>
+
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">分类方式</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <nz-radio-group formControlName="type" id="type">
+                    <label nz-radio nzValue="0">内部ID</label>
+                    <label nz-radio nzValue="1">第三方链接</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="modalForm.get('type')?.value == 1">
+            <nz-form-label [nzSpan]="4">url</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="url" placeholder="" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">排序</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="sort" id="sort" [maxLength]="20" placeholder="" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4" nzRequired nzFor="status">状态</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <nz-radio-group formControlName="status" id="status">
+                    <label nz-radio nzValue="1">有效</label>
+                    <label nz-radio nzValue="0">无效</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-control [nzSpan]="8" [nzOffset]="4">
+                <button nz-button nzType="primary" [nzLoading]="modalLoading">保存</button>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+</nz-modal>

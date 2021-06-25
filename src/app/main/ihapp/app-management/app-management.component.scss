@@ -1,0 +1,124 @@
+.app-management-search {
+    display: flex;
+    .bt-box {
+        button {
+            margin: 0 5px;
+        }
+    }
+}
+
+.app-management-main {
+    margin-top: 10px;
+    background: #fff;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2);
+
+    .pagination-box {
+        height: 56px;
+        line-height: 56px;
+        padding: 0 18px;
+        font-size: 12px;
+        .pagination-template {
+            float: left;
+        }
+        &:after {
+            content: " ";
+            display: block;
+            clear: both;
+            height: 0;
+            visibility: hidden;
+        }
+    }
+    nz-pagination {
+        margin-top: 12px;
+    }
+
+    nz-table {
+        th {
+            height: 38px;
+            padding: 0;
+            color: #888;
+            background: #fff !important;
+            border-right: none !important;
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+            position: relative;
+            &:nth-child(1) {
+                width: 80px;
+            }
+        }
+        td {
+            height: 56px;
+            padding: 0;
+            font-size: 12px;
+            border-right: none !important;
+            border-bottom: 1px solid rgb(229, 229, 229) !important;
+        }
+        .pic-icon {
+            width: 40px;
+        }
+        .td-name {
+            padding-left: 20px;
+        }
+        .third-item {
+            padding-left: 20px;
+        }
+
+    }
+    .ant-table-tbody > tr.ant-table-row:hover > td {
+        background: #f2f2f2;
+    }
+
+    :host ::ng-deep .ant-modal-footer {
+        display: none;
+    }
+    .pagination-box {
+        height: 56px;
+        line-height: 56px;
+        padding: 0 18px;
+        font-size: 12px;
+        span {
+            float: left;
+        }
+        .pagination-template {
+            float: right;
+        }
+        &:after {
+            content: " ";
+            display: block;
+            clear: both;
+            height: 0;
+            visibility: hidden;
+        }
+    }
+    .saveBtn {
+        margin-top: 50px;
+    }
+    .table-img-icon {
+        width: 32px;
+    }
+}
+.app-modal-foot {
+    text-align: right;
+    button {
+        margin: 0 5px;
+    }
+}
+.modal-pic-box {
+    display: flex;
+}
+.modal-link-box {
+    display: flex;
+    nz-form-item {
+        width: 500px;
+    }
+    nz-date-picker {
+        width: 100%;
+    }
+}
+
+.pic-labe {
+    text-align: right;
+}
+nz-form-label {
+    width: 90px;
+}

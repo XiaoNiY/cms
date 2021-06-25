@@ -1,0 +1,124 @@
+.imgList{
+    float: left;
+    li{
+        width: 132px;
+        height: 132px;
+        margin-right: 10px;
+        padding: 10px;
+        text-align: center;
+        border: 1px solid #eee;
+        float: left;
+        img{
+            width: 84px;
+            height: 84px !important;
+            height: auto;
+            margin-bottom: 6px;
+        }
+        a{
+            font-size: 12px;
+            margin-right: 4px;
+            &.active{
+                color: #52c41a;
+            }
+        }
+    }
+}
+.videoImg{
+    width: 132px;
+    height: 132px;
+    margin-left: 20px;
+    padding: 10px;
+    line-height: initial;
+    float: left;
+    text-align: center;
+    border: 1px solid #eee;
+    img{
+        width: 84px;
+        height: auto;
+        margin-bottom: 6px;
+    }
+    a{
+        display: block;
+    }
+}
+nz-upload{
+    width: auto;
+    float: left;
+}
+main{
+  width: 1500px;
+  margin: auto;
+  background: #fff;
+  position: relative;
+  .main-box{
+    padding: 40px 40px 0 40px;
+    .video{
+        line-height: 130px;
+        margin-bottom: 10px;
+        >label{
+            float: left;
+            margin-left: 20px;
+        }
+        >span{
+            float: left;
+            color: #b7b7b7;
+        }
+    }
+  }
+  .submit-box{
+    width:100%;
+    height: 70px;    
+    padding: 0 40px;
+    position: relative;
+    .bt-box{
+      position: absolute;
+      left: 40px;
+      bottom: 15px;
+      top: 18px;
+    }
+  }
+  .ImportGoods{
+    color: #006eff;
+    position: absolute;
+    right: 20px;
+    top: 24px;
+  }
+}
+
+.upFile {    
+    width: 130px;
+    height: 130px;
+    line-height: initial;
+    padding: 44px 12px;
+    position: relative;
+    display: inline-block;
+    text-align: center;
+    border: 1px dashed #bfbfbf;
+    cursor: pointer;
+    span{
+        display: block;
+    }
+    input {
+        display: none;
+    }
+}
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+              0 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+.cdk-drag-preview img{
+    width: 84px;
+    height: auto;
+    margin-bottom: 6px;
+}

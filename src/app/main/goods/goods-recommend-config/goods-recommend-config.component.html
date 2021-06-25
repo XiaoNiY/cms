@@ -1,0 +1,140 @@
+<div class="recommend">
+    <div class="bt-save">
+        <button nz-button nzType="primary" (click)="save()">保存</button>
+    </div>
+    <div class="bt-products">
+        <button nz-button nzType="primary" (click)="showModal()">选择更多商品</button>
+    </div>
+</div>
+
+<main>
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="listOfData" [nzShowPagination]="false"
+        [nzLoading]="tableLoading">
+        <thead>
+            <tr>
+                <th nzAlign="center">序号</th>
+                <th nzAlign="center">商品编号</th>
+                <th nzAlign="left">  商品名称</th>
+                <th nzAlign="left">  商品短名称</th>
+                <th nzAlign="center">商品分类</th>
+                <th nzAlign="center">商品库存</th>
+                <th nzAlign="center">商品图片</th>
+                <th nzAlign="center">适用用户</th>
+                <th nzAlign="center">标签颜色</th>
+                <th nzAlign="center">推荐标签</th>
+                <th nzAlign="center">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of listOfData let i = index">
+                <td nzAlign="center">{{ i + 1 }}</td>
+                <td nzAlign="center">{{ data.code }}</td>
+                <!-- <span *ngIf = "data.jxStatus" style="color: red;">精选</span> -->
+                <td nzAlign="left">{{ data.name }}</td>
+                <!-- <span *ngIf = "data.jxStatus" style="color: red;">精选</span> -->
+                <td nzAlign="left">{{ data.shortName }}</td>
+                <td nzAlign="center">{{ data.goodsType }}</td>
+                <td nzAlign="center">{{ data.stockNum }}</td>
+                <td nzAlign="center">
+                    <img nz-image nzSrc="{{data.icon}}" [nzFallback]="fallback" />
+                </td>
+                <!-- 适用用户 -->
+                <td nzAlign="center">{{ data.userType == 0 ? '通用' : data.userType == 1 ? 'C端' : data.userType == 2 ?
+                    'B端' : '-' }}</td>
+                <!-- 标签颜色 -->
+                <td nzAlign="center">
+                    <input nz-input (ngModelChange)="inputChange(data)" type="color" nzBorderless [(ngModel)]="data.labelColor" />
+                </td>
+                <!-- 推荐标签 -->
+                <td nzAlign="left">
+                    <input type="text" (keyup)="inputChange(data)" nz-input placeholder="请输入" [maxLength]="4"
+                        [(ngModel)]="data.labelText" />
+                </td>
+                <td nzAlign="center">
+                    <a nz-button nz-button-tdlink nzType="link" nzDanger nz-popconfirm nzPopconfirmTitle="确认删除？"
+                        (nzOnConfirm)="confirm(data)">删除</a>
+                    <!-- <a nz-button nz-button-tdlink nzType="link" [disabled]="true">上移</a>
+                    <a nz-button nz-button-tdlink nzType="link" [disabled]="true">下移</a> -->
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</main>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="选择商品" (nzOnCancel)="handleCancel()" [nzStyle]="{ width: '1000px' }"
+    [nzFooter]="null">
+    <div class="recommendIsVisble">
+        <div class="bt-search">
+            <button nz-button nzType="primary" (click)="query()">查询</button>
+        </div>
+
+        <div class="search-box">
+            <div class="select1-box">
+                <nz-form-label>品牌</nz-form-label>
+                <nz-select nzPlaceHolder="请选择" [(ngModel)]="queryForm.brandId">
+                    <nz-option nzLabel="全部" nzValue=""></nz-option>
+                    <nz-option nzValue="{{data.id}}" nzLabel="{{data.name}}" *ngFor="let data of BrandTypeList">
+                    </nz-option>
+                </nz-select>
+            </div>
+            <div class="select-box">
+                <nz-form-label>分类</nz-form-label>
+                <nz-select nzPlaceHolder="请选择" [(ngModel)]="queryForm.typeId">
+                    <nz-option nzLabel="全部" nzValue=""></nz-option>
+                    <nz-option nzValue="{{data.id}}" nzLabel="{{data.name}}" *ngFor="let data of GoodsTypeList">
+                    </nz-option>
+                </nz-select>
+            </div>
+
+            <div class="input-box">
+                <nz-form-label>商品</nz-form-label>
+                <input type="text" nz-input placeholder="请输入商品编码、名称" [(ngModel)]="queryForm.name">
+            </div>
+        </div>
+    </div>
+
+    <nz-table #borderedTable nzBordered [nzData]="detailsData?.records" [nzShowPagination]="false"
+        [nzPageSize]="detailsData?.size" [nzLoading]="tableLoading">
+        <thead>
+            <tr>
+                <th nzAlign="center">商品编号</th>
+                <th nzAlign="center">商品名称</th>
+                <th nzAlign="center">商品分类</th>
+                <th nzAlign="center">商品品牌</th>
+                <th nzAlign="center">适用用户</th>
+                <th nzAlign="center">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="searchHint && detailsData?.records">
+                <td class="searchHint" nzAlign="center" colspan="13">
+                    <span>搜索 “{{searchName}}”，找到&nbsp;{{ detailsData?.total }}&nbsp;条结果</span>
+                    <a (click)="backList()">返回原列表</a>
+                </td>
+            </tr>
+            <tr *ngFor="let data of borderedTable.data">
+                <td nzAlign="center">{{ data.code }}</td>
+                <td nzAlign="left">{{ data.name ? data.name : '-' }}</td>
+                <td nzAlign="center">{{ data.typeName ? data.typeName : '-' }}</td>
+                <td nzAlign="center">{{ data.brandName ? data.brandName : '-' }}</td>
+                <td nzAlign="center">{{ data.userType == 0 ? '通用' : data.userType == 1 ? 'C端' : data.userType == 2 ?
+                    'B端': '-' }}</td>
+                <td nzAlign="center">
+                    <a nz-button nz-button-tdlink nzType="link" *ngIf="disableGoods(data.code)" [disabled] = "true" (click)="sendGoods(data)">选择</a>
+                    <a nz-button nz-button-tdlink nzType="link" *ngIf="!disableGoods(data.code)" [disabled] = "false" (click)="sendGoods(data)">选择</a>
+                
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <div class="pagination-box">
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]" nzShowSizeChanger nzShowQuickJumper
+                [nzPageIndex]="detailsData?.current" [nzTotal]="detailsData?.total" [nzShowTotal]="totalTemplate"
+                [nzPageSize]="queryForm.size" (nzPageIndexChange)="onPageIndexChange($event)"
+                (nzPageSizeChange)="onPageSizeChange($event)">
+            </nz-pagination>
+        </div>
+    </div>
+</nz-modal>

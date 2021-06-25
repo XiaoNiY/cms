@@ -1,0 +1,167 @@
+<div class="bt-search">
+    <div class="bt-box">
+        <button nz-button nzType="primary" (click)="showModal()">新增字典</button>
+    </div>
+    <!-- 其他功能按钮 -->
+    <div class="bt-list">
+        <a class="refresh" nzTooltipTitle="刷新" nzTooltipPlacement="top" nz-tooltip  (click)="refresh()" ><i nz-icon nzType="sync"
+                nzTheme="outline"></i></a>
+        <!-- <a class="export" nzTooltipTitle="导出" nzTooltipPlacement="top" nz-tooltip><i nz-icon nzType="download"
+                nzTheme="outline"></i></a> -->
+    </div>
+    <!-- 搜索 -->
+    <div class="search-box">
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+            <input type="text" nz-input placeholder="请输入名称或编码" [(ngModel)]="query_params_Json.name" />
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+            <button nz-button nzType="primary" nzSearch (click)="query()"><i nz-icon nzType="search"></i></button>
+        </ng-template>
+    </div>
+</div>
+<main>
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="listOfData?.records" [nzShowPagination]="false"
+        [nzPageSize]="query_params_Json.pageSize" nzBordered [nzLoading]="tableLoading">
+        <thead>
+            <tr>
+                <th nzAlign="center">ID</th>
+                <th nzAlign="center">名称</th>
+                <th nzAlign="center">编码</th>
+                <th nzAlign="center">值</th>
+                <th nzAlign="center">上级ID</th>
+                <th nzAlign="center">状态</th>
+                <th nzAlign="center">权限</th>
+                <th nzAlign="center">备注</th>
+                <th nzAlign="center">字段1</th>
+                <th nzAlign="center">字段2</th>
+                <th nzAlign="center">字段3</th>
+                <th nzAlign="center">备注</th>
+                <th nzAlign="center">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="searchHint && rowSelectionTable.data">
+                <td class="searchHint"nzAlign="center" colspan="13">
+                    <span>搜索 “{{searcName}}”，找到&nbsp;{{ listOfData?.total }}&nbsp;条结果</span>
+                    <a (click)="backList()">返回原列表</a>
+                </td>
+            </tr>
+
+            <tr *ngFor="let data of rowSelectionTable.data; let i=index">
+                <td nzAlign="center">{{data.id}}</td>
+                <!-- 名称 -->
+                <td nzAlign="center">{{data.name}}</td>
+                <!-- 编码 -->
+                <td nzAlign="center">{{data.dictKey}}</td>
+                <!-- 值 -->
+                <td nzAlign="center">{{data.content ?data.content : '-'}}</td>
+                <!-- 上级ID -->
+                <td nzAlign="center">{{data.parentKey ? data.parentKey : '-'}}</td>
+                <!-- 状态 -->
+                <td nzAlign="center">{{data.status == 1 ? '启用' : '禁用'}}</td>
+                <!-- 权限 -->
+                <td nzAlign="center">{{data.optionType == 0 ? '不允许删改' :'允许删改'}}</td>
+                <!-- 备注 -->
+                <td nzAlign="center">{{data.remark ? data.remark : '-'}}</td>
+                <!-- 字段1 -->
+                <td nzAlign="center">{{data.field1 ? data.field1 : '-'}}</td>
+                <!-- 字段2 -->
+                <td nzAlign="center">{{data.field2 ? data.field2 : '-'}}</td>
+                <!-- 字段3 -->
+                <td nzAlign="center">{{data.field3 ? data.field3 : '-'}}</td>
+                <!-- 备注 -->
+                <td nzAlign="center">{{data.remark ? data.remark : '-'}}</td>
+                <td nzAlign="center">
+                    <a nz-button nz-button-tdlink nzType="link" (click)="showModal(data.id)">编辑</a>
+                    <a nz-button nz-button-tdlink nzType="link"
+                        [routerLink]="['../DictList', { dictKey: data.dictKey }]">列表</a>
+                    <a nz-button nz-button-tdlink nzType="link" nzDanger nz-popconfirm nzPopconfirmTitle="确认删除吗?"
+                        [nzIcon]="iconTpl" (nzOnConfirm)="confirm(data.id)">删除</a>
+                    <ng-template #iconTpl>
+                        <i nz-icon nzType="question-circle-o" style="color: red;"></i>
+                    </ng-template>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <div class="pagination-box">
+        <div class="pagination-template">
+          <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+          <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]"nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="listOfData?.current"
+            [nzTotal]="listOfData?.total" [nzShowTotal]="totalTemplate" [nzPageSize]="listOfData?.size"
+            (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)"></nz-pagination>
+        </div>
+    </div>
+</main>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="属性设置" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+    <form nz-form [formGroup]="modalForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4" nzRequired nzFor="name">属性名</nz-form-label>
+            <nz-form-control [nzSpan]="14" nzErrorTip="必填">
+                <input nz-input formControlName="name" id="name" [maxLength]="50" placeholder="" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4" nzRequired nzFor="dictKey">编码</nz-form-label>
+            <nz-form-control [nzSpan]="14" nzErrorTip="必填">
+                <input nz-input formControlName="dictKey" id="dictKey" [maxLength]="50" placeholder="" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">值</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="content" [maxLength]="50" placeholder="" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">字段1</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="field1" [maxLength]="20" placeholder="" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">字段2</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="field2" [maxLength]="20" placeholder="" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">字段3</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="field3" [maxLength]="20" placeholder="" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4" nzRequired nzFor="optionType">权限</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <nz-radio-group formControlName="optionType" id="optionType">
+                    <label nz-radio nzValue="1">允许删改</label>
+                    <label nz-radio nzValue="0">不允许删改</label>
+                </nz-radio-group>
+                <i nz-icon nzType="info-circle" nzTheme="outline" nzTooltipTitle="如果不允许删改的话，则字典和对应的列表都无法删除修改"
+                    nzTooltipPlacement="right" nz-button nz-tooltip></i>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4" nzRequired nzFor="status">状态</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <nz-radio-group formControlName="status" id="status">
+                    <label nz-radio nzValue="1">启用</label>
+                    <label nz-radio nzValue="0">禁用</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">备注</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <textarea rows="4" nz-input [maxLength]="100" formControlName="remark"></textarea>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-control [nzSpan]="8" [nzOffset]="4">
+                <button nz-button nzType="primary">保存</button>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+</nz-modal>

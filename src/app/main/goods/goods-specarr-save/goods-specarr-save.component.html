@@ -1,0 +1,328 @@
+<main>
+    <div class="form-box">
+        <nz-form-item>
+            <nz-form-label nz-col nzRequired>
+                标题
+            </nz-form-label>
+            <nz-form-control nz-col nzFlex="400px">
+                <input nz-input [(ngModel)]="entityParam.name" placeholder="请输入标题" [maxlength]="50" />
+            </nz-form-control>
+            <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline" [nzTooltipTitle]="title"
+                nzTooltipPlacement="right"></i>
+            <ng-template #title>
+                <span>请规范填写，该名称会展示在用户端，表示该组商品集合</span>
+            </ng-template>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col>
+                备注
+            </nz-form-label>
+            <nz-form-control nz-col nzFlex="400px">
+                <textarea rows="4" nz-input [(ngModel)]="entityParam.note" placeholder="请输入备注，仅内部可见"
+                    [maxlength]="100"></textarea>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col>
+                图片
+            </nz-form-label>
+            <nz-form-control nz-col nzFlex="130px">
+                <label for="resFile" class="upFile" *ngIf="!entityParam.icon">
+                    <i nz-icon nzType="plus"></i>
+                    <span>上传图片</span>
+                    <input id="resFile" type="file" [(ngModel)]="fileVal" multiple="multiple" accept="image/*"
+                        (change)="handleFileInput($event)">
+                </label>
+                <div class="videoImg" *ngIf="entityParam.icon">
+                    <img nz-image nzSrc="{{entityParam?.icon}}" [nzFallback]="fallback" />
+                    <a (click)="deleteImg()">删除</a>
+                </div>
+            </nz-form-control>
+            <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline" [nzTooltipTitle]="slogan"
+                nzTooltipPlacement="right"></i>
+            <ng-template #slogan>
+                <span>该图片会展示在订单和购物车中，请规范上传</span>
+            </ng-template>
+        </nz-form-item>
+        <!-- <nz-form-item>
+            <nz-form-label nz-col nzRequired>
+                规格
+            </nz-form-label>
+            <nz-form-control nz-col>
+                <a ><i nz-icon nzType="plus-circle" nzTheme="outline"></i></a>
+            </nz-form-control>
+        </nz-form-item> -->
+        <nz-form-item>
+            <nz-form-label nz-col nzRequired>规格</nz-form-label>
+            <nz-form-control nz-col>
+                <ul class="spenList" cdkDropList (cdkDropListDropped)="dropSpec($event)">
+                    <li *ngFor="let data of specArr; index as i" cdkDrag>
+                        <div class="spec-key">
+                            <span><input nz-input placeholder="例如：型号" [(ngModel)]="data.name" /></span>：
+                        </div>
+                        <div class="specItemBox" cdkDropList cdkDropListOrientation="horizontal"
+                            (cdkDropListDropped)="dropSpecItem(i,$event)">
+                            <span class=specItem *ngFor="let item of data?.value; let val as k" cdkDrag>
+                                <input nz-input placeholder="例如：iphone12" [(ngModel)]="item.key"
+                                    (ngModelChange)="paramChang()" />
+                                <a (click)="specItemDelete(i,item.key)"><i nz-icon nzType="close"
+                                        nzTheme="outline"></i></a>
+                            </span>
+                        </div>
+                        <div class="spec-box">
+                            <a nz-button nz-button-tdlink nzType="link" (click)="addSpecItem(i)">添加参数</a>
+                            <a nz-button nz-button-tdlink nzType="link" *ngIf="i == 0" (click)="addSpec()">添加规格</a>
+                            <a nz-button nz-button-tdlink nzType="link" nzDanger *ngIf="i != 0"
+                                (click)="delSpec(i)">删除规格</a>
+                        </div>
+                        <!-- <a (click)="addSpecItem(i)"><i nz-icon nzType="plus-circle" nzTheme="outline"></i></a> -->
+                        <!-- <nz-tag  *ngFor="let tag of data?.val; let val as k" [nzMode]="'closeable'" (nzOnClose)="handleClose()">
+                            {{ tag }}
+                        </nz-tag>
+                         -->
+                        <!-- <input #inputElement nz-input nzSize="small" *ngIf="data.inputVisible" type="text"
+                            [(ngModel)]="inputAttrValue" style="width: 78px;" (blur)="handleInputConfirm(i)"
+                            (keydown.enter)="handleInputConfirm(i)" />
+
+                        <nz-tag *ngIf="!data.inputVisible" class="editable-tag" nzNoAnimation (click)="showInput(data)">
+                            <i nz-icon nzType="plus"></i>新建参数
+                        </nz-tag> -->
+
+                    </li>
+                </ul>
+            </nz-form-control>
+        </nz-form-item>
+        <div class="newBt">
+            <button nz-button nzType="default" (click)="resetTable()">生成SKU表格(手动)</button>
+            <span>PS：添加 or 调整规格会重置表格全部数据</span>
+        </div>
+        <nz-table #groupingTable [nzData]="tableData" nzShowSizeChanger nzBordered [nzShowPagination]="false"
+            nzSize="middle">
+            <thead>
+                <tr>
+                    <th *ngIf="tableTh.length != 0" colspan="{{tableTh?.length}}">规格</th>
+                    <!-- <th colspan="{{attrCheck? '2' : '1'}}">基本信息</th> -->
+                    <th rowspan="2">关联商品</th>
+
+                    <th colspan="5">B端设置</th>
+                    <th colspan="4">C端设置</th>
+                    <th rowspan="2">销售库存</th>
+                    <th rowspan="2">适用用户</th>
+                    <th rowspan="2">状态</th>
+                    <!-- <th rowspan="2">阶梯价格</th> -->
+                    <th rowspan="2">操作</th>
+                </tr>
+                <tr>
+                    <th *ngFor="let data of tableTh; index as i">{{data.name}}</th>
+                    <th>最小购买</th>
+                    <th>最大购买</th>
+                    <th>建议零售价</th>
+                    <th>单个售价</th>
+                    <th>单个划线价</th>
+                    <th>最小购买</th>
+                    <th>最大购买</th>
+                    <th>单个售价</th>
+                    <th>单个划线价</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of tableData; index as i">
+                    <ng-container *ngFor="let item of tableTh; index as k">
+                        <td *ngIf="propertiesArr[i][k].name != undefined "
+                            attr.rowspan="{{propertiesArr[i][k].rowspan}}">
+                            <span class="specTd">{{propertiesArr[i][k].name.key}}</span>
+                        </td>
+                    </ng-container>
+                    <!-- 关联商品 -->
+                    <td>
+                        <div class="selectGoods">
+                            <img nz-image width="30px" height="30px" nzSrc="{{data.goods.icon}}" [nzFallback]="fallback"
+                                alt="" />
+                            <span title="{{data.goods.name}}">{{data.goods.name ? data.goods.name  : '请选择'}}</span>
+                            <a nz-button nz-button-tdlink nzType="link" href=".#/goods/goodsTabs/{{data.goodsId}}"
+                                target="_blank" [disabled]="data.goodsId == 0">查看</a>
+                            <a nz-button nz-button-tdlink nzType="link" (click)="showModal(i)">
+                                {{data.goodsId != 0 ? '解绑' : '绑定'}}
+                            </a>
+                        </div>
+                    </td>
+                    <!-- B端设置 最小购买-->
+                    <td><input nz-input placeholder="请输入" [(ngModel)]="data.goods.buyMinB" nzBorderless
+                            [disabled]="data.disabled" />
+                    </td>
+                    <!-- B端设置 最大购买-->
+                    <td><input nz-input placeholder="请输入" [(ngModel)]="data.goods.buyMaxB" nzBorderless
+                            [disabled]="data.disabled" />
+                    </td>
+                    <!-- B端设置 建议零售价-->
+                    <td><input nz-input placeholder="请输入" [(ngModel)]="data.goods.retailPriceB" nzBorderless
+                            [disabled]="data.disabled" /></td>
+                    <!-- B端设置 单个售价-->
+                    <td><input nz-input placeholder="请输入" [(ngModel)]="data.goods.shopPriceB" nzBorderless
+                            [disabled]="data.disabled" /></td>
+                    <!-- B端设置 单个划线价-->
+                    <td><input nz-input placeholder="请输入" [(ngModel)]="data.goods.originalPriceB" nzBorderless
+                            [disabled]="data.disabled" /></td>
+                    <!-- C端设置 最小购买-->
+                    <td><input nz-input placeholder="请输入" [(ngModel)]="data.goods.buyMinC" nzBorderless
+                            [disabled]="data.disabled" />
+                    </td>
+                    <!-- C端设置 最大购买-->
+                    <td><input nz-input placeholder="请输入" [(ngModel)]="data.goods.buyMaxC" nzBorderless
+                            [disabled]="data.disabled" />
+                    </td>
+                    <!-- C端设置 单个售价-->
+                    <td><input nz-input placeholder="请输入" [(ngModel)]="data.goods.shopPriceC" nzBorderless
+                            [disabled]="data.disabled" /></td>
+                    <!-- C端设置 单个划线价-->
+                    <td>
+                        <input nz-input placeholder="请输入" [(ngModel)]="data.goods.originalPriceC" nzBorderless
+                            [disabled]="data.disabled" />
+                    </td>
+                    <!-- 库存 -->
+                    <td>
+                        <input nz-input placeholder="请输入" [(ngModel)]="data.goods.stockNum" nzBorderless
+                            [disabled]="data.disabled" />
+                    </td>
+                    <!-- 适用用户 -->
+                    <td>
+                        <div class="selectUser">
+                            <label nz-checkbox [(ngModel)]="data.goods.selectUserTypeB"
+                                [disabled]="data.disabled">B端商户</label>
+                            <br>
+                            <label nz-checkbox [(ngModel)]="data.goods.selectUserTypeC"
+                                [disabled]="data.disabled">C端用户</label>
+                        </div>
+                    </td>
+                    <!-- 上下架 -->
+                    <td class="{{data.goods.status == 1 ? 'font1'  : 'font2'}}">
+                        <span style="width: 100px;display: inline-block;">
+                            {{data.goods.status == 1 ? '已上架' : '已下架'}}</span>
+                        <!-- <nz-switch [ngModel]="data.goods.status == 1" nzCheckedChildren="上架" nzUnCheckedChildren="下架"
+                            [nzDisabled]="data.disabled">
+                        </nz-switch> -->
+                    </td>
+                    <!-- 编辑 -->
+                    <td>
+                        <div style="width:180px;text-align:center">
+                            <a nz-button nz-button-tdlink nzType="link" [disabled]="data.goodsId == 0 "
+                                (click)="saveGoods(data)">{{data.disabled ? '编辑' : '保存'}}</a>
+                            <a nz-button nz-button-tdlink nzType="link" [disabled]="data.goodsId == 0"
+                                class="{{data.goods.status == 1 ? 'red' : 'green' }}"
+                                (click)="goodsSwitch(data)">{{data.goods.status == 1 ? '下架' : '上架'}}</a>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td attr.colspan="{{tableTh?.length + 1}}">批量操作</td>
+                    <!-- B端设置 最小购买-->
+                    <td><input nz-input placeholder="请输入" [(ngModel)]="bulkData.buyMinB" nzBorderless />
+                    </td>
+                    <!-- B端设置 最大购买-->
+                    <td><input nz-input placeholder="请输入" [(ngModel)]="bulkData.buyMaxB" nzBorderless />
+                    </td>
+                    <!-- B端设置 建议零售价-->
+                    <td><input nz-input placeholder="请输入" [(ngModel)]="bulkData.retailPriceB" nzBorderless /></td>
+                    <!-- B端设置 单个售价-->
+                    <td><input nz-input placeholder="请输入" [(ngModel)]="bulkData.shopPriceB" nzBorderless /></td>
+                    <!-- B端设置 单个划线价-->
+                    <td><input nz-input placeholder="请输入" [(ngModel)]="bulkData.originalPriceB" nzBorderless /></td>
+                    <!-- C端设置 最小购买-->
+                    <td><input nz-input placeholder="请输入" [(ngModel)]="bulkData.buyMinC" nzBorderless />
+                    </td>
+                    <!-- C端设置 最大购买-->
+                    <td><input nz-input placeholder="请输入" [(ngModel)]="bulkData.buyMaxC" nzBorderless />
+                    </td>
+                    <!-- C端设置 单个售价-->
+                    <td><input nz-input placeholder="请输入" [(ngModel)]="bulkData.shopPriceC" nzBorderless /></td>
+                    <!-- C端设置 单个划线价-->
+                    <td>
+                        <input nz-input placeholder="请输入" [(ngModel)]="bulkData.originalPriceC" nzBorderless />
+                    </td>
+                    <!-- 库存 -->
+                    <td>
+                        <input nz-input placeholder="请输入" [(ngModel)]="bulkData.stockNum" nzBorderless />
+                    </td>
+
+                    <td>
+                        <label nz-checkbox [(ngModel)]="bulkData.selectUserTypeB">B端商户</label>
+                        <br>
+                        <label nz-checkbox [(ngModel)]="bulkData.selectUserTypeC">C端用户</label>
+                    </td>
+                    <td>
+
+                    </td>
+                    <td>
+                        <div style="width:180px;text-align:center">
+                            <a nz-button nz-button-tdlink nzType="link" (click)="batchWrite()">填写</a>
+                            <a nz-button nz-button-tdlink nzType="link" (click)="saveAll()">保存</a>
+                            <a nz-button nz-button-tdlink nzType="link" style="color: #008000;"
+                                (click)="goodsTop()">上架</a>
+                            <a nz-button nz-button-tdlink nzType="link" style="color: #f00;" (click)="boodsBt()">下架</a>
+                        </div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </nz-table>
+    </div>
+    <div class="submit-box">
+        <nz-divider></nz-divider>
+        <div class="bt-box">
+            <!-- <button nz-button nzType="primary" (click)="submitForm()">保存</button> -->
+            <app-bt-group [btType]="'primary'" (btClick)="submitForm()" [btText]="'保存'"></app-bt-group>
+            <app-bt-group [btType]="'default'" [btText]="'返回'"></app-bt-group>
+        </div>
+    </div>
+</main>
+<nz-modal [(nzVisible)]="goodsVisible" nzTitle="选择商品" (nzOnCancel)="handleCancel()" [nzFooter]="null" [nzWidth]="1050">
+    <div class="search-box">
+        <div class="label-box">
+            <nz-form-label>商品</nz-form-label>
+            <input type="text" nz-input placeholder="商品编码、名称" [(ngModel)]="queryForm.name" />
+        </div>
+
+        <!-- 商品类型 -->
+        <div class="label-box">
+            <nz-form-label>商品类型</nz-form-label>
+            <nz-select nzAllowClear nzPlaceHolder="请选择" [(ngModel)]="queryForm.typeId">
+                <nz-option nzLabel="全部" nzValue=""></nz-option>
+                <nz-option nzValue="{{data.id}}" nzLabel="{{data.name}}" *ngFor="let data of GoodsTypeList"></nz-option>
+            </nz-select>
+        </div>
+
+        <button nz-button nzType="primary" nzSearch (click)="getGoodsList()"><i nz-icon nzType="search"></i></button>
+    </div>
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="goodsList?.records" [nzShowPagination]="false"
+        [nzPageSize]="goodsList?.size" nzBordered>
+        <thead>
+            <tr>
+                <th>商品编号</th>
+                <th>商品名称</th>
+                <th>商品分类</th>
+                <th>商品品牌</th>
+                <th>已关联组</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of goodsList?.records">
+                <td>{{data.code}}</td>
+                <td style="text-indent:14px;text-align: left;">{{data.name}}</td>
+                <td>{{data.typeName}}</td>
+                <td>{{data.brandName}}</td>
+                <td>{{data.skuGroupName}}</td>
+                <td style="width: 50px;">
+                    <a nz-button nz-button-tdlink nzType="link" [disabled]="data.skuGroupId >0"
+                        (click)="bindGoods(data)">绑定</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <p>&nbsp;</p>
+    <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+    <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]"nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="goodsList?.current" [nzTotal]="goodsList?.total"
+        [nzShowTotal]="totalTemplate" [nzPageSize]="goodsList?.size" (nzPageIndexChange)="onPageIndexChange($event)"
+        (nzPageSizeChange)="onPageSizeChange($event)">
+    </nz-pagination>
+</nz-modal>

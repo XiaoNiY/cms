@@ -1,0 +1,259 @@
+<main>
+    <nz-skeleton *ngIf="skeletonActive" [nzActive]="true"></nz-skeleton>
+    <nz-skeleton *ngIf="skeletonActive" [nzActive]="true"></nz-skeleton>
+    <div class="formBox" *ngIf="!skeletonActive">
+        <h3>基础信息</h3>
+        <nz-form-item *ngIf="!routeParams.type && purchaseObj.id >0">
+            <nz-form-label>采购单号</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input type="text" nz-input [(ngModel)]="purchaseObj.purchaseNumber" [disabled]="true">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzRequired>计划单</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <nz-select [(ngModel)]="purchaseObj.applyNumber" (ngModelChange)="selectPlan($event)" nzAllowClear
+                    nzPlaceHolder="{{purchaseObj.applyNumber ? purchaseObj.applyNumber : '请输入'}}"
+                    [disabled]="purchaseObj.id >0">
+                    <nz-option *ngFor="let data of planSelectList" [nzValue]="data.billNo" [nzLabel]="data.billNo">
+                    </nz-option>
+                </nz-select>
+            </nz-form-control>
+            <p style="margin-left:10px;line-height: 32px;font-size: 12px;color: #8e8e8e;">重新选择以后，采购内容会被清空，计划单内容会重新加载</p>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzRequired>甲方</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <nz-select nzPlaceHolder="请选择" [(ngModel)]="purchaseObj.firstParty">
+                    <nz-option *ngFor="let data of SupplierList" nzValue="{{data.id}}" nzLabel="{{data.name}}">
+                    </nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzRequired>乙方</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <nz-select nzPlaceHolder="请选择" [(ngModel)]="purchaseObj.partyB">
+                    <nz-option *ngFor="let data of SupplierList" nzValue="{{data.id}}" nzLabel="{{data.name}}">
+                    </nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>
+                备注
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <textarea rows="3" nz-input placeholder="仅内部可见" ng-reflect-name="remark"
+                    [(ngModel)]="purchaseObj.remark" [maxlength]="100"></textarea>
+            </nz-form-control>
+        </nz-form-item>
+        <h3>采购详情</h3>
+
+        <nz-table #groupingTable nzShowSizeChanger nzBordered [nzData]="planTable?.list"
+            nzTitle=" {{planTable?.procurementPlan.billNo ? '以下是计划单 ' + planTable?.procurementPlan.billNo +' 的所有内容' : '请选择计划计划单' }}"
+            [nzShowPagination]="false" nzSize="middle">
+            <a nz-button nz-button-tdlink nzType="link" (click)="selectAll()" class="all">全部采购</a>
+            <thead>
+                <tr>
+                    <th colspan="5" nzAlign="center">商品信息</th>
+                    <th colspan="5" nzAlign="center">计划单信息</th>
+                    <th colspan="5" nzAlign="center">本次采购信息</th>
+                </tr>
+                <tr>
+                    <th rowspan="3" nzAlign="center" style="width: 50px;">序号</th>
+                    <th rowspan="3" nzAlign="center" style="width: 62px;">商品编号</th>
+                    <th rowspan="3" nzAlign="center">商品名称</th>
+                    <th rowspan="3" nzAlign="center">商品69码</th>
+                    <th rowspan="3" nzAlign="center">标准采购价
+                        (含税)</th>
+                </tr>
+                <tr>
+                    <th rowspan="2" nzAlign="center">期望交货日期</th>
+                    <th rowspan="2" nzAlign="center">最迟交货日期</th>
+                    <th rowspan="2" nzAlign="center">计划数量</th>
+                    <th rowspan="2" nzAlign="center">已采购数量</th>
+                    <th rowspan="2" nzAlign="center">冻结数量</th>
+                </tr>
+                <tr>
+                    <th rowspan="4" nzAlign="center">交货日期</th>
+                    <th rowspan="4" nzAlign="center">采购数量</th>
+                    <th rowspan="4" nzAlign="center">采购单价(含税)</th>
+                    <th rowspan="4" nzAlign="center" style="width: 62px;">小计</th>
+                    <th rowspan="4" nzAlign="center">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of planTable?.list; let i=index">
+                    <!-- 序号 -->
+                    <td nzAlign="center">{{i + 1}}</td>
+                    <!-- 商品编号 -->
+                    <td nzAlign="center">{{item.id}}</td>
+                    <!-- 商品名称 -->
+                    <td nzAlign="center">
+                        <div class="texTflow">
+                            {{item.name}}
+                        </div>
+                    </td>
+                    <!-- 商品69码 -->
+                    <td nzAlign="center">{{item.code}}</td>
+                    <!-- 标准采购价 (含税) -->
+                    <td nzAlign="center">{{ '￥' + (item.standardCostPrice | number : '0.4-4' )}}</td>
+                    <!-- 期望交货日期 -->
+                    <td nzAlign="center">{{item.standardCostPrice | date: 'yyyy-MM-dd'}}</td>
+                    <!-- 最迟交货日期 -->
+                    <td nzAlign="center">{{item.endDeliveryTime | date: 'yyyy-MM-dd'}}</td>
+                    <!-- 计划数量 -->
+                    <td nzAlign="center">{{item.planNumber}}</td>
+                    <!-- 已采购数量 -->
+                    <td nzAlign="center">{{item.purchasedNumber}}</td>
+                    <!-- 冻结数量 -->
+                    <td nzAlign="center">{{item.frozenNumber}}</td>
+                    <!-- 交货日期 -->
+                    <td nzAlign="center">
+                        <div class="domBox">
+                            -
+                        </div>
+                    </td>
+                    <!-- 采购数量 -->
+                    <td nzAlign="center">
+                        <div class="domBox">
+                            -
+                        </div>
+                    </td>
+                    <!-- 采购单价 -->
+                    <td nzAlign="center">
+                        <div class="domBox">
+                            -
+                        </div>
+                    </td>
+
+                    <!-- 采购价涨幅 -->
+                    <!-- <td nzAlign="center">
+                        -
+                    </td> -->
+                    <!-- 小计 -->
+                    <td nzAlign="center">
+                        -
+                    </td>
+                    <!-- 操作 -->
+                    <td nzAlign="center">
+                        <!-- <a nz-button nz-button-tdlink nzType="link"
+                            (click)="addBuyer(item)">{{item.isShow == 0 ? '采购' : '取消采购'}}</a> -->
+                        <a nz-button nz-button-tdlink nzType="link" (click)="addBuyer(item)"
+                            *ngIf="item.state == 0 || item.state == 3" [disabled]="item.maxPurchasedNumber <= 0">
+                            {{item.isShow == 0 ? '采购' : '取消采购'}}</a>
+                        <a nz-button nz-button-tdlink nzType="link" [disabled]="item.state == 1 || item.state == 2"
+                            *ngIf="item.state == 1 || item.state == 2"> {{state_to_text(item.state) }}</a>
+
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+        <br />
+        <nz-table #groupingTable nzShowSizeChanger nzBordered [nzData]="addPlanTable" nzTitle="以下是本次要采购的内容"
+            [nzShowPagination]="false" nzSize="middle" *ngIf="addPlanTable.length !=0">
+            <a nz-button nz-button-tdlink nzType="link" (click)="clearAll()" class="all">清空已选</a>
+            <thead>
+                <tr>
+                    <th colspan="5" nzAlign="center">商品信息</th>
+                    <th colspan="5" nzAlign="center">计划单信息</th>
+                    <th colspan="5" nzAlign="center">本次采购信息</th>
+                </tr>
+                <tr>
+                    <th rowspan="3" nzAlign="center" style="width: 50px;">序号</th>
+                    <th rowspan="3" nzAlign="center" style="width: 62px;">商品编号</th>
+                    <th rowspan="3" nzAlign="center">商品名称</th>
+                    <th rowspan="3" nzAlign="center">商品69码</th>
+                    <th rowspan="3" nzAlign="center">标准采购价
+                        (含税)</th>
+                </tr>
+                <tr>
+                    <th rowspan="2" nzAlign="center">期望交货日期</th>
+                    <th rowspan="2" nzAlign="center">最迟交货日期</th>
+                    <th rowspan="2" nzAlign="center">计划数量</th>
+                    <th rowspan="2" nzAlign="center">已采购数量</th>
+                    <th rowspan="2" nzAlign="center">冻结数量</th>
+                </tr>
+                <tr>
+                    <th rowspan="4" nzAlign="center">交货日期</th>
+                    <th rowspan="4" nzAlign="center">采购数量</th>
+                    <th rowspan="4" nzAlign="center">采购单价(含税)</th>
+                    <th rowspan="4" nzAlign="center" style="width: 62px;">小计</th>
+                    <th rowspan="4" nzAlign="center">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let item of addPlanTable; let i=index;">
+                    <tr *ngIf="item.isDelete == 0">
+                        <!-- 序号 -->
+                        <td nzAlign="center">{{i + 1}}</td>
+                        <!-- 商品编号 -->
+                        <td nzAlign="center">{{item.planId}}</td>
+                        <!-- 商品名称 -->
+                        <td nzAlign="center">
+                            <div class="texTflow">
+                                {{item.name}}
+                            </div>
+                        </td>
+                        <!-- 商品69码 -->
+                        <td nzAlign="center">{{item.code}}</td>
+                        <!-- 标准采购价 (含税) -->
+                        <td nzAlign="center">￥{{(item.standardCostPrice | number : '0.4-4' )}}</td>
+                        <!-- 期望交货日期 -->
+                        <td nzAlign="center">{{item.expectDeliveryTime | date: 'yyyy-MM-dd'}}</td>
+                        <!-- 最迟交货日期 -->
+                        <td nzAlign="center">{{item.endDeliveryTime | date: 'yyyy-MM-dd'}}</td>
+                        <!-- 计划数量 -->
+                        <td nzAlign="center">{{item.planNumber}}</td>
+                        <!-- 已采购数量 -->
+                        <td nzAlign="center">{{item.purchasedNumber}}</td>
+                        <!-- 冻结数量 -->
+                        <td nzAlign="center">{{item.planFrozenNumber || item.frozenNumber}}</td>
+                        <!-- 交货日期 -->
+                        <td nzAlign="center">
+                            <div class="domBox">
+                                <nz-date-picker [(ngModel)]="item.deliveryTime"></nz-date-picker>
+                            </div>
+                        </td>
+                        <!-- 采购数量 -->
+                        <td nzAlign="center">
+                            <div class="domBox">
+                                <nz-input-number [(ngModel)]="item.purchaseNumber" [nzMin]="1"
+                                    [nzMax]="item.maxStockNumber || item.maxPurchasedNumber"></nz-input-number>
+                            </div>
+                        </td>
+                        <!-- 采购单价 -->
+                        <td nzAlign="center">
+                            <div class="domBox">
+                                <nz-input-number [(ngModel)]="item.purchasePrice" [nzMin]="0.0001" [nzPrecision]="4">
+                                </nz-input-number>
+                            </div>
+                        </td>
+                        <!-- 小计 -->
+                        <td nzAlign="center">
+                            <ng-container *ngIf="item.purchaseNumber && item.purchasePrice">
+                                {{ '￥' + (item.purchaseNumber * item.purchasePrice | number : '0.4-4')}}
+                            </ng-container>
+                            <ng-container *ngIf="!item.purchaseNumber && !item.purchasePrice">
+                                -
+                            </ng-container>
+                        </td>
+                        <!-- 操作 -->
+                        <td nzAlign="center">
+                            <a nz-button nz-button-tdlink nzType="link" (click)="delBuyer(item)">取消采购</a>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </nz-table>
+    </div>
+    <div class="submit-box">
+        <nz-divider></nz-divider>
+        <div class="bt-box">
+            <button nz-button nzType="primary" (click)="onSave(1)">保存(审核)</button>
+            <button nz-button nzType="dashed" (click)="save(0)">保存(草稿)</button>
+            <app-bt-group [btType]="'default'" [btText]="'返回'"></app-bt-group>
+        </div>
+    </div>
+</main>

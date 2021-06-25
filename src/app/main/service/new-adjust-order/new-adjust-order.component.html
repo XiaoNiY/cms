@@ -1,0 +1,111 @@
+<main>
+    <div class="form-box">
+        <h3>基础信息</h3>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px" nzRequired>关联售后单号</nz-form-label>
+            <nz-form-control nzFlex="400px">
+
+                <nz-select nzAllowClear nzShowSearch [(ngModel)]="AdjustParam.refundId" (nzScrollToBottom)="loadMore()"
+                    nzPlaceHolder="请选择 or 输入单号" nzAllowClear [nzDropdownRender]="renderTemplate"  (nzOnSearch)="onSearch($event)"
+                    (ngModelChange)="getSaleInfo()">
+                    <nz-option *ngFor="let o of selectParam.list" [nzValue]="o.id" [nzLabel]="o.returnNum">
+                    </nz-option>
+                </nz-select>
+                <ng-template #renderTemplate>
+                    <nz-spin *ngIf="selectParam.isLoading"></nz-spin>
+                </ng-template>
+            </nz-form-control>
+            <!-- <a nz-button nzType="link">重新获取数据</a> -->
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px">调节方式</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <nz-radio-group [(ngModel)]="AdjustParam.adjustType" [disabled]="true">
+                    <label nz-radio nzValue="1">换货</label>
+                    <label nz-radio nzValue="2">补货</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px" nzRequired>跟进备注</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <textarea rows="4" nz-input [maxLength]="100" placeholder="请输入跟进备注"
+                    [(ngModel)]="AdjustParam.followText"></textarea>
+            </nz-form-control>
+        </nz-form-item>
+
+        <h3>收货人信息</h3>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px" nzRequired>收货人</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input nz-input type="text" placeholder="请输入" [(ngModel)]="AdjustParam.consignee">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px" nzRequired>联系方式</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input nz-input type="text" placeholder="请输入" [(ngModel)]="AdjustParam.tel">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px" nzRequired>地区</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <nz-cascader [nzOptions]="nzOptions" [(ngModel)]="AdjustParam.districtId" [nzAllowClear]="true"
+                    nzPlaceHolder="请选择">
+                </nz-cascader>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col nzFlex="100px" nzRequired>详细地址</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <textarea rows="4" nz-input [maxLength]="100" placeholder="请输入详细地址"
+                    [(ngModel)]="AdjustParam.address"></textarea>
+            </nz-form-control>
+        </nz-form-item>
+
+        <div class="panelgroup" *ngIf="AdjustParam.order.length !=0">
+            <div class="panel-hd">
+                <h3>商品信息</h3>
+            </div>
+            <div class="panel-bd">
+                <div class="goodsTable">
+                    <div class="goodsHd">
+                        <ul>
+                            <li>商品信息</li>
+                            <li>购买数量</li>
+                            <li>购买单价</li>
+                            <li>已售后数量</li>
+                            <li>本次售后数量</li>
+                        </ul>
+                    </div>
+                    <div class="goodsCt">
+                        <div class="attr-box" *ngFor="let attrItem of AdjustParam.order">
+                            <h3>{{attrItem.groupName}}</h3>
+                            <dl *ngFor="let goodsItem of attrItem.list">
+                                <dd>
+                                    <img nz-image nzSrc="{{goodsItem.groupIcon}}" [nzFallback]="fallback" />
+                                    <a href=".#/goods/goodsTabs/{{goodsItem.goodsId}}" title="{{goodsItem.goodsName}}"
+                                        target="_blank">{{goodsItem.goodsName}}</a>
+                                </dd>
+                                <!-- 购买数量 -->
+                                <dd>x{{goodsItem.num}}</dd>
+                                <!-- 购买单价 -->
+                                <dd>￥{{goodsItem.price | number : '0.2-2'}}</dd>
+                                <!-- 已售后数量 -->
+                                <dd>{{goodsItem.returnNum }}</dd>
+                                <!-- 本次售后数量 -->
+                                <dd>{{goodsItem.afterSaleNum }}</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="submit-box">
+        <nz-divider></nz-divider>
+        <div class="bt-box">
+            <button nz-button nzType="primary" (click)="save()">保存</button>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,40 @@
+<main>
+    <div class="main-box">
+        <div class="editBox">
+            <h3>商品详情</h3>
+            <br>
+            <ul class="toolbars">
+                <li>
+                    <label for="file" class="upFile">
+                        <span>图片</span>
+                        <input id="file" type="file" [(ngModel)]="fileObj" multiple="multiple" accept="image/*"
+                            (change)="handleFileInput($event)">
+                    </label>
+                </li>
+                <!-- <li>
+                    <span>商品复制</span>
+                </li> -->
+            </ul>
+
+            <br>
+            <div class="scrollBox">
+                <div id="editorB"></div>
+            </div>
+        </div>
+        <!-- <div class="viewBox">
+            <p>效果预览</p>
+            <br>
+            <div class="view" [innerHTML]="viewContent | html"></div>
+        </div> -->
+        <div style="clear:both"></div>
+    </div>
+
+    <div class="submit-box">
+        <nz-divider></nz-divider>
+        <div class="bt-box">
+            <button nz-button nzType="primary" (click)="submit()">保存</button>
+            <app-bt-group [btType]="'default'" [btText]="'返回'"></app-bt-group>
+        </div>
+    </div>
+    <button class="ImportGoods" nz-button nzType="default">从其他商品复制</button>
+</main>

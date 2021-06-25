@@ -1,0 +1,206 @@
+<div class="order">
+    <div class="search-box">
+        <!-- 订单编号 -->
+        <div class="okey">
+            <nz-form-label>订单编号</nz-form-label>
+            <input nz-input style="width: 200px;" placeholder="请输入订单编号" [(ngModel)]="queryForm.okey">
+        </div>
+
+        <!-- 寄件人手机 -->
+        <div class="payacc">
+            <nz-form-label>寄件人手机</nz-form-label>
+            <input nz-input style="width: 200px;" placeholder="请输入寄件人手机" [(ngModel)]="queryForm.lnktel">
+        </div>
+
+        <!-- 评估机型 -->
+        <div class="umname">
+            <nz-form-label>评估机型</nz-form-label>
+            <input nz-input style="width: 200px;" placeholder="请输入评估机型" [(ngModel)]="queryForm.umname">
+        </div>
+
+        <!-- 订单状态 -->
+        <div class="ostat">
+            <nz-form-label>订单状态</nz-form-label>
+            <nz-select [(ngModel)]="queryForm.ostat">
+                <nz-option nzLabel="全部" nzValue=""></nz-option>
+                <nz-option nzLabel="待揽件邮寄" nzValue="11"></nz-option>
+                <nz-option nzLabel="物流运输中" nzValue="13"></nz-option>
+                <nz-option nzLabel="到货验机中" nzValue="14"></nz-option>
+                <nz-option nzLabel="待机主确认交易" nzValue="15"></nz-option>
+                <nz-option nzLabel="待打款" nzValue="16"></nz-option>
+                <nz-option nzLabel="打款失败" nzValue="18"></nz-option>
+                <nz-option nzLabel="订单已完成" nzValue="19"></nz-option>
+                <nz-option nzLabel="订单已取消" nzValue="91"></nz-option>
+            </nz-select>
+        </div>
+
+        <!-- 下单方式 -->
+        <div class="orderWay">
+            <nz-form-label>下单方式</nz-form-label>
+            <nz-select [(ngModel)]="queryForm.orderWay">
+                <nz-option nzLabel="全部" nzValue=""></nz-option>
+                <nz-option nzLabel="估价回收" nzValue="1"></nz-option>
+                <nz-option nzLabel="批量回收" nzValue="2"></nz-option>
+            </nz-select>
+        </div>
+        <!-- 订单来源 -->
+        <div class="platform">
+            <nz-form-label>订单来源</nz-form-label>
+            <nz-select [(ngModel)]="queryForm.platform">
+                <nz-option nzLabel="全部" nzValue=""></nz-option>
+                <nz-option nzLabel="h5" nzValue="1"></nz-option>
+                <nz-option nzLabel="pc" nzValue="2"></nz-option>
+                <nz-option nzLabel="app(爱思移动端)" nzValue="3"></nz-option>
+            </nz-select>
+        </div>
+        <!-- 用户身份 -->
+        <div class="orderUserType">
+            <nz-form-label>用户身份</nz-form-label>
+            <nz-select [(ngModel)]="queryForm.orderUserType">
+                <nz-option nzLabel="全部" nzValue=""></nz-option>
+                <nz-option nzLabel="爱思用户" nzValue="1"></nz-option>
+                <nz-option nzLabel="游客" nzValue="2"></nz-option>
+            </nz-select>
+        </div>
+        <!-- 验机结果 -->
+        <div class="restType">
+            <nz-form-label>验机结果</nz-form-label>
+            <nz-select [(ngModel)]="queryForm.restype">
+                <nz-option nzLabel="全部" nzValue=""></nz-option>
+                <nz-option nzLabel="验机结果一致" nzValue="11"></nz-option>
+                <nz-option nzLabel="验机机况存在差异" nzValue="12"></nz-option>
+                <nz-option nzLabel="验机机型不一致" nzValue="13"></nz-option>
+                <nz-option nzLabel="一单多机" nzValue="14"></nz-option>
+            </nz-select>
+        </div>
+
+        <!-- 下单时间 -->
+        <div class="date-box">
+            <nz-form-label>下单时间</nz-form-label>
+            <nz-range-picker [(ngModel)]="queryForm.OtimeForm"></nz-range-picker>
+        </div>
+    </div>
+
+    <div class="bt-search">
+        <button nz-button nzType="primary" (click)="query()">查询</button>
+    </div>
+
+    <div class="bt-reset">
+        <button nz-button nzType="default" (click)="reset()">重置</button>
+    </div>
+</div>
+<main>
+    <nz-table #basicTable [nzData]="listOfData?.records" [nzShowPagination]="false" [nzPageSize]="listOfData?.size"
+        [nzLoading]="tableLoading" nzBordered>
+        <thead>
+            <tr>
+                <th nzAlign="center">订单编号</th>
+                <th nzAlign="center">订单来源</th>
+                <th nzAlign="center">用户身份</th>
+                <th nzAlign="center">评估机型</th>
+                <th nzAlign="center">评估合计</th>
+                <th nzAlign="center">验机合计</th>
+                <th nzAlign="center">验机结果</th>
+                <th nzAlign="center">订单状态</th>
+                <th nzAlign="center">下单方式</th>
+                <th nzAlign="center">寄件人手机</th>
+                <th nzAlign="center">下单时间</th>
+                <th nzAlign="center">更新时间</th>
+                <th nzAlign="center">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="searchHint && listOfData?.records">
+                <td class="searchHint" nzAlign="center" colspan="13">
+                    <span>搜索 “{{searchName}}”，找到&nbsp;{{ listOfData?.total }}&nbsp;条结果</span>
+                    <a (click)="backList()">返回原列表</a>
+                </td>
+            </tr>
+            <tr *ngFor="let data of basicTable.data">
+                <td nzAlign="center">{{ data.okey }}</td>
+                <td nzAlign="center">{{ platform_to_text(data.platform) }}</td>
+                <td nzAlign="center" class="{{data.userId > 0 ? 'i4User' : ''}}" (click)="showModal(data)">
+                    {{ data.userId > 0 ? '爱思用户' : '游客' }}
+                </td>
+                <td nzAlign="center">{{ data.umname ? data.umname : '-' }}</td>
+                <td nzAlign="center">{{ data.uprc ? data.uprc : '-' }} <em *ngIf="data.orderAprc">({{ data.orderAprc }})</em> <font *ngIf="data.uprc"> /元</font> </td>
+                <td nzAlign="center">{{ data.bprc ? data.bprc : '-' }} <em *ngIf="data.aprc && data.bprc">({{ data.aprc }})</em><font *ngIf="data.bprc"> /元</font></td>
+                <td nzAlign="center">{{ restype_to_text(data.restype) }}</td>
+                <td nzAlign="center">{{ ostat_to_text(data.ostat) }}</td>
+                <td nzAlign="center">{{ data.orderWay == 1 ? '估价回收' : data.orderWay == 2 ? '批量回收' : '-' }}</td>
+                <td nzAlign="center">{{ data.lnktel ? data.lnktel : '-' }}</td>
+                <td nzAlign="center">{{ data.otime11 ? data.otime11 : '-' }}</td>
+                <td nzAlign="center">{{ data.otime91 ? data.otime91 : '-' }}</td>
+                <td nzAlign="center">
+                    <a nz-button nzType="link" [routerLink]="['../orderDetails', data.okey]">查看详情</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <div class="pagination-box">
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]"nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="listOfData?.current" [nzTotal]="listOfData?.total"
+                [nzShowTotal]="totalTemplate" [nzPageSize]="listOfData?.size" 
+                (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)">
+            </nz-pagination>
+        </div>
+    </div>
+</main>
+
+<nz-modal [(nzVisible)]="i4UserVisible" nzTitle="爱思用户信息" (nzOnCancel)="handleCancel()"[nzFooter]="null">
+    <div class="panelgroup"> 
+        <div class="panel-bd">
+            <ul>
+                <li>
+                    <div class="key">
+                        <span>用户身份</span>
+                    </div>
+                    <div class="val">
+                        <span>爱思用户</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>ID</span>
+                    </div>
+                    <div class="val">
+                        <span>{{ UserDetails?.i4UserId ? UserDetails?.i4UserId :'-'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>手机号</span>
+                    </div>
+                    <div class="val">
+                        <span>{{ UserDetails?.phone ? UserDetails?.phone : '-' }}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>用户名</span>
+                    </div>
+                    <div class="val">
+                        <span>{{ UserDetails?.username  ? UserDetails?.username : '-'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>昵称</span>
+                    </div>
+                    <div class="val">
+                        <span>{{ UserDetails?.nickname ? UserDetails?.nickname : '-' }}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>微信openid</span>
+                    </div>
+                    <div class="val">
+                        <span>{{ UserDetails?.openid ?  UserDetails?.openid : '-' }}</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nz-modal>

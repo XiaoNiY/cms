@@ -1,0 +1,162 @@
+.hd {
+    .bt-box {
+        float: left;
+        button {
+            padding: 5px 10px;
+        }
+    }
+    [nz-button] {
+        margin-right: 8px;
+    }
+    .bt-search {
+        float: right;
+        button {
+            padding: 5px 10px;
+        }
+    }
+
+    .search-box {
+        float: right;
+        > div {
+            display: flex;
+            float: left;
+            padding: 5px 0;
+        }
+        .bt-search {
+            margin-left: 20px;
+        }
+        nz-form-label {
+            margin-left: 20px;
+        }
+        .date-box {
+            nz-date-picker {
+                width: 200px;
+            }
+        }
+        .select-box {
+            nz-select {
+                width: 200px;
+            }
+        }
+        input {
+            width: 200px;
+        }
+    }
+    &:after {
+        content: " ";
+        display: block;
+        clear: both;
+        height: 0;
+        visibility: hidden;
+    }
+}
+
+main {
+    margin-top: 10px;
+    background: #fff;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2);
+    .pagination-box {
+        height: 56px;
+        line-height: 56px;
+        padding: 0 18px;
+        font-size: 12px;
+        .pagination-template {
+            float: left;
+        }
+        &:after {
+            content: " ";
+            display: block;
+            clear: both;
+            height: 0;
+            visibility: hidden;
+        }
+    }
+}
+
+.bt-list {
+    a {
+        width: 26px;
+        height: 26px;
+        line-height: 26px;
+        display: block;
+        text-align: center;
+        float: left;
+        margin-top: 3px;
+        &:hover {
+            background: #ebeef2;
+        }
+    }
+    &:after {
+        content: " ";
+        display: block;
+        clear: both;
+        height: 0;
+        visibility: hidden;
+    }
+}
+nz-table {
+    th {
+        height: 38px;
+        padding: 0;
+        color: #888;
+        background: #fff !important;
+        border-right: none !important;
+        border-bottom: 1px solid #ddd;
+        font-size: 14px;
+        position: relative;
+        &:nth-child(1) {
+            width: 80px;
+        }
+    }
+    td {
+        height: 56px;
+        padding: 0;
+        font-size: 12px;
+        border-right: none !important;
+        border-bottom: 1px solid rgb(229, 229, 229) !important;
+        &.searchHint {
+            a {
+                margin-left: 10px;
+                color: #006eff;
+                display: inline-block;
+            }
+        }
+    }
+    // 字体黑子
+    .font-0 {
+        color: #262626;
+    }
+    // 字体黄色
+    .font-1 {
+        color: #ff9900;
+    }
+    // 字体绿色
+    .font-2 {
+        color: #008000;
+    }
+    // 字体绿色
+    .font-3 {
+        color: #008000;
+    }
+    // 字体灰色
+    .font-4 {
+        color: #bfbfbf;
+    }
+    // 字体绿色
+    .font-5 {
+        color: #008000;
+    }
+    // 字体灰色
+    .font-6 {
+        color: #bfbfbf;
+    }
+}
+
+nz-pagination {
+    margin-top: 12px;
+}
+
+[nz-button-tdlink] {
+    margin-right: 6px;
+    padding: 0;
+}

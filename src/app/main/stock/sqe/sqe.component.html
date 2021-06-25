@@ -1,0 +1,97 @@
+<div class="sqe">
+    <div class="bt-box">
+        <button nz-button nzType="primary" [routerLink]="['../sqeAdd', 0]">新增供应商</button>
+    </div>
+
+    <div class="bt-search">
+        <button nz-button nzType="primary" (click)="query()">查询</button>
+    </div>
+
+    <div class="search-box">
+        <!-- 状态 -->
+        <div class="select-box">
+            <nz-form-label>状态</nz-form-label>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" [(ngModel)]="queryForm.state">
+                <nz-option nzValue="" nzLabel="全部"></nz-option>
+                <nz-option nzValue="0" nzLabel="草稿"></nz-option>
+                <nz-option nzValue="1" nzLabel="正常"></nz-option>
+                <nz-option nzValue="2" nzLabel="冻结"></nz-option>
+                <nz-option nzValue="3" nzLabel="合作结束"></nz-option>
+                <nz-option nzValue="4" nzLabel="合同过期"></nz-option>
+            </nz-select>
+        </div>
+        <!-- 类型 -->
+        <div class="select1-box">
+            <nz-form-label>类型</nz-form-label>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" [(ngModel)]="queryForm.type">
+                <!-- <nz-option nzValue="" nzLabel="全部"></nz-option>
+                <nz-option nzValue="1" nzLabel="工厂"></nz-option>
+                <nz-option nzValue="0" nzLabel="配件供应商"></nz-option> -->
+                <nz-option *ngFor="let item of supplier_type" nzValue="{{item.value}}" nzLabel="{{item.label}}">
+                </nz-option>
+            </nz-select>
+        </div>
+        <!-- 名称 -->
+        <div class="input-box">
+            <nz-form-label>名称</nz-form-label>
+            <input type="text" nz-input placeholder="请输入" nzSize="default" [(ngModel)]="queryForm.name">
+        </div>
+    </div>
+</div>
+
+<main>
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="listOfData?.records" [nzShowPagination]="false"
+        [nzPageSize]="listOfData?.size" [nzLoading]="tableLoading">
+        <thead>
+            <tr>
+                <th nzAlign="center" >id</th>
+                <th nzAlign="center" >名称</th>
+                <th nzAlign="center" >联系人</th>
+                <th nzAlign="center" >联系电话</th>
+                <th nzAlign="center" >附件</th>
+                <th nzAlign="center" >合同失效日期</th>
+                <th nzAlign="center" >供应商类型</th>
+                <th nzAlign="center" >状态</th>
+                <th nzAlign="center" [nzWidth]="'200px'">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="searchHint && listOfData?.records">
+                <td class="searchHint" nzAlign="center" colspan="13">
+                    <span>搜索 “{{searchName}}”，找到&nbsp;{{ listOfData?.total }}&nbsp;条结果</span>
+                    <a (click)="backList()">返回原列表</a>
+                </td>
+            </tr>
+            <tr *ngFor="let data of rowSelectionTable.data">
+                <td nzAlign="center">{{ data.id }}</td>
+                <td nzAlign="left">{{ data.abbreviation }}</td>
+                <td nzAlign="center">{{ data.contacts ? data.contacts  : '-'}}</td>
+                <td nzAlign="center">{{ data.phoneNumber ? data.phoneNumber : '-' }}</td>
+                <td nzAlign="center">{{ data.contractEnclosure ? data.contractEnclosure.split(',').length + ' 项' : '-' }}</td>
+                <td nzAlign="center">
+                    <span *ngIf="!flagTime(data.endTime)">{{ data.endTime ? data.endTime : '-' }}</span>
+                    <span *ngIf="flagTime(data.endTime)" style="color: orange;">{{ data.endTime }}</span>
+                    </td>
+                <td nzAlign="center">
+                    {{ type_To_text(data.type) }}
+                </td>
+                <td nzAlign="center"
+                    class="{{data.state == 1 ? 'font_Green'  : data.state == 2 ? 'font_Yellow' : data.state == 3 ? 'font_Gray' : 'font_Black'}}">
+                    {{ state_To_text(data.state) }}
+                </td>
+                <td nzAlign="center">
+                    <a nz-button nz-button-tdlink nzType="link" [routerLink]="['../sqeAdd', data.id]">编辑</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <div class="pagination-box">
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]"nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="listOfData?.current" [nzTotal]="listOfData?.total"
+                [nzShowTotal]="totalTemplate" [nzPageSize]="listOfData?.size" 
+                (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)">
+            </nz-pagination>
+        </div>
+    </div>
+</main>

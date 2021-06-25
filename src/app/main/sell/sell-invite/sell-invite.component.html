@@ -1,0 +1,82 @@
+<div class="bt-search">
+    <div class="bt-box">
+        <button nz-button nzType="primary" [routerLink]="['../inviteSave']">活动配置</button>
+    </div>
+    <!-- 其他功能按钮 -->
+    <div class="bt-list">
+        <a class="refresh" nzTooltipTitle="刷新" nzTooltipPlacement="top" nz-tooltip><i nz-icon nzType="sync"
+                nzTheme="outline"></i></a>
+        <!-- <a class="export" nzTooltipTitle="导出" nzTooltipPlacement="top" nz-tooltip><i nz-icon nzType="download"
+                nzTheme="outline"></i></a> -->
+    </div>
+    <!-- 搜索 -->
+    <div class="search-box">
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+            <input type="text" nz-input placeholder="请输入名称或编码" />
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+            <button nz-button nzType="primary"><i nz-icon nzType="search"></i></button>
+        </ng-template>
+    </div>
+</div>
+<main>
+    <nz-table #rowSelectionTable nzShowSizeChanger nzBordered>
+        <thead>
+            <tr>
+                <th nzAlign="center">ID</th>
+                <th nzAlign="center">邀请人</th>
+                <th nzAlign="center">被邀请人</th>
+                <th nzAlign="center">邀请方式</th>
+                <th nzAlign="center">邀请结果</th>
+                <th nzAlign="center">邀请时间</th>
+                <th nzAlign="center">新人打开时间</th>
+                <th nzAlign="center">新人注册时间</th>
+                <th nzAlign="center">新人认证时间</th>
+                <th nzAlign="center">新人首单时间</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <!-- ID -->
+                <td nzAlign="center">111</td>
+                <!-- 邀请人 -->
+                <td nzAlign="center">222</td>
+                <!-- 被邀请人 -->
+                <td nzAlign="center">333</td>
+                <!-- 邀请方式 -->
+                <td nzAlign="center">444</td>
+                <!-- 邀请结果 -->
+                <td nzAlign="center">555</td>
+                <!-- 邀请时间 -->
+                <td nzAlign="center">666</td>
+                <!-- 新人打开时间 -->
+                <td nzAlign="center">777</td>
+                <!-- 新人注册时间 -->
+                <td nzAlign="center">888</td>
+                <!-- 新人认证时间 -->
+                <td nzAlign="center">999</td>
+                <!-- 新人首单时间 -->
+                <td nzAlign="center">000</td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <div class="pagination-box">
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有1 条 </ng-template>
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]"nzShowSizeChanger nzShowQuickJumper>
+            </nz-pagination>
+        </div>
+    </div>
+
+    <!-- <div class="pagination-box">
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]" nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="1"
+                [nzTotal]="listOfData?.total" [nzShowTotal]="totalTemplate" [nzPageSize]="queryForm.pageSize"
+                [nzPageIndex]="queryForm.pageNum" (nzPageIndexChange)="onPageIndexChange($event)"
+                (nzPageSizeChange)="onPageSizeChange($event)">
+            </nz-pagination>
+        </div>
+    </div> -->
+</main>

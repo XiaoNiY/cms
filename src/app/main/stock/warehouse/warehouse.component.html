@@ -1,0 +1,144 @@
+<div class="warehouse">
+    <div class="bt-box">
+        <button nz-button nzType="primary" (click)="showModal()">新增仓库</button>
+    </div>
+
+    <div class="bt-search">
+        <button nz-button nzType="primary" (click)="query()">查询</button>
+    </div>
+
+    <div class="search-box">
+        <!-- 类型 -->
+        <div class="select-box">
+            <nz-form-label>类型</nz-form-label>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" [(ngModel)]="queryForm.type">
+                <nz-option nzValue="" nzLabel="全部"></nz-option>
+                <nz-option nzValue="1" nzLabel="虚拟仓"></nz-option>
+                <nz-option nzValue="2" nzLabel="配件仓"></nz-option>
+            </nz-select>
+        </div>
+        <!-- 名称 -->
+        <div class="input-box">
+            <nz-form-label>名称</nz-form-label>
+            <input type="text" nz-input placeholder="请输入" nzSize="default" [(ngModel)]="queryForm.name">
+        </div>
+    </div>
+</div>
+
+<main>
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="listOfData?.records" [nzShowPagination]="false"
+        [nzPageSize]="listOfData?.size" [nzLoading]="tableLoading">
+        <thead>
+            <tr>
+                <th nzAlign="center">id</th>
+                <th nzAlign="center">仓库名称</th>
+                <th nzAlign="center">仓库类型</th>
+                <th nzAlign="center">地址</th>
+                <th nzAlign="center">联系人</th>
+                <th nzAlign="center">联系手机</th>
+                <th nzAlign="center">创建时间</th>
+                <th nzAlign="center">状态</th>
+                <th nzAlign="center" nzWidth="270px">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="searchHint && listOfData?.records">
+                <td class="searchHint" nzAlign="center" colspan="13">
+                    <span>搜索 “{{searchName}}”，找到&nbsp;{{ listOfData?.total }}&nbsp;条结果</span>
+                    <a (click)="backList()">返回原列表</a>
+                </td>
+            </tr>
+            <tr *ngFor="let data of rowSelectionTable.data; let i=index">
+                <td nzAlign="center">{{data.id}}</td>
+                <td nzAlign="center">{{data.name ? data.name : '-'}}</td>
+                <td nzAlign="center">{{data.type == 1 ? '虚拟仓' : data.type == 2 ? '配件仓' : '-'}}</td>
+                <td nzAlign="center">{{data.address ? data.address : '-'}}</td>
+                <td nzAlign="center">{{data.contacts ? data.contacts : '-'}}</td>
+                <td nzAlign="center">{{data.phoneNumber ? data.phoneNumber : '-'}}</td>
+                <td nzAlign="center">{{data.createTime ? data.createTime : '-'}}</td>
+                <td nzAlign="center" class="{{data.state == 1 ? 'font_Green' : data.state == 0 ? 'font_red' : ''}}">{{data.stateText}}</td>
+                <td nzAlign="center">
+                    <a nz-button nz-button-tdlink nzType="link" (click)="showModal(data.id)">编辑</a>
+                    <a nz-button nz-button-tdlink nzType="link" nzDanger nz-popconfirm nzPopconfirmTitle="确认删除吗?"
+                        [nzIcon]="iconTpl" (nzOnConfirm)="confirm(data.id)">删除</a>
+                    <ng-template #iconTpl>
+                        <i nz-icon nzType="question-circle-o" style="color: red;"></i>
+                    </ng-template>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <div class="pagination-box">
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]"nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="listOfData?.current" [nzTotal]="listOfData?.total"  [nzShowTotal]="totalTemplate" [nzPageSize]="listOfData?.size" 
+                (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)">
+            </nz-pagination>
+        </div>
+    </div>
+</main>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="仓库信息" (nzOnCancel)="handleCancel()" [nzStyle]="{ width: '600px' }">
+    <form nz-form [formGroup]="modalForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+            <nz-form-label [nzSm]="4" nzRequired nzFor="name">
+                名称
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input type="text" nz-input formControlName="name" [maxlength]="10" id="name" autocomplete="off">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="4">
+                仓库类型
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <nz-select nzPlaceHolder="请选择" nzShowSearch formControlName="type">
+                    <nz-option nzValue="" nzLabel="全部"></nz-option>
+                    <nz-option nzValue="1" nzLabel="虚拟仓"></nz-option>
+                    <nz-option nzValue="2" nzLabel="配件仓"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="4">
+                联系人
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input type="text" nz-input [maxlength]="20" formControlName="contacts">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="4">
+                联系方式
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input type="text" nz-input [maxlength]="20" formControlName="phoneNumber">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="4">
+                详细地址
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input type="text" nz-input placeholder="请输入详细地址" [maxlength]="50" formControlName="address">
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="4">状态</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <nz-radio-group formControlName="state">
+                    <label nz-radio nzValue="1">启用</label>
+                    <label nz-radio nzValue="0">禁用</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-control [nzOffset]="9">
+                <button nz-button nzType="primary">确定</button>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+</nz-modal>

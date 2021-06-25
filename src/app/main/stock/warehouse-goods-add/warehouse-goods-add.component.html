@@ -1,0 +1,338 @@
+<main>
+    <form nz-form [formGroup]="validateForm">
+        <h3>基础信息</h3>
+        <nz-form-item>
+            <nz-form-label nzRequired>
+                简称
+            </nz-form-label>
+            <nz-form-control nzFlex="400px" nzErrorTip="必填">
+                <input type="text" nz-input placeholder="请输入" [maxLength]="60" formControlName="name">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>全称</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input type="text" nz-input placeholder="请输入" [maxLength]="60" formControlName="fullName">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzFor="name">
+                69码
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input type="text" nz-input placeholder="请输入" [maxLength]="20" formControlName="code">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>
+                属性描述
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input type="text" nz-input placeholder="列如颜色、大小、型号等" [maxLength]="50" formControlName="attr">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>
+                仓库编码
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input nz-input type="text" placeholder="请输入" [maxLength]="20" formControlName="whCode">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>
+                备注
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <textarea rows="2" nz-input="" placeholder="仅内部可见" [maxLength]="100" ng-reflect-name="remark"
+                    formControlName="remark"></textarea>
+            </nz-form-control>
+        </nz-form-item>
+        <h3>详细信息</h3>
+        <nz-form-item>
+            <nz-form-label nzRequired>
+                分类
+            </nz-form-label>
+            <nz-form-control nzErrorTip="必选">
+                <nz-select style="width: 390px" nzPlaceHolder="请选择" formControlName="type">
+                    <nz-option nzValue="{{ data.id }}" nzLabel="{{ data.name }}" *ngFor="let data of GoodsTypeList">
+                    </nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <!-- <nz-form-item>
+            <nz-form-label   nzRequired>
+                供应商
+            </nz-form-label>
+            <nz-form-control>
+                <nz-select style="width: 390px" nzPlaceHolder="请选择" formControlName="supId">
+                    <nz-option nzValue="1" nzLabel="工厂"></nz-option>
+                    <nz-option nzValue="0" nzLabel="配件供应商"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item> -->
+        <nz-form-item>
+            <nz-form-label nzRequired>
+                品牌
+            </nz-form-label>
+            <nz-form-control nzErrorTip="必填">
+                <nz-select style="width: 390px" nzPlaceHolder="请选择" formControlName="brandId">
+                    <nz-option nzValue="{{ data.id }}" nzLabel="{{ data.name }}" *ngFor="let data of BrandList">
+                    </nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzRequired>
+                单位
+            </nz-form-label>
+            <nz-form-control nzErrorTip="必选">
+                <nz-select style="width: 390px" nzPlaceHolder="请选择" formControlName="stockUnit">
+                    <nz-option *ngFor="let item of wh_goods_stock_unit" nzValue="{{item.value}}"
+                        nzLabel="{{item.label}}">
+                    </nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzRequired>
+                保质期
+            </nz-form-label>
+            <nz-form-control nzFlex="400px" nzErrorTip="必填">
+                <!-- <input type="text" nz-input placeholder="请输入" formControlName="shelfLife"> -->
+                <nz-input-number [nzMin]="1" [nzPrecision]="0" formControlName="shelfLife" nzPlaceHolder="请输入保质期">
+                </nz-input-number>
+            </nz-form-control>
+            <p>天</p>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>
+                重量
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <nz-input-number [nzMin]="0.01" [nzPrecision]="3" formControlName="weight" nzPlaceHolder="请输入重量">
+                </nz-input-number>
+            </nz-form-control>
+            <p>kg</p>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzRequired>
+                默认仓库
+            </nz-form-label>
+            <nz-form-control nzErrorTip="必填">
+                <nz-select style="width: 390px" nzPlaceHolder="请选择" formControlName="whId">
+                    <nz-option *ngFor="let data of WhPutList" nzValue="{{data.id}}" nzLabel="{{data.name}}"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>图片</nz-form-label>
+            <nz-form-control nzFlex="100px">
+
+
+                <label for="file" class="upFile" *ngIf="!validateForm.get('img')?.value">
+                    <i nz-icon nzType="plus"></i>
+                    <span>上传图片</span>
+                    <input id="file" type="file" multiple="multiple" accept="image/*"
+                        (change)="handleFileInput($event,1)">
+                </label>
+
+                <div class="videoImg" *ngIf="validateForm.get('img')?.value">
+                    <img nz-image nzSrc="{{validateForm.get('img')?.value}}" [nzFallback]="fallback" />
+                    <a (click)="deleteVideoImg(1)">删除</a>
+                </div>
+
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>备用图片</nz-form-label>
+            <nz-form-control nzFlex="100px">
+
+                <label for="resFile" class="upFile" *ngIf="!validateForm.get('spareImg')?.value">
+                    <i nz-icon nzType="plus"></i>
+                    <span>上传图片</span>
+                    <input id="resFile" type="file" multiple="multiple" accept="image/*"
+                        (change)="handleFileInput($event,2)">
+                </label>
+
+                <div class="videoImg" *ngIf="validateForm.get('spareImg')?.value">
+                    <img nz-image nzSrc="{{validateForm.get('spareImg')?.value}}" [nzFallback]="fallback" />
+                    <a (click)="deleteVideoImg(2)">删除</a>
+                </div>
+
+
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>附件</nz-form-label>
+            <nz-form-control>
+                <label for="accessory" class="upFile" *ngIf="!validateForm.get('enclosure')?.value">
+                    <i nz-icon nzType="plus"></i>
+                    <span>上传文件</span>
+                    <input id="accessory" type="file" multiple="multiple" (change)="handleFileInput($event,3)">
+                </label>
+                <div *ngIf="validateForm.get('enclosure')?.value">
+                    <span>{{validateForm.get('enclosure')?.value}}</span>
+                    <a style="margin-left: 10px;" href="{{validateForm.get('enclosure')?.value}}">下载</a>
+                    <a style="margin-left: 10px;" (click)="deleteVideoImg(3)">删除</a>
+                </div>
+            </nz-form-control>
+        </nz-form-item>
+        <h3>进货信息</h3>
+        <nz-form-item>
+            <nz-form-label>进货周期</nz-form-label>
+            <nz-form-control nzFlex="400px">
+
+                <nz-input-number [nzMin]="1" [nzPrecision]="0" formControlName="purchaseDuration"
+                    nzPlaceHolder="请输入进货周期">
+                </nz-input-number>
+
+                <!-- <input type="text" nz-input placeholder="请输入" formControlName="purchaseDuration"> -->
+            </nz-form-control>
+            <p>天</p>
+            <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline" [nzTooltipTitle]="purchases"
+                nzTooltipPlacement="right"></i>
+            <ng-template #purchases>
+                <span>从商家接到采购订单到入库的大概天数</span>
+            </ng-template>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzRequired>
+                税率
+            </nz-form-label>
+            <nz-form-control nzFlex="400px" nzErrorTip="必填">
+                <nz-input-number [nzMin]="1" [nzMax]="100" [nzPrecision]="0" formControlName="taxRate"
+                    nzPlaceHolder="税率" (ngModelChange)="inputFun()"></nz-input-number>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>
+                成本价（不含税）
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <nz-input-number [nzMin]="0.0001" [nzPrecision]="4" formControlName="costPrice" nzPlaceHolder="请输入成本价（不含税）"
+                    (ngModelChange)="inputFun()">
+                </nz-input-number>
+                <!-- <input type="text" nz-input placeholder="请输入" formControlName="costPrice"> -->
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>
+                标准成本价（含税）
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+
+                <nz-input-number [nzMin]="0.0001" [nzPrecision]="4" formControlName="standardCostPrice"
+                    nzPlaceHolder="标准成本价（含税）" (ngModelChange)="inputFun(-1)">
+                </nz-input-number>
+
+                <!-- <input type="text" nz-input placeholder="请输入" formControlName="standardCostPrice"> -->
+            </nz-form-control>
+            <nz-checkbox-wrapper *ngIf="hintCode">
+                <label nz-checkbox formControlName="readCheck">确认商品的含税成本价和税点不一致</label>
+            </nz-checkbox-wrapper>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>
+                最高成本价
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <nz-input-number [nzMin]="0.0001" [nzPrecision]="4" formControlName="highestCostPrice"
+                    nzPlaceHolder="最高成本价（含税）">
+                </nz-input-number>
+
+                <!-- <input type="text" nz-input placeholder="请输入" formControlName="highestCostPrice"> -->
+            </nz-form-control>
+            <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline" [nzTooltipTitle]="highest"
+                nzTooltipPlacement="right"></i>
+            <ng-template #highest>
+                <span>防止采购的时候填写错误</span>
+            </ng-template>
+        </nz-form-item>
+        <h3>库存安全</h3>
+        <nz-form-item>
+            <nz-form-label>预警值</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input type="text" nz-input placeholder="请输入" formControlName="earlyWarning">
+            </nz-form-control>
+            <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline" [nzTooltipTitle]="earlyWarning"
+                nzTooltipPlacement="right"></i>
+            <ng-template #earlyWarning>
+                <span>当实际库存低于该值的时候，会提醒管理员补货</span>
+            </ng-template>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>最大超卖量</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input type="text" nz-input placeholder="请输入" formControlName="max_single">
+            </nz-form-control>
+            <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline" [nzTooltipTitle]="maximumOversold"
+                nzTooltipPlacement="right"></i>
+            <ng-template #maximumOversold>
+                <span>商品是可以提前多卖一些的</span>
+                <span>为了安全起见可以设置该量，防止提前售卖过多来不及补货的情况</span>
+                <span>超卖量 = 实际库存 - 排队数量</span>
+            </ng-template>
+        </nz-form-item>
+    </form>
+
+    <div class="submit-box">
+        <nz-divider></nz-divider>
+        <div class="bt-box">
+            <button nz-button nzType="primary" *ngIf=" validateForm.get('state')?.value  != '1' " (click)="submitForm(1)">保存(提交审核)</button>
+            <button nz-button nzType="dashed" *ngIf=" validateForm.get('state')?.value  != '1' " (click)="submitForm(0)">保存(草稿)</button>
+
+            <!-- <button nz-button nzType="primary" (click)="submitForm(1)"
+                *ngIf="validateForm.get('state')?.value  == '0'  || validateForm.get('state')?.value  == '3' ">保存(提交审核)</button>
+            <button nz-button nzType="dashed" (click)="submitForm(0)"
+                *ngIf="validateForm.get('state')?.value  == '0'  || validateForm.get('state')?.value  == '3' ">保存(草稿)</button> -->
+
+            <button nz-button nzType="primary" (click)="showModal()"
+                *ngIf="validateForm.get('state')?.value  == '1' ">审核</button>
+            <app-bt-group [btType]="'default'" [btText]="'返回'"></app-bt-group>
+        </div>
+    </div>
+</main>
+
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="审核" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+    <form nz-form [formGroup]="modalForm">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">审核意见</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <textarea rows="6" nz-input formControlName="auditDesc" [maxlength]="100"></textarea>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-control [nzSpan]="12" [nzOffset]="4">
+                <button nz-button nzType="primary" (click)="auditSave(2)">通过</button>
+                <button nz-button nzType="primary" (click)="auditSave(3)">不通过</button>
+                <button nz-button nzType="default" (click)="handleCancel()">取消</button>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+</nz-modal>
+
+
+
+
+<!-- <nz-modal [(nzVisible)]="isVisible" nzTitle="审核" (nzOnCancel)="handleCancel()">
+    <form nz-form [formGroup]="modalForm">
+        <nz-form-item>
+            <nz-form-label [nzSm]="4">
+                审核意见
+            </nz-form-label>
+            <nz-form-control nzFlex="420px" [nzSpan]="64">
+                <nz-mention>
+                    <textarea rows="6" nz-input formControlName="auditDesc"></textarea>
+                </nz-mention>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-control [nzOffset]="13">
+            <button nz-button nzCentered nzType="primary" class="saveBtn" (click)="submitForm(2)">通过</button>
+            <button nz-button nzCentered nzType="primary" class="saveBtn" (click)="submitForm(3)">不通过</button>
+            <button nz-button nzCentered nzType="default" (click)="handleCancel()">取消</button>
+        </nz-form-control>
+    </form>
+</nz-modal> -->

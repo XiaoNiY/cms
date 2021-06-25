@@ -1,0 +1,686 @@
+<main>
+    <!-- <div class="panelgroup">
+        <div class="panel-hd">
+            <h3>订单动态</h3>
+        </div>
+        <div class="panel-bd">
+            <nz-steps [nzCurrent]="1" [nzSize]="'small'" nzProgressDot>
+                <nz-step nzTitle="买家下单" nzDescription="2020-12-15 20:24:58"></nz-step>
+                <nz-step nzTitle="买家付款" nzDescription="2020-12-15 20:24:58"></nz-step>
+                <nz-step nzTitle="商家发货" nzDescription="2020-12-15 20:24:58"></nz-step>
+                <nz-step nzTitle="卖家收货" nzDescription="2020-12-15 20:24:58"></nz-step>
+                <nz-step nzTitle="交易结束" nzDescription="2020-12-15 20:24:58"></nz-step>
+            </nz-steps>
+        </div>
+    </div> -->
+    <div class="panelgroup">
+        <div class="panel-hd">
+            <h3>订单信息</h3>
+        </div>
+        <div class="panel-bd">
+            <ul>
+                <li>
+                    <div class="key">
+                        <span>订单编号</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.order.orderNum ? detailsData?.order.orderNum : '-'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>订单状态</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.order.statusText}}</span>
+                        <nz-countdown *ngIf="detailsData?.order.countdown" [nzValue]="detailsData?.order.countdown"
+                            [nzFormat]="'m 分 s 秒'"></nz-countdown>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>审核时间</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.order.auditTime ? detailsData?.order.auditTime : '-'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>审核状态</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.order.status == 3 ? '待审核' : detailsData?.order.status == 4 ? '审核不通过' :
+                            detailsData?.order.status >= 5 ? '审核通过' : '-'}}</span>
+                    </div>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <div class="key">
+                        <span>审核备注</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.order.auditDesc ? detailsData?.order.auditDesc : '-'}}</span>
+                    </div>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <div class="key">
+                        <span>备注</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.order.note ? detailsData?.order.note : '-'}}</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="panelgroup">
+        <div class="panel-hd">
+            <h3>物流动态</h3>
+        </div>
+        <div class="panel-bd">
+            <ul>
+                <li>
+                    <div class="key">
+                        <span>公司名称</span>
+                    </div>
+                    <div class="val">
+                        <span>{{ detailsData?.orderExpress.length != 0 ?
+                            expressCode_To_Text(detailsData?.orderExpress[0].expressCode) : '-'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>快递单号</span>
+                    </div>
+                    <div class="val">
+                        <span>{{ detailsData?.orderExpress.length != 0 ? detailsData?.orderExpress[0].expressNum :
+                            '-'}}</span>
+                    </div>
+                </li>
+            </ul>
+            <br>
+            <nz-timeline *ngIf=" detailsData?.orderExpress.length != 0">
+                <nz-timeline-item *ngFor="let item of detailsData?.orderExpress[0].expressTraces; let i=index;">
+                    <p style="padding-top:2px;font-size: 12px;color: #888;">{{item.time}}</p>
+                    <p style="margin-top:8px;font-size: 12px;">{{item.station}}
+                    </p>
+                </nz-timeline-item>
+            </nz-timeline>
+        </div>
+    </div>
+    <!-- <div class="panelgroup">
+        <div class="panel-hd">
+            <h3>跟进信息</h3>
+        </div>
+        <div class="panel-bd">
+            <nz-table #colSpanTable nzBordered [nzShowPagination]="false" [nzData]="[{}]">
+                <thead>
+                    <tr>
+                        <th nzAlign="center">跟进时间</th>
+                        <th nzAlign="center">跟进人</th>
+                        <th nzAlign="center">跟进内容</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td nzAlign="center">1</td>
+                        <td nzAlign="center">1</td>
+                        <td nzAlign="center">1</td>
+                    </tr>
+                    <tr>
+                        <td nzAlign="center">1</td>
+                        <td nzAlign="center">1</td>
+                        <td nzAlign="center">1</td>
+                    </tr>
+                    <tr>
+                        <td nzAlign="center">1</td>
+                        <td nzAlign="center">1</td>
+                        <td nzAlign="center">1</td>
+                    </tr>
+                </tbody>
+            </nz-table>
+            <div class="commentBox">
+                <input nz-input placeholder="请输入内容">
+                <button nz-button nzType="primary">跟进</button>
+            </div>
+        </div>
+    </div> -->
+
+    <div class="panelgroup">
+        <div class="panel-hd">
+            <h3>收货人信息</h3>
+        </div>
+        <div class="panel-bd">
+            <ul>
+                <li>
+                    <div class="key">
+                        <span>收货人</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.order.consignee ? detailsData?.order.consignee : '-'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>联系电话</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.order.tel ? detailsData?.order.tel : '-'}}</span>
+                    </div>
+                </li>
+                <li class="addLen">
+                    <div class="key">
+                        <span>收货地址</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.order.address ? detailsData?.order.address : '-'}}</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="panelgroup">
+        <div class="panel-hd">
+            <h3>买家信息</h3>
+        </div>
+        <div class="panel-bd">
+            <ul>
+                <li>
+                    <div class="key">
+                        <span>买家账号</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.order.userId ? detailsData?.order.userId : '-'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>买家电话</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.order.userPhone ? detailsData?.order.userPhone : '-'}}</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="panelgroup">
+        <div class="panel-hd">
+            <h3>收款信息</h3>
+        </div>
+        <div class="panel-bd">
+            <ul>
+                <li>
+                    <div class="key">
+                        <span>收款状态</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.order.payTime ? '已收款' : '未收款'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>应收总额</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.order.totalPrice ? '￥' + (detailsData?.order.totalPrice | number : '0.2-2')
+                            : '-'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>实收总额</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.order.realPrice ? '￥' +(detailsData?.order.realPrice | number : '0.2-2' ):
+                            '-'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>运费</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.order.expressPrice ?'￥' + detailsData?.order.expressPrice : '-'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>付款方式</span>
+                    </div>
+                    <div class="val">
+                        <span>{{payType_To_Text(detailsData?.order.payType)}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>支付商家编号</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.order.paymentMerchantNo ? detailsData?.order.paymentMerchantNo :
+                            '-'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>付款时间</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.order.payTime ? detailsData?.order.payTime : '-'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>第三方流水号</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.order.tradeOrderNo ? detailsData?.order.tradeOrderNo : '-'}}</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="panelgroup">
+        <div class="panel-hd">
+            <h3>退款信息</h3>
+        </div>
+        <div class="panel-bd">
+            <ul>
+                <li>
+                    <div class="key">
+                        <span>退款状态</span>
+                    </div>
+                    <div class="val">
+                        <span>{{refundState_To_Text(detailsData?.order.refundState)}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>售后截止时间</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.order.afterSaleCloseTime ? detailsData?.order.afterSaleCloseTime : '-'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>退款总额</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.order.refundPrice ? '￥' + (detailsData?.order.refundPrice | number :
+                            '0.2-2' ) : '-'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>我方承担运费</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.order.bearFreight ? '￥' +detailsData?.order.bearFreight : '-'}}</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+
+    <div class="panelgroup">
+        <div class="panel-hd">
+            <h3>优惠信息</h3>
+        </div>
+        <div class="panel-bd">
+            <ul>
+                <li>
+                    <div class="key">
+                        <span>优惠总额</span>
+                    </div>
+                    <div class="val">
+                        <span>￥{{ (detailsData?.order.favorablePrice + detailsData?.order.priceChange +
+                            detailsData?.order.favorablePostage) | number : '0.2-2'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>优惠券</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.order.favorablePrice ? '-￥' + detailsData?.order.favorablePrice :
+                            '-'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>手动改价</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.order.priceChange ? '-￥' + detailsData?.order.priceChange : '-'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>运费优惠</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.order.favorablePostage ? '-￥' + detailsData?.order.favorablePostage :
+                            '-'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>活动优惠</span>
+                    </div>
+                    <div class="val">
+                        <span>-</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>会员折扣</span>
+                    </div>
+                    <div class="val">
+                        <span>-</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="panelgroup">
+        <div class="panel-hd">
+            <h3>商品信息</h3>
+        </div>
+        <div class="panel-bd">
+            <div class="goodsTable">
+                <div class="goodsHd">
+                    <ul>
+                        <li>商品信息</li>
+                        <li>购买数量</li>
+                        <li>购买单价</li>
+                        <li>小计</li>
+                        <li>优惠小计
+                            <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline"
+                                [nzTooltipTitle]="endTime" nzTooltipPlacement="top"></i>
+                            <ng-template #endTime>
+                                <span>优惠小计是根据优惠总额均摊到每个符合优惠的商品上的</span>
+                            </ng-template>
+                        </li>
+                        <li>售后中数量</li>
+                        <li>已售后数量</li>
+                    </ul>
+                </div>
+                <div class="goodsCt">
+                    <div class="attr-box" *ngFor="let attrItem of detailsData?.order.list">
+                        <h3>{{attrItem.groupName}}</h3>
+                        <dl *ngFor="let goodsItem of attrItem.list">
+                            <dd>
+                                <img nz-image nzSrc="{{goodsItem.groupIcon}}" [nzFallback]="fallback" />
+                                <a href=".#/goods/goodsTabs/{{goodsItem.goodsId}}" title="{{goodsItem.goodsName}}"
+                                    target="_blank">{{goodsItem.goodsName}}</a>
+                            </dd>
+                            <!-- 购买数量 -->
+                            <dd>x{{goodsItem.num}}</dd>
+                            <!-- 购买单价 -->
+                            <dd>￥{{goodsItem.price | number : '0.2-2'}}</dd>
+                            <!-- 小计 -->
+                            <dd>￥{{(goodsItem.num * goodsItem.price) | number : '0.2-2'}}</dd>
+                            <!-- 优惠小计 -->
+                            <!-- <dd>-</dd> -->
+                            <dd>￥{{goodsItem.favorablePrice | number : '0.2-2'}}</dd>
+                            <!-- 售后中数量 -->
+                            <dd>{{goodsItem.returnNum ? goodsItem.returnNum : '-'}}</dd>
+                            <!-- 已售后数量 -->
+                            <dd>{{goodsItem.returnNum ? goodsItem.returnNum : '-'}}</dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="goodsTotal">
+                    <div class="attr-box">
+                        <dl>
+                            <dd><em>合计</em></dd>
+                            <!-- 购买数量 -->
+                            <dd>x{{ numSum }}</dd>
+                            <dd></dd>
+                            <!-- 小计 -->
+                            <dd>{{ subTotal == 0 ? '-' : '￥' +(subTotal | number : '0.2-2') }}</dd>
+                            <!-- 优惠小计 -->
+                            <dd>{{ favorablePriceSum == 0 ? '-' : '￥' +(favorablePriceSum | number : '0.2-2') }}</dd>
+                            <dd>x</dd>
+                            <dd>x</dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="goodsPrice">
+                    <div class="bt">
+                        <p>
+                            <em>运费 <font>
+                                    {{ detailsData?.order.expressPrice ? '￥' +(detailsData?.order.expressPrice | number : '0.2-2') : '-'}}
+                                </font></em>
+                        </p>
+                        <p>
+                            <em>运费优惠 <font style="color: #008000;">
+                                    {{ detailsData?.order.favorablePostage ? '-￥' +(detailsData?.order.favorablePostage | number : '0.2-2') : '-' }}
+                                </font></em>
+                        </p>
+                        <p>
+                            <em>实际总额 <font style="color: #f00;">{{ detailsData?.order.realPrice ? '￥' +(detailsData?.order.realPrice | number : '0.2-2' ):
+                                '-' }}</font></em>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="submit-box">
+        <nz-divider></nz-divider>
+        <div class="bt-box">
+            <button nz-button nzType="primary" (click)="followModal(detailsData?.order.orderNum)">跟进</button>
+            <button nz-button nzType="primary" (click)="modifyPriceModal()"
+                [disabled]="true">改价</button>
+            <button nz-button nzType="primary" (click)="showModal()"
+                [disabled]="detailsData?.order.status != '9'">售后退款</button>
+            <button nz-button nzType="primary" (click)="extendTimeModal()"
+                [disabled]="detailsData?.order.status != '9'">延长售后日期</button>
+            <app-bt-group [btType]="'default'" [btText]="'返回'"></app-bt-group>
+        </div>
+    </div>
+</main>
+
+
+<nz-modal [(nzVisible)]="refundVisible" nzTitle="售后退款" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6">退款金额(元)</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+            <nz-input-number [nzMin]="1" [(ngModel)]="entityParam.refundPrice" nzPlaceHolder="请输入退款金额">
+            </nz-input-number>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6">我方承担运费(元)</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+            <nz-input-number [nzMin]="0" [(ngModel)]="entityParam.bearFreight" nzPlaceHolder="请输入我方承担运费">
+            </nz-input-number>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control [nzSpan]="8" [nzOffset]="6">
+            <button nz-button nzType="primary" (click)="affirmModal()">确认</button>
+            &nbsp;
+            <button nz-button nzType="default" (click)="handleCancel()">取消</button>
+        </nz-form-control>
+    </nz-form-item>
+    PS:
+    <br>
+    1：确认以后，该订单会直接将填写的款项原路退回到用户账户
+    <br>
+    2：请提前做好备注记录，不要胡乱操作，避免造成损失
+    <br>
+    3：用户实际收到的钱是退款金额+运费；
+</nz-modal>
+
+<nz-modal [(nzVisible)]="affirmVisible" nzTitle="再次确认" (nzOnCancel)="affirmCancel()" [nzFooter]="null">
+
+    <nz-form-item>
+        <nz-form-label [nzSpan]="4">提示</nz-form-label>
+        <nz-form-control [nzSpan]="19">
+            请输入“确认退款”文字，然后点击确认来完成最终退款操作；
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="4">是否退款</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+            <input nz-input placeholder="请输入“确认退款”文字" [(ngModel)]="affirmText" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control [nzSpan]="18" [nzOffset]="4">
+            <button nz-button nzType="primary" (click)="confirmRefund()">退款({{(entityParam.refundPrice +
+                entityParam.bearFreight)}}元)</button>
+            &nbsp;
+            <button nz-button nzType="default" (click)="affirmCancel()">取消</button>
+        </nz-form-control>
+    </nz-form-item>
+    PS:
+    <br>
+    1：点击确认以后，该订单会直接将填写的款项原路退回到用户账户
+</nz-modal>
+
+<nz-modal [(nzVisible)]="extendTimeVisible" nzTitle="售后延期" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+    <nz-form-item>
+        <nz-form-label [nzSpan]="5">延长售后日期</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+            <nz-date-picker [(ngModel)]="entityParam.afterSaleCloseTime"></nz-date-picker>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control [nzOffset]="5">
+            <button nz-button nzType="primary" (click)="extendTimeConfirm()">确定</button>
+            &nbsp;&nbsp;
+            <button nz-button nzType="default" (click)="handleCancel()">取消</button>
+        </nz-form-control>
+    </nz-form-item>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="modifyPriceVisible" nzTitle="订单改价" (nzOnCancel)="handleCancel()" [nzFooter]="null"
+    [nzWidth]="1000">
+    <nz-form-item>
+        <nz-form-label [nzSpan]="3">订单优惠</nz-form-label>
+        <nz-form-control>
+            <nz-row [nzGutter]="16">
+                <nz-col [nzSpan]="3">
+                    <nz-statistic [nzValue]="'￥'+ detailsData?.order.totalPrice" [nzTitle]="'应付总额'"></nz-statistic>
+                </nz-col>
+                <nz-col [nzSpan]="4">
+                    <nz-statistic [nzValue]="'￥'+ (detailsData?.order.favorablePrice + detailsData?.order.priceChange +
+                    detailsData?.order.favorablePostage)" [nzTitle]="'其他优惠总额'"></nz-statistic>
+                </nz-col>
+                <nz-col [nzSpan]="5">
+                    <nz-statistic [nzValue]="''" [nzTitle]="'优惠额度'" [nzPrefix]="prefixTplOne"></nz-statistic>
+                    <ng-template #prefixTplOne>
+                        <nz-input-number [nzMin]="0.01" [(ngModel)]="modifyPriceParam.priceChange"
+                            nzPlaceHolder="请输入优惠额度" [nzStep]="1"></nz-input-number>
+                    </ng-template>
+                </nz-col>
+                <nz-col [nzSpan]="5">
+                    <nz-statistic [nzValue]="'￥'+ (detailsData?.order.totalPrice -  (detailsData?.order.favorablePrice + detailsData?.order.priceChange +
+                    detailsData?.order.favorablePostage) - modifyPriceParam.priceChange)" [nzTitle]="'用户实际需要支付金额'">
+                    </nz-statistic>
+                </nz-col>
+            </nz-row>
+
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="3">邮费优惠</nz-form-label>
+        <nz-form-control>
+            <nz-row [nzGutter]="16">
+                <nz-col [nzSpan]="3">
+                    <nz-statistic [nzValue]="'￥'+ detailsData?.order.expressPrice" [nzTitle]="'应付邮费'"></nz-statistic>
+                </nz-col>
+                <nz-col [nzSpan]="5">
+                    <nz-statistic [nzValue]="''" [nzTitle]="'优惠额度'" [nzPrefix]="prefixTplOne1"></nz-statistic>
+                    <ng-template #prefixTplOne1>
+                        <nz-input-number [nzMin]="0.01" [(ngModel)]="modifyPriceParam.favorablePostage"
+                            nzPlaceHolder="请输入优惠额度" [nzStep]="1" [disabled]="true"></nz-input-number>
+                    </ng-template>
+                </nz-col>
+                <nz-col [nzSpan]="5">
+                    <nz-statistic [nzValue]="'￥'+ (detailsData?.order.expressPrice - modifyPriceParam.favorablePostage)"
+                        [nzTitle]="'用户实际需要支付邮费'"></nz-statistic>
+                </nz-col>
+            </nz-row>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control [nzOffset]="3">
+            <button nz-button nzType="primary" (click)="modifyPriceConfirm()">确定</button>
+            &nbsp;&nbsp;
+            <button nz-button nzType="default" (click)="handleCancel()">取消</button>
+        </nz-form-control>
+    </nz-form-item>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="followVisible" nzTitle="跟进" (nzOnCancel)="handleCancel()" [nzFooter]="null"
+    [nzWidth]="'1050px'">
+    <div class="importBox">
+        <textarea rows="6" nz-input [(ngModel)]="followParam.content" placeholder="请输入内容，限制100字"
+            [maxlength]="100"></textarea>
+        <div class="bt-box">
+            <label for="file" class="followFile">
+                <span>选择文件</span>
+                <input id="file" type="file" multiple="multiple" [(ngModel)]="inputVal"
+                    (change)="handleFileInput($event,2)">
+            </label>
+            <font>请选择图片、office文件、PDF文件</font>
+            <button nz-button nzType="primary" (click)="followerSave()">提交</button>
+        </div>
+        <ul>
+            <li *ngFor="let item of followParam.enclosure; index as i">
+                <span>{{item.showUrl}}</span>
+                <a nz-button nz-button-tdlink nzType="link" (click)="deleteFollowImg(i)">删除</a>
+            </li>
+        </ul>
+    </div>
+    <div class="followTable" *ngIf="followList.length != 0">
+        <h3>跟进记录</h3>
+        <br>
+        <nz-table #colSpanTable nzBordered [nzShowPagination]="false" [nzData]="[{}]">
+            <thead>
+                <tr>
+                    <th nzAlign="center">id</th>
+                    <th nzAlign="center">跟进时间</th>
+                    <th nzAlign="center">跟进人</th>
+                    <th nzAlign="center">跟进内容</th>
+                    <th nzAlign="center">附件</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of followList">
+                    <td nzAlign="center">{{item.id}}</td>
+                    <td nzAlign="center">{{item.createTime}}</td>
+                    <td nzAlign="center">{{item.follower}}</td>
+                    <td nzAlign="center">{{item.content}}</td>
+                    <td nzAlign="center">
+                        <ul>
+                            <li *ngFor="let o of item.enclosure">
+                                <span>{{formUrl(o)}}</span>
+                                <a href="{{o}}">下载</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</nz-modal>
+

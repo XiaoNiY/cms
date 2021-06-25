@@ -1,12 +1,9 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "cli": {
-    "analytics": "2d76267b-54b9-4674-ae00-7fca1433f26b"
-  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "cms": {
+    "mallAdmin": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -23,12 +20,28 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/cms",
+            "outputPath": "dist/mallAdmin",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "inlineStyleLanguage": "scss",
+            "aot": true,
+            "allowedCommonJsDependencies": [
+              "@angularclass/hmr",
+              "moment",
+              "moment/locale/zh-cn",
+              "jquery",
+              "handsontable",
+              "@feathersjs/socketio-client",
+              "@feathersjs/rest-client",
+              "@feathersjs/feathers",
+              "@feathersjs/authentication-client",
+              "socket.io-client",
+              "xlsx",
+              "rxjs",
+              "pikaday",
+              "ng2-flatpickr"
+            ],
             "assets": [
               "src/favicon.ico",
               "src/assets",
@@ -39,188 +52,187 @@
               }
             ],
             "styles": [
-                "src/theme.less",
-                "src/styles.scss",
-                "src/assets/css/ueditor/themes/default/_css/ueditor.css",
-                "src/assets/css/ueditor/themes/iframe.css",
-  
-                "src/assets/lib/ueditor/third-party/codemirror/codemirror.css"
-              ],
-              "scripts": [
-                "src/assets/lib/ueditor/ueditor.config.js",
-  
-                "src/assets/lib/ueditor/_src/editor.js",
-                "src/assets/lib/ueditor/_src/core/browser.js",
-                "src/assets/lib/ueditor/_src/core/utils.js",
-                "src/assets/lib/ueditor/_src/core/EventBase.js",
-                "src/assets/lib/ueditor/_src/core/dtd.js",
-                "src/assets/lib/ueditor/_src/core/domUtils.js",
-                "src/assets/lib/ueditor/_src/core/Range.js",
-                "src/assets/lib/ueditor/_src/core/Selection.js",
-                "src/assets/lib/ueditor/_src/core/Editor.js",
-                "src/assets/lib/ueditor/_src/core/Editor.defaultoptions.js",
-                "src/assets/lib/ueditor/_src/core/loadconfig.js",
-                "src/assets/lib/ueditor/_src/core/ajax.js",
-                "src/assets/lib/ueditor/_src/core/filterword.js",
-                "src/assets/lib/ueditor/_src/core/node.js",
-                "src/assets/lib/ueditor/_src/core/htmlparser.js",
-                "src/assets/lib/ueditor/_src/core/filternode.js",
-                "src/assets/lib/ueditor/_src/core/plugin.js",
-                "src/assets/lib/ueditor/_src/core/keymap.js",
-                "src/assets/lib/ueditor/_src/core/localstorage.js",
-                "src/assets/lib/ueditor/_src/plugins/defaultfilter.js",
-                "src/assets/lib/ueditor/_src/plugins/inserthtml.js",
-                "src/assets/lib/ueditor/_src/plugins/autotypeset.js",
-                "src/assets/lib/ueditor/_src/plugins/autosubmit.js",
-                "src/assets/lib/ueditor/_src/plugins/background.js",
-                "src/assets/lib/ueditor/_src/plugins/image.js",
-                "src/assets/lib/ueditor/_src/plugins/justify.js",
-                "src/assets/lib/ueditor/_src/plugins/font.js",
-                "src/assets/lib/ueditor/_src/plugins/link.js",
-                "src/assets/lib/ueditor/_src/plugins/iframe.js",
-                "src/assets/lib/ueditor/_src/plugins/scrawl.js",
-                "src/assets/lib/ueditor/_src/plugins/removeformat.js",
-                "src/assets/lib/ueditor/_src/plugins/blockquote.js",
-                "src/assets/lib/ueditor/_src/plugins/convertcase.js",
-                "src/assets/lib/ueditor/_src/plugins/indent.js",
-                "src/assets/lib/ueditor/_src/plugins/print.js",
-                "src/assets/lib/ueditor/_src/plugins/preview.js",
-                "src/assets/lib/ueditor/_src/plugins/selectall.js",
-                "src/assets/lib/ueditor/_src/plugins/paragraph.js",
-                "src/assets/lib/ueditor/_src/plugins/directionality.js",
-                "src/assets/lib/ueditor/_src/plugins/horizontal.js",
-                "src/assets/lib/ueditor/_src/plugins/time.js",
-                "src/assets/lib/ueditor/_src/plugins/rowspacing.js",
-                "src/assets/lib/ueditor/_src/plugins/lineheight.js",
-                "src/assets/lib/ueditor/_src/plugins/insertcode.js",
-                "src/assets/lib/ueditor/_src/plugins/cleardoc.js",
-                "src/assets/lib/ueditor/_src/plugins/anchor.js",
-                "src/assets/lib/ueditor/_src/plugins/wordcount.js",
-                "src/assets/lib/ueditor/_src/plugins/pagebreak.js",
-                "src/assets/lib/ueditor/_src/plugins/wordimage.js",
-                "src/assets/lib/ueditor/_src/plugins/dragdrop.js",
-                "src/assets/lib/ueditor/_src/plugins/undo.js",
-                "src/assets/lib/ueditor/_src/plugins/copy.js",
-                "src/assets/lib/ueditor/_src/plugins/paste.js",
-                "src/assets/lib/ueditor/_src/plugins/puretxtpaste.js",
-                "src/assets/lib/ueditor/_src/plugins/list.js",
-                "src/assets/lib/ueditor/_src/plugins/source.js",
-                "src/assets/lib/ueditor/_src/plugins/enterkey.js",
-                "src/assets/lib/ueditor/_src/plugins/keystrokes.js",
-                "src/assets/lib/ueditor/_src/plugins/fiximgclick.js",
-                "src/assets/lib/ueditor/_src/plugins/autolink.js",
-                "src/assets/lib/ueditor/_src/plugins/autoheight.js",
-                "src/assets/lib/ueditor/_src/plugins/autofloat.js",
-                "src/assets/lib/ueditor/_src/plugins/video.js",
-                "src/assets/lib/ueditor/_src/plugins/table.core.js",
-                "src/assets/lib/ueditor/_src/plugins/table.cmds.js",
-                "src/assets/lib/ueditor/_src/plugins/table.action.js",
-                "src/assets/lib/ueditor/_src/plugins/table.sort.js",
-                "src/assets/lib/ueditor/_src/plugins/contextmenu.js",
-                "src/assets/lib/ueditor/_src/plugins/shortcutmenu.js",
-                "src/assets/lib/ueditor/_src/plugins/basestyle.js",
-                "src/assets/lib/ueditor/_src/plugins/elementpath.js",
-                "src/assets/lib/ueditor/_src/plugins/formatmatch.js",
-                "src/assets/lib/ueditor/_src/plugins/searchreplace.js",
-                "src/assets/lib/ueditor/_src/plugins/customstyle.js",
-                "src/assets/lib/ueditor/_src/plugins/catchremoteimage.js",
-                "src/assets/lib/ueditor/_src/plugins/snapscreen.js",
-                "src/assets/lib/ueditor/_src/plugins/insertparagraph.js",
-                "src/assets/lib/ueditor/_src/plugins/webapp.js",
-                "src/assets/lib/ueditor/_src/plugins/template.js",
-                "src/assets/lib/ueditor/_src/plugins/music.js",
-                "src/assets/lib/ueditor/_src/plugins/autoupload.js",
-                "src/assets/lib/ueditor/_src/plugins/autosave.js",
-                "src/assets/lib/ueditor/_src/plugins/charts.js",
-                "src/assets/lib/ueditor/_src/plugins/section.js",
-                "src/assets/lib/ueditor/_src/plugins/simpleupload.js",
-                "src/assets/lib/ueditor/_src/plugins/serverparam.js",
-                "src/assets/lib/ueditor/_src/plugins/insertfile.js",
-                "src/assets/lib/ueditor/_src/ui/ui.js",
-                "src/assets/lib/ueditor/_src/ui/uiutils.js",
-                "src/assets/lib/ueditor/_src/ui/uibase.js",
-                "src/assets/lib/ueditor/_src/ui/separator.js",
-                "src/assets/lib/ueditor/_src/ui/mask.js",
-                "src/assets/lib/ueditor/_src/ui/popup.js",
-                "src/assets/lib/ueditor/_src/ui/colorpicker.js",
-                "src/assets/lib/ueditor/_src/ui/tablepicker.js",
-                "src/assets/lib/ueditor/_src/ui/stateful.js",
-                "src/assets/lib/ueditor/_src/ui/button.js",
-                "src/assets/lib/ueditor/_src/ui/splitbutton.js",
-                "src/assets/lib/ueditor/_src/ui/colorbutton.js",
-                "src/assets/lib/ueditor/_src/ui/tablebutton.js",
-                "src/assets/lib/ueditor/_src/ui/autotypesetpicker.js",
-                "src/assets/lib/ueditor/_src/ui/autotypesetbutton.js",
-                "src/assets/lib/ueditor/_src/ui/cellalignpicker.js",
-                "src/assets/lib/ueditor/_src/ui/pastepicker.js",
-                "src/assets/lib/ueditor/_src/ui/toolbar.js",
-                "src/assets/lib/ueditor/_src/ui/menu.js",
-                "src/assets/lib/ueditor/_src/ui/combox.js",
-                "src/assets/lib/ueditor/_src/ui/dialog.js",
-                "src/assets/lib/ueditor/_src/ui/menubutton.js",
-                "src/assets/lib/ueditor/_src/ui/multiMenu.js",
-                "src/assets/lib/ueditor/_src/ui/shortcutmenu.js",
-                "src/assets/lib/ueditor/_src/ui/breakline.js",
-                "src/assets/lib/ueditor/_src/ui/message.js",
-                "src/assets/lib/ueditor/_src/adapter/editorui.js",
-                "src/assets/lib/ueditor/_src/adapter/editor.js",
-                "src/assets/lib/ueditor/_src/adapter/message.js",
-                "src/assets/lib/ueditor/_src/adapter/autosave.js",
-  
-                "src/assets/lib/ueditor/third-party/codemirror/codemirror.js",
-                "src/assets/lib/ueditor/third-party/zeroclipboard/ZeroClipboard.js",
-  
-                "src/assets/lib/ueditor/zh-cn/zh-cn.js"
-  
-              ]
+              "src/theme.less",
+              "src/styles.scss",
+              "src/assets/css/ueditor/themes/default/_css/ueditor.css",
+              "src/assets/css/ueditor/themes/iframe.css",
+
+              "src/assets/lib/ueditor/third-party/codemirror/codemirror.css"
+            ],
+            "scripts": [
+              "src/assets/lib/ueditor/ueditor.config.js",
+
+              "src/assets/lib/ueditor/_src/editor.js",
+              "src/assets/lib/ueditor/_src/core/browser.js",
+              "src/assets/lib/ueditor/_src/core/utils.js",
+              "src/assets/lib/ueditor/_src/core/EventBase.js",
+              "src/assets/lib/ueditor/_src/core/dtd.js",
+              "src/assets/lib/ueditor/_src/core/domUtils.js",
+              "src/assets/lib/ueditor/_src/core/Range.js",
+              "src/assets/lib/ueditor/_src/core/Selection.js",
+              "src/assets/lib/ueditor/_src/core/Editor.js",
+              "src/assets/lib/ueditor/_src/core/Editor.defaultoptions.js",
+              "src/assets/lib/ueditor/_src/core/loadconfig.js",
+              "src/assets/lib/ueditor/_src/core/ajax.js",
+              "src/assets/lib/ueditor/_src/core/filterword.js",
+              "src/assets/lib/ueditor/_src/core/node.js",
+              "src/assets/lib/ueditor/_src/core/htmlparser.js",
+              "src/assets/lib/ueditor/_src/core/filternode.js",
+              "src/assets/lib/ueditor/_src/core/plugin.js",
+              "src/assets/lib/ueditor/_src/core/keymap.js",
+              "src/assets/lib/ueditor/_src/core/localstorage.js",
+              "src/assets/lib/ueditor/_src/plugins/defaultfilter.js",
+              "src/assets/lib/ueditor/_src/plugins/inserthtml.js",
+              "src/assets/lib/ueditor/_src/plugins/autotypeset.js",
+              "src/assets/lib/ueditor/_src/plugins/autosubmit.js",
+              "src/assets/lib/ueditor/_src/plugins/background.js",
+              "src/assets/lib/ueditor/_src/plugins/image.js",
+              "src/assets/lib/ueditor/_src/plugins/justify.js",
+              "src/assets/lib/ueditor/_src/plugins/font.js",
+              "src/assets/lib/ueditor/_src/plugins/link.js",
+              "src/assets/lib/ueditor/_src/plugins/iframe.js",
+              "src/assets/lib/ueditor/_src/plugins/scrawl.js",
+              "src/assets/lib/ueditor/_src/plugins/removeformat.js",
+              "src/assets/lib/ueditor/_src/plugins/blockquote.js",
+              "src/assets/lib/ueditor/_src/plugins/convertcase.js",
+              "src/assets/lib/ueditor/_src/plugins/indent.js",
+              "src/assets/lib/ueditor/_src/plugins/print.js",
+              "src/assets/lib/ueditor/_src/plugins/preview.js",
+              "src/assets/lib/ueditor/_src/plugins/selectall.js",
+              "src/assets/lib/ueditor/_src/plugins/paragraph.js",
+              "src/assets/lib/ueditor/_src/plugins/directionality.js",
+              "src/assets/lib/ueditor/_src/plugins/horizontal.js",
+              "src/assets/lib/ueditor/_src/plugins/time.js",
+              "src/assets/lib/ueditor/_src/plugins/rowspacing.js",
+              "src/assets/lib/ueditor/_src/plugins/lineheight.js",
+              "src/assets/lib/ueditor/_src/plugins/insertcode.js",
+              "src/assets/lib/ueditor/_src/plugins/cleardoc.js",
+              "src/assets/lib/ueditor/_src/plugins/anchor.js",
+              "src/assets/lib/ueditor/_src/plugins/wordcount.js",
+              "src/assets/lib/ueditor/_src/plugins/pagebreak.js",
+              "src/assets/lib/ueditor/_src/plugins/wordimage.js",
+              "src/assets/lib/ueditor/_src/plugins/dragdrop.js",
+              "src/assets/lib/ueditor/_src/plugins/undo.js",
+              "src/assets/lib/ueditor/_src/plugins/copy.js",
+              "src/assets/lib/ueditor/_src/plugins/paste.js",
+              "src/assets/lib/ueditor/_src/plugins/puretxtpaste.js",
+              "src/assets/lib/ueditor/_src/plugins/list.js",
+              "src/assets/lib/ueditor/_src/plugins/source.js",
+              "src/assets/lib/ueditor/_src/plugins/enterkey.js",
+              "src/assets/lib/ueditor/_src/plugins/keystrokes.js",
+              "src/assets/lib/ueditor/_src/plugins/fiximgclick.js",
+              "src/assets/lib/ueditor/_src/plugins/autolink.js",
+              "src/assets/lib/ueditor/_src/plugins/autoheight.js",
+              "src/assets/lib/ueditor/_src/plugins/autofloat.js",
+              "src/assets/lib/ueditor/_src/plugins/video.js",
+              "src/assets/lib/ueditor/_src/plugins/table.core.js",
+              "src/assets/lib/ueditor/_src/plugins/table.cmds.js",
+              "src/assets/lib/ueditor/_src/plugins/table.action.js",
+              "src/assets/lib/ueditor/_src/plugins/table.sort.js",
+              "src/assets/lib/ueditor/_src/plugins/contextmenu.js",
+              "src/assets/lib/ueditor/_src/plugins/shortcutmenu.js",
+              "src/assets/lib/ueditor/_src/plugins/basestyle.js",
+              "src/assets/lib/ueditor/_src/plugins/elementpath.js",
+              "src/assets/lib/ueditor/_src/plugins/formatmatch.js",
+              "src/assets/lib/ueditor/_src/plugins/searchreplace.js",
+              "src/assets/lib/ueditor/_src/plugins/customstyle.js",
+              "src/assets/lib/ueditor/_src/plugins/catchremoteimage.js",
+              "src/assets/lib/ueditor/_src/plugins/snapscreen.js",
+              "src/assets/lib/ueditor/_src/plugins/insertparagraph.js",
+              "src/assets/lib/ueditor/_src/plugins/webapp.js",
+              "src/assets/lib/ueditor/_src/plugins/template.js",
+              "src/assets/lib/ueditor/_src/plugins/music.js",
+              "src/assets/lib/ueditor/_src/plugins/autoupload.js",
+              "src/assets/lib/ueditor/_src/plugins/autosave.js",
+              "src/assets/lib/ueditor/_src/plugins/charts.js",
+              "src/assets/lib/ueditor/_src/plugins/section.js",
+              "src/assets/lib/ueditor/_src/plugins/simpleupload.js",
+              "src/assets/lib/ueditor/_src/plugins/serverparam.js",
+              "src/assets/lib/ueditor/_src/plugins/insertfile.js",
+              "src/assets/lib/ueditor/_src/ui/ui.js",
+              "src/assets/lib/ueditor/_src/ui/uiutils.js",
+              "src/assets/lib/ueditor/_src/ui/uibase.js",
+              "src/assets/lib/ueditor/_src/ui/separator.js",
+              "src/assets/lib/ueditor/_src/ui/mask.js",
+              "src/assets/lib/ueditor/_src/ui/popup.js",
+              "src/assets/lib/ueditor/_src/ui/colorpicker.js",
+              "src/assets/lib/ueditor/_src/ui/tablepicker.js",
+              "src/assets/lib/ueditor/_src/ui/stateful.js",
+              "src/assets/lib/ueditor/_src/ui/button.js",
+              "src/assets/lib/ueditor/_src/ui/splitbutton.js",
+              "src/assets/lib/ueditor/_src/ui/colorbutton.js",
+              "src/assets/lib/ueditor/_src/ui/tablebutton.js",
+              "src/assets/lib/ueditor/_src/ui/autotypesetpicker.js",
+              "src/assets/lib/ueditor/_src/ui/autotypesetbutton.js",
+              "src/assets/lib/ueditor/_src/ui/cellalignpicker.js",
+              "src/assets/lib/ueditor/_src/ui/pastepicker.js",
+              "src/assets/lib/ueditor/_src/ui/toolbar.js",
+              "src/assets/lib/ueditor/_src/ui/menu.js",
+              "src/assets/lib/ueditor/_src/ui/combox.js",
+              "src/assets/lib/ueditor/_src/ui/dialog.js",
+              "src/assets/lib/ueditor/_src/ui/menubutton.js",
+              "src/assets/lib/ueditor/_src/ui/multiMenu.js",
+              "src/assets/lib/ueditor/_src/ui/shortcutmenu.js",
+              "src/assets/lib/ueditor/_src/ui/breakline.js",
+              "src/assets/lib/ueditor/_src/ui/message.js",
+              "src/assets/lib/ueditor/_src/adapter/editorui.js",
+              "src/assets/lib/ueditor/_src/adapter/editor.js",
+              "src/assets/lib/ueditor/_src/adapter/message.js",
+              "src/assets/lib/ueditor/_src/adapter/autosave.js",
+
+              "src/assets/lib/ueditor/third-party/codemirror/codemirror.js",
+              "src/assets/lib/ueditor/third-party/zeroclipboard/ZeroClipboard.js",
+
+              "src/assets/lib/ueditor/zh-cn/zh-cn.js"
+
+            ]
           },
           "configurations": {
             "production": {
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
-                }
-              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "outputHashing": "all"
-            },
-            "development": {
-              "buildOptimizer": false,
-              "optimization": false,
-              "vendorChunk": true,
-              "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "15mb",
+                  "maximumError": "20mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "1mb",
+                  "maximumError": "1mb"
+                }
+              ]
             }
-          },
-          "defaultConfiguration": "production"
+          }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "mallAdmin:build"
+          },
           "configurations": {
             "production": {
-              "browserTarget": "cms:build:production"
-            },
-            "development": {
-              "browserTarget": "cms:build:development"
+              "browserTarget": "mallAdmin:build:production"
             }
-          },
-          "defaultConfiguration": "development"
+          }
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n"
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "mallAdmin:build"
+          }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
@@ -229,19 +241,45 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
+              "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "tsconfig.app.json",
+              "tsconfig.spec.json",
+              "e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "mallAdmin:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "mallAdmin:serve:production"
+            }
           }
         }
       }
     }
   },
-  "defaultProject": "cms"
+  "defaultProject": "mallAdmin"
 }

@@ -1,0 +1,70 @@
+<div class="bt-search">
+    <!-- 搜索 -->
+    <div class="search-box">
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+            <input type="text" nz-input placeholder="请输入操作人姓名" [(ngModel)]="queryForm.realName" />
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+            <button nz-button nzType="primary" nzSearch (click)="query()"><i nz-icon nzType="search"></i></button>
+        </ng-template>
+    </div>
+    <!-- 其他功能按钮 -->
+    <div class="bt-list">
+        <a class="refresh" nzTooltipTitle="刷新" nzTooltipPlacement="top" nz-tooltip (click)="refresh()"><i nz-icon nzType="sync"
+                nzTheme="outline"></i></a>
+        <!-- <a class="export" nzTooltipTitle="导出" nzTooltipPlacement="top" nz-tooltip><i nz-icon nzType="download"
+                nzTheme="outline"></i></a> -->
+    </div>
+</div>
+
+<main>
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="listOfData?.records" [nzShowPagination]="false"
+        [nzPageSize]="listOfData?.size" [nzLoading]="tableLoading"nzBordered>
+        <thead>
+            <tr>
+                <th nzAlign="center">id</th>
+                <th nzAlign="center">操作</th>
+                <th nzAlign="center">操作时间</th>
+                <th nzAlign="center">操作人ID</th>
+                <th nzAlign="center">操作人姓名</th>
+                <th nzAlign="center">IP地址</th>
+                <th nzAlign="center">请求数据</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="searchHint && listOfData?.records">
+                <td class="searchHint" nzAlign="center" colspan="13">
+                    <span>搜索 “{{searcName}}”，找到&nbsp;{{ listOfData?.total }}&nbsp;条结果</span>
+                    <a (click)="backList()">返回原列表</a>
+                </td>
+            </tr>
+            <tr *ngFor="let data of rowSelectionTable.data">
+                <!-- id -->
+                <td nzAlign="center">{{data.id}}</td>
+                <!-- 操作 -->
+                <td nzAlign="center">{{data.menu}}</td>
+                <!-- 操作时间 -->
+                <td nzAlign="center">{{data.createTime}}</td>
+                <!-- 操作人ID -->
+                <td nzAlign="center">{{data.userId}}</td>
+                <!-- 操作人姓名 -->
+                <td nzAlign="center">{{data.realName}}</td>
+                <!-- IP地址 -->
+                <td nzAlign="center">{{data.ip}}</td>
+                <!-- 请求数据 -->
+                <td nzAlign="center">
+                    <span  class="newContent">{{data.newContent}}</span>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <div class="pagination-box">
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]"nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="listOfData?.current" [nzTotal]="listOfData?.total"
+                [nzShowTotal]="totalTemplate" [nzPageSize]="listOfData?.size"
+                (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)">
+            </nz-pagination>
+        </div>
+    </div>
+</main>

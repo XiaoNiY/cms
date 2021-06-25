@@ -1,0 +1,70 @@
+main {
+    width: 1300px;
+    margin: auto;
+    background: #fff;
+    .formBox {
+        padding: 40px;
+        h3 {
+            margin-bottom: 20px;
+        }
+    }
+
+    nz-form-label {
+        width: 120px;
+    }
+
+    nz-date-picker {
+        width: 193px;
+    }
+
+    .submit-box {
+        width: 100%;
+        height: 70px;
+        padding: 0 40px;
+        position: relative;
+        .bt-box {
+            position: absolute;
+            left: 170px;
+            > button {
+                margin-right: 10px;
+            }
+        }
+    }
+
+    .look {
+        width: 100%;
+        height: 300px;
+        padding: 0 40px;
+        position: relative;
+        font-size: 14px;
+        color: #999;
+        .lookBox {
+            margin-top: 10px;
+            position: absolute;
+            left: 170px;
+            p:nth-child(1) {
+                padding-bottom: 20px;
+            }
+            p:nth-child(3) {
+                padding-left: 20px;
+            }
+            p:nth-child(4),
+            p:nth-child(5),
+            p:nth-child(6) {
+                padding-left: 48px;
+            }
+            p:nth-child(7) {
+                margin-top: 20px;
+            }
+            p:nth-child(8),
+            p:nth-child(9),
+            p:nth-child(10) {
+                padding-left: 20px;
+            }
+        }
+    }
+}
+
+:host ::ng-deep .ant-form-item-control {
+    margin-left: 10px;
+}

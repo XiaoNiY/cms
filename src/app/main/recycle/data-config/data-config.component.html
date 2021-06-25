@@ -1,0 +1,54 @@
+<div class="dataConfig">
+    <h2>PC爱思助手弹窗</h2>
+    <nz-radio-group [(ngModel)]="queryForm.popupWay">
+        <label nz-radio nzValue="-10">关闭</label>
+        <label nz-radio nzValue="1">每 
+            <nz-input-number [nzMin]="1" [(ngModel)]="popupWayNum" nzPlaceHolder="请输入">
+            </nz-input-number> 天弹一次</label>
+        <label nz-radio nzValue="0">每插入一台设备弹一次    <font>*最新插入的设备弹窗覆盖之前的弹窗</font></label>
+    </nz-radio-group>
+    <h2>PC二手回收信息样式</h2>
+    <nz-radio-group [(ngModel)]="queryForm.showFloatingWindowWay">
+        <label nz-radio nzValue="1">只显示大浮层</label>
+        <label nz-radio nzValue="2">只显示小浮层</label>
+    </nz-radio-group>
+    <p>
+        <button nz-button nzType="primary" (click)="save()">保存</button>
+    </p>
+    <!-- <div class="bt-search">
+       
+    </div> -->
+</div>
+
+<h2>热搜榜</h2>
+<main>
+    <nz-table #basicTable [nzData]="listOfData?.hotModels" [nzShowPagination]="false"
+        [nzLoading]="tableLoading" nzBordered>
+        <thead>
+            <tr>
+                <th nzAlign="center">排序</th>
+                <th nzAlign="center">机型</th>
+                <th nzAlign="center">ID</th>
+                <th nzAlign="center">类型</th>
+                <th nzAlign="center">品牌名称</th>
+                <th nzAlign="center">最高回收价</th>
+                <th nzAlign="center">图片</th>
+                <th nzAlign="center">更新时间</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of basicTable.data">
+                <td nzAlign="center">{{ data.autoId }}</td>
+                <td nzAlign="center">{{ data.name }}</td>
+                <td nzAlign="center">{{ data.id }}</td>
+                <td nzAlign="center">{{ data.type == 1 ? '手机' : '平板' }}</td>
+                <td nzAlign="center">{{ data.brandName }}</td>
+                <td nzAlign="center">{{ data.price }}</td>
+                <td nzAlign="center">
+                    <img nz-image nzSrc="{{data.imgSrc}}" [nzFallback]="fallback" />
+                </td>
+                <td nzAlign="center">{{ data.updateTime }}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+</main>

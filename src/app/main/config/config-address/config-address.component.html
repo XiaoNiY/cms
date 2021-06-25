@@ -1,0 +1,122 @@
+<div class="bt-search">
+    <div class="bt-box">
+        <button nz-button nzType="primary" (click)="showModal()">新增地址</button>
+    </div>
+    <!-- 其他功能按钮 -->
+    <div class="bt-list">
+        <a class="refresh" nzTooltipTitle="刷新" nzTooltipPlacement="top" nz-tooltip (click)="refresh()"><i nz-icon nzType="sync"
+                nzTheme="outline"></i></a>
+        <!-- <a class="export" nzTooltipTitle="导出" nzTooltipPlacement="top" nz-tooltip><i nz-icon nzType="download"
+                nzTheme="outline"></i></a> -->
+    </div>
+    <!-- 搜索 -->
+    <div class="search-box">
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+            <input type="text" nz-input placeholder="请输入地址简称" [(ngModel)]="query_params_Json.name" />
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+            <button nz-button nzType="primary" nzSearch (click)="query()"><i nz-icon nzType="search"></i></button>
+        </ng-template>
+    </div>
+</div>
+<main>
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="listOfData?.records" [nzShowPagination]="false"
+        [nzPageSize]="query_params_Json.pageSize" [nzLoading]="tableLoading" nzBordered>
+        <thead>
+            <tr>
+                <th nzAlign="center">ID</th>
+                <th nzAlign="center">简称</th>
+                <th nzAlign="center">联系人</th>
+                <th nzAlign="center">联系方式</th>
+                <th nzAlign="center">地区</th>
+                <th nzAlign="center">详细地址</th>
+                <th nzAlign="center">状态</th>
+                <th nzAlign="center">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="searchHint && rowSelectionTable.data">
+                <td class="searchHint" nzAlign="center" colspan="13">
+                    <span>搜索 “{{searcName}}”，找到&nbsp;{{ listOfData?.total }}&nbsp;条结果</span>
+                    <a (click)="backList()">返回原列表</a>
+                </td>
+            </tr>
+
+            <tr *ngFor="let data of rowSelectionTable.data; let i=index">
+                <td nzAlign="center">{{data.id}}</td>
+                <td nzAlign="center">{{data.name}}</td>
+                <td nzAlign="center">{{data.contacts ? data.contacts : '-'}}</td>
+                <td nzAlign="center">{{data.tel}}</td>
+                <td nzAlign="center">{{data.region}}</td>
+                <td nzAlign="center">{{data.address}}</td>
+                <td nzAlign="center">{{data.status == 0 ? '启用'  : '禁用'}}</td>
+                <td nzAlign="center">
+                    <a nz-button nz-button-tdlink nzType="link" (click)="showModal(data.id)">编辑</a>
+                    <a nz-button nz-button-tdlink nzType="link" nzDanger nz-popconfirm nzPopconfirmTitle="确认删除吗?"
+                        [nzIcon]="iconTpl" (nzOnConfirm)="confirm(data.id)">删除</a>
+                    <ng-template #iconTpl>
+                        <i nz-icon nzType="question-circle-o" style="color: red;"></i>
+                    </ng-template>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <div class="pagination-box">
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]"nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="listOfData?.current"
+                [nzTotal]="listOfData?.total" [nzShowTotal]="totalTemplate" [nzPageSize]="query_params_Json.pageSize"
+                (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)">
+            </nz-pagination>
+        </div>
+    </div>
+</main>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="地址信息" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+    <form nz-form [formGroup]="modalForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">简称</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="name" [maxLength]="20" placeholder="请输入简称" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">联系人</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="contacts" [maxLength]="20" placeholder="请输入联系人" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">联系方式</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="tel" [maxLength]="20" placeholder="请输入联系方式" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">地区</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <nz-cascader [nzOptions]="nzOptions" formControlName="districtId"   nzPlaceHolder="请选择"  [nzAllowClear]="true">
+                </nz-cascader>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">详细地址</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="address" [maxLength]="100" placeholder="请输入详细地址" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">状态</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <nz-radio-group formControlName="status">
+                    <label nz-radio nzValue="0">启用</label>
+                    <label nz-radio nzValue="1">禁用</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-control [nzSpan]="8" [nzOffset]="4">
+                <button nz-button nzType="primary">保存</button>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+</nz-modal>

@@ -1,0 +1,6 @@
+[0106/182534.968:ERROR:directory_reader_win.cc(43)] FindFirstFile: 系统找不到指定的路径。 (0x3)
+[0107/182525.209:ERROR:directory_reader_win.cc(43)] FindFirstFile: 系统找不到指定的路径。 (0x3)
+[0108/114625.946:ERROR:process_info.cc(359)] UncheckedAllocate
+[0108/114626.081:ERROR:filesystem_win.cc(148)] DeleteFile C:\Users\aaabbbccc\AppData\Local\Google\Chrome\User Data\Crashpad\reports\365e2e85-b262-4c62-a66e-3a9eebfcdfa7.dmp: 另一个程序正在使用此文件，进程无法访问。 (0x20)
+[0108/114626.560:ERROR:process_info.cc(359)] UncheckedAllocate
+[0417/141418.801:ERROR:directory_reader_win.cc(43)] FindFirstFile: 系统找不到指定的路径。 (0x3)

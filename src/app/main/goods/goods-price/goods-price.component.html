@@ -1,0 +1,95 @@
+<main>
+    <div class="form-box">
+        <h3>B端价格设置</h3>
+        <nz-form-item>
+            <nz-form-label nz-col nzRequired>
+                单个售价
+            </nz-form-label>
+            <nz-form-control nz-col nzFlex="200px">
+                <nz-input-number [nzMin]="1" [(ngModel)]="entityParam.shopPriceB" nzPlaceHolder="请输入单个售价">
+                </nz-input-number>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col>
+                最小购买值
+            </nz-form-label>
+            <nz-form-control nz-col nzFlex="200px">
+                <nz-input-number [nzMin]="1" [(ngModel)]="entityParam.buyMinB" nzPlaceHolder="请输入最小购买值">
+                </nz-input-number>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col>
+                最大购买值
+            </nz-form-label>
+            <nz-form-control nz-col nzFlex="200px">
+                <nz-input-number [nzMin]="0" [nzMax]="999" [(ngModel)]="entityParam.buyMaxB" nzPlaceHolder="请输入最大购买值">
+                </nz-input-number>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col>
+                单个划线价
+            </nz-form-label>
+            <nz-form-control nz-col nzFlex="200px">
+                <nz-input-number [nzMin]="1" [(ngModel)]="entityParam.originalPriceB" nzPlaceHolder="请输入单个划线价">
+                </nz-input-number>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col>
+                建议零售价
+            </nz-form-label>
+            <nz-form-control nz-col nzFlex="200px">
+                <nz-input-number [nzMin]="1" [(ngModel)]="entityParam.retailPriceB" nzPlaceHolder="请输入建议零售价">
+                </nz-input-number>
+            </nz-form-control>
+        </nz-form-item>
+        <br>
+        <h3>C端价格设置</h3>
+        <nz-form-item>
+            <nz-form-label nz-col nzRequired>
+                单个售价
+            </nz-form-label>
+            <nz-form-control nz-col nzFlex="200px">
+                <nz-input-number [nzMin]="1" [(ngModel)]="entityParam.shopPriceC" nzPlaceHolder="请输入单个售价">
+                </nz-input-number>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col>
+                最小购买值
+            </nz-form-label>
+            <nz-form-control nz-col nzFlex="200px">
+                <nz-input-number [nzMin]="1" [(ngModel)]="entityParam.buyMinC" nzPlaceHolder="请输入最小购买值">
+                </nz-input-number>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col>
+                最大购买值
+            </nz-form-label>
+            <nz-form-control nz-col nzFlex="200px">
+                <nz-input-number [nzMin]="0" [nzMax]="999" [(ngModel)]="entityParam.buyMaxC" nzPlaceHolder="请输入最大购买值">
+                </nz-input-number>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nz-col>
+                单个划线价
+            </nz-form-label>
+            <nz-form-control nz-col nzFlex="200px">
+                <nz-input-number [nzMin]="1" [(ngModel)]="entityParam.originalPriceC" nzPlaceHolder="请输入单个划线价">
+                </nz-input-number>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div class="submit-box">
+        <nz-divider></nz-divider>
+        <div class="bt-box">
+            <button nz-button nzType="primary" (click)="submitForm()">保存</button>
+            <app-bt-group [btType]="'default'" [btText]="'返回'"></app-bt-group>
+        </div>
+    </div>
+</main>

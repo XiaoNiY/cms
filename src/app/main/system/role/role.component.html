@@ -1,0 +1,135 @@
+<div class="bt-search">
+    <div class="bt-box">
+        <button nz-button nzType="primary" (click)="showRoleModal()">新增角色</button>
+        <!-- <button nz-button nzType="default" nzDanger>批量删除</button> -->
+    </div>
+    <!-- 其他功能按钮 -->
+    <div class="bt-list">
+        <a class="refresh" nzTooltipTitle="刷新" nzTooltipPlacement="top" nz-tooltip (click)="refresh()"><i nz-icon
+                nzType="sync" nzTheme="outline"></i></a>
+        <!-- <a class="export" nzTooltipTitle="导出" nzTooltipPlacement="top" nz-tooltip><i nz-icon nzType="download"
+                nzTheme="outline"></i></a> -->
+    </div>
+    <!-- 搜索 -->
+    <div class="search-box">
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+            <input type="text" nz-input placeholder="请输入角色名称" [(ngModel)]="queryForm.name" />
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+            <button nz-button nzType="primary" nzSearch (click)="query()"><i nz-icon nzType="search"></i></button>
+        </ng-template>
+    </div>
+</div>
+
+<main>
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="listOfData?.records" [nzShowPagination]="false"
+        [nzPageSize]="listOfData?.size" [nzLoading]="tableLoading" nzBordered>
+        <thead>
+            <tr>
+                <!-- <th [(nzChecked)]="checked" (nzCheckedChange)="onAllChecked($event)"></th> -->
+                <th nzAlign="center">id</th>
+                <th nzAlign="center">角色名称</th>
+                <th nzAlign="center">权限字符</th>
+                <th nzAlign="center">权限数</th>
+                <th nzAlign="center">员工数</th>
+                <th nzAlign="center">显示顺序</th>
+                <th nzAlign="center">状态</th>
+                <th nzAlign="center">备注</th>
+                <th nzAlign="center">创建时间</th>
+                <th nzAlign="center">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="searchHint && listOfData?.records">
+                <td class="searchHint" nzAlign="center" colspan="13">
+                    <span>搜索 “{{searcName}}”，找到&nbsp;{{ listOfData?.total }}&nbsp;条结果</span>
+                    <a (click)="backList()">返回原列表</a>
+                </td>
+            </tr>
+            <tr *ngFor="let data of rowSelectionTable.data">
+                <!-- <td nzAlign="center" [nzChecked]="data.Checked" (nzCheckedChange)="onItemChecked(data.id, $event)">
+                </td> -->
+                <!-- id -->
+                <td nzAlign="center">{{data.id}}</td>
+                <!-- 角色名称 -->
+                <td nzAlign="center">{{data.name}}</td>
+                <!-- 权限字符 -->
+                <td nzAlign="center">{{data.keyword ? data.keyword :'-'}}</td>
+                <!-- 权限数 -->
+                <td nzAlign="center">{{data.permitCount ? data.permitCount : 0}} 项</td>
+                <!-- 员工数 -->
+                <td nzAlign="center">{{data.userCount}}人</td>
+                <!-- 显示顺序 -->
+                <td nzAlign="center">{{data.sort}}</td>
+                <!-- 状态 -->
+                <td nzAlign="center">{{data.rstats == 0 ? '启用' : '禁用'}}</td>
+                <!-- 备注 -->
+                <td nzAlign="center">{{data.rremarks ? data.rremarks : '-'}}</td>
+                <!-- 创建时间 -->
+                <td nzAlign="center">{{data.createTime}}</td>
+                <td nzAlign="center">
+                    <a nz-button nz-button-tdlink nzType="link" (click)="showRoleModal(data.id)">编辑</a>
+                    <a nz-button nz-button-tdlink nzType="link" (click)="showMenuModal(data.id)">权限</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <div class="pagination-box">
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]"nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="1" [nzTotal]="listOfData?.total"
+                [nzShowTotal]="totalTemplate" [nzPageSize]="listOfData?.size"
+                (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)">
+            </nz-pagination>
+        </div>
+    </div>
+</main>
+
+<nz-modal [(nzVisible)]="roleModal" nzTitle="角色信息" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+    <form nz-form [formGroup]="modalForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">角色名称</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="name" [maxLength]="20" placeholder="请输入角色名称" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">权限字符</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="keyword" [maxLength]="20" placeholder="请输入权限字符" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">显示顺序</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <input nz-input formControlName="sort" [maxLength]="20" placeholder="请输入显示顺序" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">状态</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <nz-radio-group formControlName="rStats">
+                    <label nz-radio nzValue="0">启用</label>
+                    <label nz-radio nzValue="1">禁用</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="4">备注</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+                <textarea nz-input rows="10" formControlName="rRemarks" [maxLength]="100" placeholder="请输入备注"></textarea>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-control [nzSpan]="8" [nzOffset]="4">
+                <button nz-button nzType="primary" [nzLoading]="modalLoading">保存</button>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+</nz-modal>
+<nz-modal [(nzVisible)]="menuModal" nzTitle="角色权限" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+    <nz-tree #nzTreeComponent [nzData]="nodes" [nzExpandAll]="true" [nzCheckedKeys]="menuForm.showPid" nzCheckable></nz-tree>
+    
+    <button nz-button nzType="default" (click)="submitPower()">确定</button>&nbsp;
+    <button nz-button nzType="primary" (click)="handleCancel()">取消</button>
+</nz-modal>

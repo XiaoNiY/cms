@@ -1,0 +1,160 @@
+<div class="app-home-activty-search">
+    <div class="bt-box">
+        <button nz-button nzType="primary" (click)="onOpenModalAdd()">新增</button>
+    </div>
+    <div class="search-box">
+        <!-- 状态 -->
+        <div class="select-box">
+            <nz-form-label [nzSpan]="5">状态</nz-form-label>
+            <nz-select nzAllowClear nzPlaceHolder="请选择" [(ngModel)]="queryForm.status">
+                <nz-option nzValue="0" nzLabel="未开始"></nz-option>
+                <nz-option nzValue="1" nzLabel="进行中"></nz-option>
+                <nz-option nzValue="2" nzLabel="已结束"></nz-option>
+            </nz-select>
+        </div>
+        <!-- 搜索 -->
+        <button nz-button nzType="primary" nzSearch (click)="onQuery()">查询</button>
+    </div>
+</div>
+<main class="app-home-activty-main">
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="tableData?.records" [nzShowPagination]="false"
+        [nzPageSize]="tableData?.records?.size" [nzLoading]="tableLoading">
+        <thead>
+            <tr>
+                <th nzAlign="center">排序</th>
+                <th nzAlign="center" nzWidth="10%">名称</th>
+                <th nzAlign="center" nzWidth="20%">活动图片</th>
+                <th nzAlign="center" nzWidth="10%">格式</th>
+                <th nzAlign="center" nzWidth="10%">开始时间</th>
+                <th nzAlign="center" nzWidth="10%">结束时间</th>
+                <th nzAlign="center" nzWidth="10%">状态</th>
+                <th nzAlign="center">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of tableData?.records; let i = index">
+                <!-- 排序 -->
+                <td nzAlign="center">{{ queryForm.pageSize * (queryForm.pageNum - 1) + i + 1 }}</td>
+                <!-- 名称 -->
+                <td nzAlign="center">{{item.activityName}}</td>
+                <!-- 活动图片 -->
+                <td nzAlign="center">
+                    <img *ngIf="content_to_pic(item)" nz-image [nzSrc]="content_to_pic(item)" class="pic-icon">
+                    <span *ngIf="!content_to_pic(item)">-</span>
+                </td>
+                <!-- 格式 -->
+                <td nzAlign="center">{{item.layout || '-'}}</td>
+                <!-- 开始时间 -->
+                <td nzAlign="center">{{item.beginTime || '-'}}</td>
+                <!-- 结束时间 -->
+                <td nzAlign="center">{{item.endTime || '-'}}</td>
+                <!-- 状态 -->
+                <td nzAlign="center">{{status_to_text(item.status)}}</td>
+                <!-- 操作 -->
+                <td nzAlign="center">
+                    <a nz-button nz-button-tdlink nzType="link" (click)="onTableMove(item, 'up')">上移</a>
+                    <a nz-button nz-button-tdlink nzType="link" (click)="onTableMove(item, 'down')">下移</a>
+                    <a nz-button nz-button-tdlink nzType="link" (click)="onTableEdit(item)">编辑</a>
+                    <a nz-button nz-button-tdlink nzType="link" nzDanger nz-popconfirm nzPopconfirmTitle="确认删除吗?"
+                        (nzOnConfirm)="onTableDelete(item)">删除
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <div class="pagination-box">
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有 {{ tableData.total }} 条 </ng-template>
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]" nzShowSizeChanger nzShowQuickJumper
+                [nzPageIndex]="queryForm.pageNum" [nzTotal]="tableData.total" [nzShowTotal]="totalTemplate"
+                [nzPageSize]="queryForm.pageSize" (nzPageIndexChange)="onPageIndexChange($event)"
+                (nzPageSizeChange)="onPageSizeChange($event)">
+            </nz-pagination>
+        </div>
+    </div>
+</main>
+
+<nz-modal [(nzVisible)]="isModalShow" nzTitle="选择采购商品" (nzOnCancel)="onModalClose()" [nzFooter]="null"
+    [nzStyle]="{ width: '1100px' }">
+    <!-- 名称 -->
+    <nz-form-item>
+        <nz-form-label nzRequired>名称：</nz-form-label>
+        <nz-form-control nzFlex="400px">
+            <input nz-input [(ngModel)]="modalForm.activityName" placeholder="请输入" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label nzRequired>状态：</nz-form-label>
+        <nz-form-control nzFlex="400px">
+            <nz-select nzAllowClear nzPlaceHolder="请选择" [(ngModel)]="modalForm.layout"
+                (ngModelChange)="onModalSelectStatus($event)">
+                <nz-option *ngFor="let item of modalStatusSet | keyvalue" nzValue="{{item.key}}"
+                    nzLabel="{{item.value}}">
+                </nz-option>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item>
+    <article class="modal-pic-box">
+        <!-- 图片 -->
+        <nz-form-item *ngFor="let item of contentList; let i = index;">
+            <nz-form-label nzRequired [class]="i > 0 ? 'pic-labe' : ''">图片{{ number_to_text(i + 1) }}：</nz-form-label>
+            <nz-form-control>
+                <nz-upload nzAccept="image/*" nzAction="" nzListType="picture-card"
+                    (nzChange)="onModalPreview($event, i)" [nzShowUploadList]="false">
+                    <ng-container *ngIf="!item.pic">
+                        <i class="upload-icon" nz-icon nzType="plus"></i>
+                    </ng-container>
+                    <img *ngIf="item.pic" [src]="item.pic" style="width: 100%" />
+                </nz-upload>
+            </nz-form-control>
+        </nz-form-item>
+    </article>
+    <article *ngFor="let item of contentList; let i = index;" class="modal-link-box">
+        <!-- 链接一： -->
+        <nz-form-item>
+            <nz-form-label nzRequired>链接{{ number_to_text(i + 1) }}：</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input nz-input [(ngModel)]="item.lurl" placeholder="请输入" />
+            </nz-form-control>
+        </nz-form-item>
+        <!-- 状态 -->
+        <nz-form-item>
+            <nz-form-label nzRequired>状态：</nz-form-label>
+            <nz-form-control>
+                <nz-radio-group [(ngModel)]="item.needLogin">
+                    <label nz-radio [nzValue]="0">需要登录</label>
+                    <label nz-radio [nzValue]="1">不需要登录</label>
+                </nz-radio-group>
+            </nz-form-control>
+        </nz-form-item>
+    </article>
+
+    <article class="modal-link-box">
+        <!-- 开始时间 -->
+        <nz-form-item>
+            <nz-form-label nzRequired>开始时间：</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <nz-date-picker nzShowTime [(ngModel)]="modalForm.beginTime"></nz-date-picker>
+            </nz-form-control>
+        </nz-form-item>
+        <!-- 结束时间 -->
+        <nz-form-item>
+            <nz-form-label nzRequired>结束时间：</nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <nz-date-picker nzShowTime [(ngModel)]="modalForm.endTime">
+                </nz-date-picker>
+            </nz-form-control>
+        </nz-form-item>
+    </article>
+    <!-- 备注 -->
+    <nz-form-item>
+        <nz-form-label>备注：</nz-form-label>
+        <nz-form-control nzFlex="400px">
+            <textarea nz-input [(ngModel)]="modalForm.bak" placeholder="请输入"></textarea>
+        </nz-form-control>
+    </nz-form-item>
+    <footer class="app-modal-foot">
+        <button nz-button nzType="default" (click)="onModalClose()">取消</button>
+        <button nz-button nzType="primary" (click)="onConfirm()">确定</button>
+    </footer>
+</nz-modal>

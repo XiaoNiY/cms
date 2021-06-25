@@ -1,0 +1,106 @@
+main{
+    width: 1670px;
+    margin: auto;
+    margin-bottom: 20px;
+    background: #fff;    
+    box-shadow: 0 2px 3px 0 rgba(0,0,0,.2);
+    .panelgroup{
+      padding: 40px 40px 0 40px;
+    }
+    h3{
+        font-size: 14px;
+        font-weight: 700;
+    }
+    .panel-bd{
+        padding-top: 10px;
+    }
+    .bt-box{
+        margin-bottom: 10px;
+    }
+    .pagination-box{    
+      height: 56px;
+      line-height: 56px;
+      padding: 0 18px;
+      font-size: 12px;
+      .pagination-template{
+        float: left;
+      }
+      &:after {content: ' ';display: block;clear: both;height: 0;visibility: hidden;}
+    }
+    ul{
+        li{
+            width: 396px;
+            line-height: 40px;
+            font-size: 12px;
+            float: left;
+            .key{
+                width: 100px;
+                padding-right: 20px;
+                color: #888;
+                text-align: right;
+                float: left;
+            }
+            .val{
+                float: left;
+            } 
+            &.addLen{
+                width: 100%;
+                .val{
+                    width: calc(100% - 100px);
+                }
+            }
+            &:after {content: ' ';display: block;clear: both;height: 0;visibility: hidden;}
+        }
+        &:after {content: ' ';display: block;clear: both;height: 0;visibility: hidden;}
+    }
+    .submit-box{
+      width:100%;
+      height: 70px;    
+      padding: 0 40px;
+      position: relative;
+      .bt-box{
+        position: absolute;
+        left: 40px;
+        bottom: 15px;
+        top: 18px;
+      }
+    }
+}
+nz-table{
+  margin-bottom: 10px;
+  border: 1px solid #cfd5de;
+  th{
+    height: 38px;
+    padding:0;
+    color: #888;
+    font-weight: 700;
+    background: #fff !important;
+    border-right: none !important;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    position: relative;
+  }
+  tbody{
+      tr{
+          td{
+            height: 46px;
+            padding:0;
+            font-size: 12px;
+            border-right: none !important;
+            border-bottom: 1px solid rgb(229, 229, 229) !important;
+          }
+          &:last-child td{
+              border-bottom: none !important;
+          }
+      }
+  }
+}
+:host ::ng-deep .ant-table.ant-table-bordered > .ant-table-container{
+    border: none;
+}
+[nz-button] {
+  margin-right: 8px;
+}
+nz-pagination{
+  margin-top: 12px;
+}

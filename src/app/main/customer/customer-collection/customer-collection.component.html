@@ -49,12 +49,10 @@
         </tbody>
     </nz-table>
     <div class="pagination-box">
-      <div class="pagination-template">
-        <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
-        <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]" nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="1"
-          [nzTotal]="1" [nzShowTotal]="totalTemplate" [nzPageSize]="1" (nzPageIndexChange)="onPageIndexChange($event)"
-          (nzPageSizeChange)="onPageSizeChange($event)">
-        </nz-pagination>
-      </div>
+        <span>共 <strong>0</strong> 条</span>
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有 1 条 </ng-template>
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]"nzShowSizeChanger></nz-pagination>
+        </div>
     </div>
 </main>

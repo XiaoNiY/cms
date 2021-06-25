@@ -1,0 +1,109 @@
+main{
+  width: 1900px;
+  margin: auto;
+  background: #fff;
+  h3{
+        margin-bottom: 20px;
+  }
+  .formBox{
+    padding: 40px;
+  }
+
+  .submit-box{
+    width:100%;
+    height: 70px;    
+    padding: 0 40px;
+    position: relative;
+    .bt-box{
+      position: absolute;
+      left: 40px;
+      bottom: 15px;
+      top: 18px;
+      >button{
+        margin-right: 10px;
+      }
+    }
+  }
+  nz-form-label{    
+    width: 92px;
+  }
+}
+:host ::ng-deep .ant-form-item-label > label{
+    color: #b7b7b7 !important;
+}
+nz-table{
+  position: relative;
+  .all{
+    position: absolute;
+    right: 38px;
+    top: 12px;
+  }
+  .domBox{
+    width: 150px;
+    margin: auto;
+    padding: 0 10px;
+  }
+  .texTflow{
+    width: 100px;
+    margin: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
+  th{
+    width: 100px;
+    height: 38px;
+    padding:0 !important;
+    color: #888;
+    background: #fff !important;
+    
+    border-top-color: #cfd5de !important;
+    border-right-color: #cfd5de !important;
+    border-left-color: #cfd5de !important;
+    border-color: #cfd5de !important;
+    font-size: 14px;
+    position: relative;
+  }
+  td{
+    height: 56px;
+    padding:0 !important;
+    font-size: 12px; 
+    nz-input-number{
+      width: 100%;
+    }
+  }
+}
+:host ::ng-deep  .ant-table.ant-table-bordered > .ant-table-container{
+  border-left: 1px solid #cfd5de;
+  border-color: #cfd5de !important;
+}
+:host ::ng-deep  .ant-table.ant-table-bordered > .ant-table-title{
+  border-color: #cfd5de !important;
+}
+:host ::ng-deep .ant-table-tbody > tr > td{
+  border-color: #cfd5de !important;
+}
+
+:host ::ng-deep .ant-form-item-label > label{
+  padding-right: 14px;
+  color: #b7b7b7 !important;
+}
+:host ::ng-deep .ant-form-item-label{
+  text-align: left;
+}
+:host ::ng-deep.ant-form-item-label > label::after{
+  display: none;
+}
+
+:host ::ng-deep.ant-form-item-label > label::before{
+      margin-right: 4px;
+      font-size: 12px !important;
+      font-family:auto !important;
+      line-height: inherit !important;
+      position: absolute;
+      right: 0;
+      top: 8px;
+}

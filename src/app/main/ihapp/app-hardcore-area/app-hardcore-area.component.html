@@ -1,0 +1,151 @@
+<div class="app-hardcore-area-search">
+    <div class="bt-box">
+        <button nz-button nzType="primary" (click)="onOpenModalAdd()">新增</button>
+        <button nz-button nzType="primary" nz-popover nzPopoverTitle="金刚区设置" [(nzPopoverVisible)]="visible"
+            (click)="onHardcore()" nzPopoverPlacement="bottom" nzPopoverTrigger="click"
+            [nzPopoverContent]="contentTemplate">
+            金刚区（{{popoverForm.kingKongSetting ? '显示' : '隐藏'}}）
+        </button>
+        <ng-template #contentTemplate>
+            <nz-radio-group [(ngModel)]="popoverForm.kingKongSetting">
+                <label nz-radio [nzValue]="1">显示</label>
+                <label nz-radio [nzValue]="0">隐藏</label>
+            </nz-radio-group>
+            <footer style="margin-top: 20px;">
+                <button nz-button nzType="default" (click)="onClosePopover()" style="margin: 0 5px;">取消</button>
+                <button nz-button nzType="primary" (click)="onSurePopover()" style="margin: 0 5px;">确定</button>
+            </footer>
+        </ng-template>
+    </div>
+    <div class="search-box">
+        <!-- 状态 -->
+        <div class="select-box">
+            <nz-form-label>状态</nz-form-label>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择" [(ngModel)]="queryForm.status">
+                <nz-option nzValue="0" nzLabel="禁用"></nz-option>
+                <nz-option nzValue="1" nzLabel="启用"></nz-option>
+            </nz-select>
+        </div>
+        <!-- 搜索 -->
+        <button nz-button nzType="primary" nzSearch (click)="onQuery()">查询</button>
+    </div>
+</div>
+<main class="app-hardcore-area-main">
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="tableData?.records" [nzShowPagination]="false"
+        [nzPageSize]="tableData?.records?.size" [nzLoading]="tableLoading">
+        <thead>
+            <tr>
+                <th nzAlign="center">排序</th>
+                <th nzAlign="center" nzWidth="20%">名称</th>
+                <th nzAlign="center" nzWidth="10%">图标</th>
+                <th nzAlign="center" nzWidth="30%">链接</th>
+                <th nzAlign="center" nzWidth="10%">状态</th>
+                <th nzAlign="center">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of tableData?.records; let i = index">
+                <!-- 排序 -->
+                <td nzAlign="center">{{ queryForm.pageSize * (queryForm.pageNum - 1) + i + 1 }}</td>
+                <!-- 名称 -->
+                <td nzAlign="center">{{item.ntName}}</td>
+                <!-- 图标 -->
+                <td nzAlign="center">
+                    <img *ngIf="item.ntPicUrl" nz-image [nzSrc]="item.ntPicUrl" class="pic-icon">
+                    <span *ngIf="!item.ntPicUrl">-</span>
+                </td>
+                <!-- 链接 -->
+                <td nzAlign="center">{{item.ntUrl || '-'}}</td>
+                <!-- 状态 -->
+                <td nzAlign="center">{{status_to_text(item.status)}}</td>
+                <!-- 操作 -->
+                <td nzAlign="center">
+                    <a nz-button nz-button-tdlink nzType="link" (click)="onTableOperate(item, 'up')">上移</a>
+                    <a nz-button nz-button-tdlink nzType="link" (click)="onTableOperate(item, 'down')">下移</a>
+                    <a nz-button nz-button-tdlink nzType="link" (click)="onTableEdit(item)">编辑</a>
+                    <a nz-button nz-button-tdlink nzType="link" nzDanger nz-popconfirm nzPopconfirmTitle="确认删除吗?"
+                        (nzOnConfirm)="onTableDelete(item)">删除
+                    </a>
+                    <a *ngIf="item.status == 1" nz-button nz-button-tdlink nzType="link" nz-popconfirm
+                        nzPopconfirmTitle="确认禁用吗?" (nzOnConfirm)="onTableDisable(item)">禁用</a>
+                    <a *ngIf="item.status == 0" nz-button nz-button-tdlink nzType="link" nz-popconfirm
+                        nzPopconfirmTitle="确认启用吗?" (nzOnConfirm)="onTableEnable(item)">启用</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <div class="pagination-box">
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有 {{ tableData.total }} 条 </ng-template>
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]" nzShowSizeChanger nzShowQuickJumper
+                [nzPageIndex]="queryForm.pageNum" [nzTotal]="tableData.total" [nzShowTotal]="totalTemplate"
+                [nzPageSize]="queryForm.pageSize" (nzPageIndexChange)="onPageIndexChange($event)"
+                (nzPageSizeChange)="onPageSizeChange($event)">
+            </nz-pagination>
+        </div>
+    </div>
+</main>
+
+<nz-modal [(nzVisible)]="isModalShow" nzTitle="选择采购商品" (nzOnCancel)="onModalClose()" [nzFooter]="null">
+    <!-- 名称 -->
+    <nz-form-item>
+        <nz-form-label nzRequired>名称：</nz-form-label>
+        <nz-form-control nzFlex="400px">
+            <input nz-input [(ngModel)]="modalForm.ntName" placeholder="请输入" input-noSpace />
+        </nz-form-control>
+    </nz-form-item>
+    <!-- 图标 -->
+    <nz-form-item>
+        <nz-form-label nzRequired>图标：</nz-form-label>
+        <nz-form-control>
+            <nz-upload nzAccept="image/*" nzAction="" nzListType="picture-card"
+                (nzChange)="onModalPreview($event, 'ntPicUrl')" [nzShowUploadList]="false">
+                <ng-container *ngIf="!cacheData.ntPicUrl">
+                    <i class="upload-icon" nz-icon nzType="plus"></i>
+                </ng-container>
+                <img *ngIf="cacheData.ntPicUrl" [src]="cacheData.ntPicUrl" style="width: 100%" />
+            </nz-upload>
+        </nz-form-control>
+    </nz-form-item>
+    <!-- 角标 -->
+    <nz-form-item>
+        <nz-form-label nzRequired>角标：</nz-form-label>
+        <nz-form-control>
+            <nz-upload nzAccept="image/*" nzAction="" nzListType="picture-card"
+                (nzChange)="onModalPreview($event, 'cornerMarker')" [nzShowUploadList]="false">
+                <ng-container *ngIf="!cacheData.cornerMarker">
+                    <i class="upload-icon" nz-icon nzType="plus"></i>
+                </ng-container>
+                <img *ngIf="cacheData.cornerMarker" [src]="cacheData.cornerMarker" style="width: 100%" />
+            </nz-upload>
+        </nz-form-control>
+    </nz-form-item>
+    <!-- 链接 -->
+    <nz-form-item>
+        <nz-form-label nzRequired>链接：</nz-form-label>
+        <nz-form-control nzFlex="400px">
+            <input nz-input [(ngModel)]="modalForm.ntUrl" placeholder="请输入" />
+        </nz-form-control>
+    </nz-form-item>
+    <!-- 状态 -->
+    <nz-form-item>
+        <nz-form-label nzRequired>状态：</nz-form-label>
+        <nz-form-control nzFlex="400px">
+            <nz-radio-group [(ngModel)]="modalForm.status">
+                <label nz-radio [nzValue]="0">禁用</label>
+                <label nz-radio [nzValue]="1">启用</label>
+            </nz-radio-group>
+        </nz-form-control>
+    </nz-form-item>
+    <!-- 备注 -->
+    <nz-form-item>
+        <nz-form-label>备注：</nz-form-label>
+        <nz-form-control nzFlex="400px">
+            <textarea nz-input [(ngModel)]="modalForm.bak" placeholder="请输入"></textarea>
+        </nz-form-control>
+    </nz-form-item>
+    <footer class="app-modal-foot">
+        <button nz-button nzType="default" (click)="onModalClose()">取消</button>
+        <button nz-button nzType="primary" (click)="onConfirm()">确定</button>
+    </footer>
+</nz-modal>

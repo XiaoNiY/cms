@@ -1,0 +1,142 @@
+.explain-box{
+  width: 1180px;
+  min-height: 48px;
+  line-height: 48px;
+  padding: 0 20px;
+  color: #002da0;
+  margin: auto;
+  margin-bottom: 20px;
+  background: #d5e7ff;
+  i{
+      margin-right: 10px;
+      color: #006eff;
+      font-size: 16px;
+  }
+  span{
+      font-size: 12px;
+  }
+}
+main{
+  width: 1180px;
+  margin: auto;
+  background: #fff;
+  h3{
+    margin-bottom: 20px;
+  }
+  .form-box{
+    padding: 40px 40px 0 40px;
+  }
+  .submit-box{
+    width:100%;
+    height: 70px;    
+    padding: 0 40px;
+    position: relative;
+    .bt-box{
+      position: absolute;
+      left: 40px;
+      bottom: 15px;
+      top: 18px;
+      >button{
+        margin-right: 10px;
+      }
+    }
+  }
+  i{
+    margin-top: 8px;
+    margin-right: 10px;
+  }
+}
+[radio-vertical] {
+  display: block;
+  height: 32px;
+  line-height: 32px;
+}
+:host ::ng-deep a.ant-btn{
+  padding-left: 0;
+  padding-right: 0;
+}
+
+:host ::ng-deep .ant-form-item-label > label{
+  padding-right: 14px;
+  color: #b7b7b7 !important;
+}
+:host ::ng-deep .ant-form-item-label{
+  width: 116px;
+  text-align: left;
+}
+:host ::ng-deep.ant-form-item-label > label::after{
+  display: none;
+}
+
+:host ::ng-deep.ant-form-item-label > label::before{
+      margin-right: 4px;
+      font-size: 12px !important;
+      font-family:auto !important;
+      line-height: inherit !important;
+      position: absolute;
+      right: 0;
+      top: 8px;
+}
+
+
+nz-table{
+  border: 1px solid #cfd5de !important;
+th{
+  height: 38px;
+  padding:0 !important;
+  color: #888;
+  background: #fff !important;
+  font-size: 14px;
+  position: relative;
+  text-align: center;
+  border-right: none !important;
+  border-left: none !important;
+  border-color: #cfd5de !important;
+  &:nth-child(1){
+    width: 80px;
+  }
+  &:nth-child(2){
+    width: 80px;
+  }
+  &.goodsName{
+    width: 600px;
+  }
+}
+tr{
+  td{
+    height: 56px;
+    padding:0 !important;
+    font-size: 12px; 
+    text-align: center;
+    border-right: none !important;
+    border-left: none !important;
+    border-bottom: 1px solid #e7eaef !important;
+  }
+  &:last-child td{
+      border: none !important
+  }
+}
+}
+:host ::ng-deep .ant-table.ant-table-bordered > .ant-table-container{
+  border: none !important;
+}
+.search-box{
+  margin-bottom: 20px;
+>div{
+  float: left;    
+  display: flex;
+}
+>button{
+    float: left;
+    &:nth-child(3){
+        margin-left: 10px;
+    }
+}
+nz-input-group {
+  width: 300px;
+}
+nz-select {
+  width: 200px;
+}
+&:after {content: ' ';display: block;clear: both;height: 0;visibility: hidden;}
+}

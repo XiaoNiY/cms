@@ -1,0 +1,89 @@
+<div class="bt-search">
+    <div class="bt-box">
+        <button nz-button nzType="primary" [routerLink]="['../goodsSpenarrSave', 0]">新增规格组</button>
+        <!-- <button nz-button nzType="default" nzDanger>批量删除</button> -->
+    </div>
+    <!-- 其他功能按钮 -->
+    <div class="bt-list">
+        <a class="refresh" nzTooltipTitle="刷新" nzTooltipPlacement="top" nz-tooltip (click)="refresh()"><i nz-icon
+                nzType="sync" nzTheme="outline"></i></a>
+        <!-- <a class="export" nzTooltipTitle="导出" nzTooltipPlacement="top" nz-tooltip><i nz-icon nzType="download"
+                nzTheme="outline"></i></a> -->
+    </div>
+    <!-- 搜索 -->
+    <div class="search-box">
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+            <input type="text" nz-input placeholder="请输入名称或备注" [(ngModel)]="queryForm.name" />
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+            <button nz-button nzType="primary" nzSearch (click)="query()"><i nz-icon nzType="search"></i></button>
+        </ng-template>
+    </div>
+</div>
+<main>
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="listOfData?.records" [nzShowPagination]="false"
+        [nzPageSize]="listOfData?.size" [nzLoading]="tableLoading" nzBordered>
+        <thead>
+            <tr>
+                <!-- <th [(nzChecked)]="checked" (nzCheckedChange)="onAllChecked($event)"></th> -->
+                <th nzAlign="center">id</th>
+                <th nzAlign="center" style="width: 160px;">图片</th>
+                <th nzAlign="center" style="width: 400px;">名称</th>
+                <th nzAlign="center">规格数</th>
+                <th nzAlign="center">已绑定</th>
+                <th nzAlign="center">已上架</th>
+                <th nzAlign="center">已下架</th>
+                <th nzAlign="center">B端商品</th>
+                <th nzAlign="center">C端商品</th>
+                <th nzAlign="center" style="width: 500px;">备注</th>
+                <th nzAlign="center" style="width: 160px;">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="searchHint && listOfData?.records">
+                <td class="searchHint" nzAlign="center" colspan="13">
+                    <span>搜索 “{{searcName}}”，找到&nbsp;{{ listOfData?.total }}&nbsp;条结果</span>
+                    <a (click)="backList()">返回原列表</a>
+                </td>
+            </tr>
+            <tr *ngFor="let data of rowSelectionTable.data">
+                <!-- id -->
+                <td nzAlign="center">{{data.id}}</td>
+                <!-- 图片 -->
+                <td nzAlign="center"> <img width="36" height="36" nz-image nzSrc="{{data.icon}}"
+                        [nzFallback]="fallback" /> </td>
+                <!-- 名称 -->
+                <td nzAlign="left">{{data.name}}</td>
+                <!-- 规格数 -->
+                <td nzAlign="center">{{data.count}}</td>
+
+                <td nzAlign="center">{{data.goodsCount}}</td>
+                <td nzAlign="center">{{data.goodsPutCount }}</td>
+                <td nzAlign="center">{{(data.goodsCount - data.goodsPutCount)}}</td>
+                <td nzAlign="center">{{data.goodsCountB}}</td>
+                <td nzAlign="center">{{data.goodsCountC}}</td>
+                <!-- 备注 -->
+                <td nzAlign="left">{{data.note ? data.note : '-'}}</td>
+                <td nzAlign="center">
+                    <a nz-button nz-button-tdlink nzType="link" [routerLink]="['../goodsSpenarrSave', data.id]">编辑</a>
+
+                    <a nz-button nz-button-tdlink nzType="link" nzDanger nz-popconfirm nzPopconfirmTitle="确认删除吗?"
+                        [nzIcon]="iconTpl" (nzOnConfirm)="confirm(data.id)">删除</a>
+                    <ng-template #iconTpl>
+                        <i nz-icon nzType="question-circle-o" style="color: red;"></i>
+                    </ng-template>
+
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <div class="pagination-box">
+        <div class="pagination-template">
+            <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+            <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]"nzShowSizeChanger nzShowQuickJumper [nzPageIndex]="listOfData?.current"
+                [nzTotal]="listOfData?.total" [nzShowTotal]="totalTemplate" [nzPageSize]="listOfData?.size"
+                (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)">
+            </nz-pagination>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,96 @@
+<main>
+    <form>
+        <h3>基础信息</h3>
+        <nz-form-item>
+            <nz-form-label [nzSm]="2" [nzXs]="4" nzRequired>
+                状态
+            </nz-form-label>
+            <nz-form-control nzFlex="147px">
+                <nz-radio-group>
+                    <label nz-radio nzValue="启用">启用</label>
+                    <label nz-radio nzValue="禁用">禁用</label>
+                </nz-radio-group>
+            </nz-form-control>
+            <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline" nzTooltipPlacement="right"></i>
+            <ng-template>
+                <span>这里的状态仅仅是作为标识，具体要看代码是否引用改配置</span>
+            </ng-template>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="2" [nzXs]="4" nzRequired>
+                所属平台
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择">
+                    <nz-option nzLabel="平台" nzValue="平台"></nz-option>
+                  </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="2" [nzXs]="4" nzRequired>
+                所属业务
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择">
+                    <nz-option nzLabel="业务" nzValue="业务"></nz-option>
+                  </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="2" [nzXs]="4">
+                所属页面
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input nz-input type="text" placeholder="请输入">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="2" [nzXs]="4" nzRequired>
+                名称
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <input nz-input type="text" placeholder="请输入">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="2" [nzXs]="6" nzRequired>
+                备注说明
+            </nz-form-label>
+            <nz-form-control nzFlex="400px">
+                <nz-mention>
+                    <textarea rows="6" nz-input placeholder="仅内部可见"></textarea>
+                </nz-mention>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+
+    <form>
+        <h3>广告配置</h3>
+        <nz-form-item>
+            <nz-form-label [nzSm]="2" [nzXs]="4">
+                内容预设
+            </nz-form-label>
+            <nz-form-control nzFlex="100px">
+                <nz-radio-group class="radio-box">
+                    <label nz-radio nzValue="指定分类">指定分类</label>
+                    <label nz-radio nzValue="指定广告">指定广告</label>
+                    <label nz-radio nzValue="不提前预设">不提前预设</label>
+                  </nz-radio-group>
+            </nz-form-control>
+            <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline" nzTooltipPlacement="right" class="icon"></i>
+            <ng-template>
+                <span>由代码自由指定广告内容</span>
+            </ng-template>
+        </nz-form-item>
+    </form>
+
+    <div class="submit-box">
+        <div class="bt-box">
+            <button nz-button nzType="primary">保存</button>
+            &nbsp;
+            <button nz-button nzType="primary">数据</button>
+            &nbsp;
+            <button nz-button nzType="primary">返回</button>
+        </div>
+    </div>
+</main>

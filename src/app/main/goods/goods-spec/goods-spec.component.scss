@@ -1,0 +1,131 @@
+.editable-tag {
+  background: rgb(255, 255, 255);
+  border-style: dashed;
+}
+[nz-button-tdlink]{
+  margin-right: 6px;
+  padding: 0;
+}
+::ng-deep .ant-table-thead > tr > th{
+    text-align: center;
+}
+::ng-deep .ant-table-tbody > tr > td{
+    text-align: center;
+}
+tbody input{
+    width: 72px;
+    text-align: center;
+}
+
+.ladderTable{
+    width: 666px;
+}
+nz-select {
+  width: 200px;
+}
+::ng-deep .ant-upload-list-picture-card .ant-upload-list-item-info::before{
+    left: 0;
+}
+
+.sku-list{
+    margin-top: 5px;
+    float: left;
+    .sku-item{
+        margin-bottom: 10px;
+        span{
+            min-width: 30px;
+            margin-right: 10px;
+            text-align: right;
+        }
+    }
+    button{
+        height: 26px;
+        line-height: 24px; 
+        padding: 0 14px;
+        font-size: 12px;
+    }
+}
+.sku-img{
+    width: 36px;
+    margin: 10px auto;
+    .upFile{
+      cursor: pointer;
+      input{
+        display: none;
+      }
+    }
+    img{
+        width: 100%;
+    }
+}
+::ng-deep td{
+    // 字体红色
+    &.font_Ged{
+        color: #ff0052;
+    }
+    // 字体绿色
+    &.font_Green{
+        color: #008000;
+    }
+}
+::ng-deep .ant-upload{
+    color: #1890ff;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+
+main{
+  width: 1900px;
+  margin: auto;
+  padding: 40px;
+  background: #fff;
+  form{
+    padding: 40px;
+  }
+  .submit-box{
+    width:100%;
+    height: 70px;    
+    border-top: 1px solid #dbe3e4;
+    box-shadow: 0 -4px 4px -2px #e4e9f0;
+    position: relative;
+    .bt-box{
+      position: absolute;
+      left: 25px;
+      bottom: 15px;
+    }
+  }
+}
+
+nz-table{
+  th{
+    height: 38px;
+    padding:0 !important;
+    color: #888;
+    background: #fff !important;
+    font-size: 14px;
+    position: relative;
+  }
+  td{
+    height: 56px;
+    padding:0 !important;
+    font-size: 12px;
+  }
+}
+
+.addParam{
+    width: 100%;
+    display: block;
+    border: 1px solid #eee;
+    border-top: none;
+    text-align: center;
+    padding: 10px;
+}
+.ladderInput{
+  span{
+    width: 62px;
+    margin-left: 8px;
+    display: inline-block;
+    text-align: left;
+  }
+}

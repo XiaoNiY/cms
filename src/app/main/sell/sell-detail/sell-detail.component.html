@@ -1,0 +1,495 @@
+<main>
+    <div class="panelgroup">
+        <div class="panel-hd">
+            <h3>基本信息</h3>
+        </div>
+        <div class="panel-bd">
+            <ul>
+                <li>
+                    <div class="key">
+                        <span>名称</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.couponInfo.name}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>优惠券ID</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.couponInfo.no}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>类型</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.couponInfo.type == 1 ? '满减券' : detailsData?.couponInfo.type == 2?'折扣券' : '随机券'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>创建时间</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.couponInfo.createTime}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>状态</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.couponInfo.status == 1 ? '未开始' : detailsData?.couponInfo.status == 2 ? '进行中' : detailsData?.couponInfo.status == 3? '已结束': detailsData?.couponInfo.status == 4?'已停止': '草稿'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>使用门槛</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.couponInfo.orderLimitMoney == 0 ? '无门槛' : '满'+detailsData?.couponInfo.orderLimitMoney+'元可用'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>减免额度</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.couponInfo.type == 1 ? detailsData?.couponInfo.limitSmall+'元' : detailsData?.couponInfo.type == 2 ? detailsData?.couponInfo.limitSmall+'折 最多' + detailsData?.couponInfo.limitBig+'元': '随机'+detailsData?.couponInfo.limitSmall + ' - ' + detailsData?.couponInfo.limitBig + '元'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>前端展示</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.couponInfo.isShowWeb == 1 ? '展示' : '不展示'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>领取时间</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.couponInfo.getBeginTime}} ~ {{detailsData?.couponInfo.getEndTime}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>领取人限制</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.couponInfo.userType == 0 ? '不限制' : detailsData?.couponInfo.userType == 1 ? 'C端用户' : 'B端用户'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>领取次数</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.couponInfo.userLimitNum > 0 ? '每人限领' + detailsData?.couponInfo.userLimitNum +'次' : '不限制'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>使用时间</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.couponInfo.useBeginTime}} ~ {{detailsData?.couponInfo.useEndTime}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>限制使用</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.couponInfo.limitTimeNum > 0 ? '领券当日' + detailsData?.couponInfo.limitTimeNum+'天内可用' : '领券当天可用'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>过期提醒</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.couponInfo.remind == 0 ? '不提醒' : '过期前' + detailsData?.couponInfo.remind +'天提醒'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <span>自动发放</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.couponInfo.autoReverse == -1 ? '新人' : detailsData?.couponInfo.autoReverse == 0? '不自动发放' : '每' + detailsData?.couponInfo.autoReverse +'天首次进店自动发放'}}</span>
+                    </div>
+                </li>
+            </ul>
+            <ul>
+                <li class="Len">
+                    <div class="key">
+                        <span>使用说明</span>
+                    </div>
+                    <div class="val">
+                        <span>{{detailsData?.couponInfo.useDesc}}</span>
+                    </div>
+                </li>
+            </ul>
+            <ul>
+                <li class="Len">
+                    <div class="key">
+                        <span>备注</span>
+                    </div>
+                    <div class="val">
+                        {{detailsData?.couponInfo.remark ? detailsData?.couponInfo.remark : '-'}}
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="panelgroup commodity">
+        <div class="panel-hd">
+            <h3>适用商品</h3>
+        </div>
+        <div class="panel-bd">
+
+            <ul>
+                <li>
+                    <div class="key">
+                        <span>指定分类</span>
+                    </div>
+                    <div class="val">
+                        <span
+                            title="{{detailsData?.applicableGoods.containsTypes}}">{{detailsData?.applicableGoods.containsTypes}}</span>
+                    </div>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <div class="key">
+                        <span>指定品牌</span>
+                    </div>
+                    <div class="val">
+                        <span
+                            title="{{detailsData?.applicableGoods.containsBrand}}">{{detailsData?.applicableGoods.containsBrand}}</span>
+                    </div>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <div class="key">
+                        <span>追加可用商品</span>
+                    </div>
+                    <div class="val">
+                        <span>已选 {{detailsData?.applicableGoods.containsGoodsIdList.length}} 个商品</span>&nbsp;&nbsp;
+                        <a nz-button nzType="link"
+                            (click)="showGoodsModal(detailsData?.applicableGoods.containsGoodsIdList)">点击查看</a>
+                    </div>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <div class="key">
+                        <span>排除可用商品</span>
+                    </div>
+                    <div class="val">
+                        <span>已选 {{detailsData?.applicableGoods.filterGoodsIdList.length}} 个商品</span>&nbsp;&nbsp;
+                        <a nz-button nzType="link"
+                            (click)="showGoodsModal(detailsData?.applicableGoods.filterGoodsIdList)">点击查看</a>
+                    </div>
+                </li>
+            </ul>
+
+
+            <!-- <nz-table #colSpanTable nzBordered [nzShowPagination]="false" [nzData]="[{}]">
+                <thead>
+                    <tr>
+                        <th nzAlign="center">商品编码</th>
+                        <th nzAlign="center">商品名称</th>
+                        <th nzAlign="center">B端价格</th>
+                        <th nzAlign="center">C端价格</th>
+                        <th nzAlign="center">库存</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of detailsData?.applicableGoods.goodsIPage.records">
+                        <td nzAlign="center">{{data.keyWord ? data.keyWord : '-'}}</td>
+                        <td nzAlign="left">{{data.name}}</td>
+                        <td nzAlign="center">{{data.originalPriceB ? '￥' + data.originalPriceB : '-'}}</td>
+                        <td nzAlign="center">{{data.originalPriceC ? '￥' + data.originalPriceC : '-'}}</td>
+                        <td nzAlign="center">{{data.inventory ? data.inventory : '-'}}</td>
+                    </tr>
+                </tbody>
+            </nz-table>
+            <div class="pagination-box">
+                <div class="pagination-template">
+                    <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+                    <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]" nzShowSizeChanger nzShowQuickJumper
+                        [nzPageIndex]="1" [nzTotal]="detailsData?.applicableGoods.goodsIPage?.total"
+                        [nzShowTotal]="totalTemplate" [nzPageSize]="detailsData?.applicableGoods.goodsIPage?.size"
+                        (nzPageIndexChange)="goods_onPageIndexChange($event)"
+                        (nzPageSizeChange)="goods_onPageSizeChange($event)">
+                    </nz-pagination>
+                </div>
+            </div> -->
+        </div>
+    </div>
+    <div class="panelgroup">
+        <div class="panel-hd">
+            <h3>使用信息 <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline"
+                    [nzTooltipTitle]="titleTemplate" nzTooltipPlacement="right"></i>
+                <ng-template #titleTemplate>
+                    <p>用券成交总额:使用了优惠券并且成交的订单总额: </p>
+                    <p>优惠总金额:使用了优惠券的抵扣额度总额:</p>
+                    <p>费效比优惠总金额/用券成交总额:</p>
+                    <p>用券单笔价:用券成交总额/订单数:</p>
+                    <p>购买商品数:用券的订单中包含的商品总数: </p>
+                </ng-template>
+            </h3>
+        </div>
+        <div class="panel-bd">
+            <dl>
+                <dd>
+                    <div class="key">最大发行数量</div>
+                    <div class="val">
+                        <span class="number">{{detailsData?.useCouponInfo.total}}</span>
+                        <span class="unit">个</span>
+                    </div>
+                </dd>
+                <dd>
+                    <div class="key">已领取</div>
+                    <div class="val">
+                        <span class="number">{{detailsData?.useCouponInfo.numberReceived}}</span>
+                        <span
+                            class="unit">{{detailsData?.useCouponInfo.numberReceived / detailsData?.useCouponInfo.total * 100}}%</span>
+                    </div>
+                </dd>
+                <!-- <dd>
+                    <div class="key">已领老客户</div>
+                    <div class="val">
+                        <span class="number">{{detailsData?.useCouponInfo.getCouponOldUsersNum}}</span>
+                        <span class="unit">个</span>
+                    </div>
+                </dd>
+                <dd>
+                    <div class="key">已领新客户</div>
+                    <div class="val">
+                        <span class="number">0</span>
+                        <span class="unit">{{detailsData?.useCouponInfo.getCouponNewUsersNum}}</span>
+                    </div>
+                </dd> -->
+                <dd>
+                    <div class="key">已使用</div>
+                    <div class="val">
+                        <span class="number">{{detailsData?.useCouponInfo.usedNumber}}</span>
+                        <span
+                            class="unit">{{ detailsData?.useCouponInfo.numberReceived ==0 ? 0 : detailsData?.useCouponInfo.usedNumber / detailsData?.useCouponInfo.numberReceived * 100}}%</span>
+                    </div>
+                </dd>
+                <dd>
+                    <div class="key">用券总成交额</div>
+                    <div class="val">
+                        <span class="number">{{detailsData?.useCouponInfo.totalTurnover}}</span>
+                        <span class="unit">￥</span>
+                    </div>
+                </dd>
+                <dd>
+                    <div class="key">优惠总金额</div>
+                    <div class="val">
+                        <span class="number">{{detailsData?.useCouponInfo.totalDiscountAmount}}</span>
+                        <span class="unit">￥</span>
+                    </div>
+                </dd>
+                <dd>
+                    <div class="key">费效比</div>
+                    <div class="val">
+                        <span
+                            class="number">{{detailsData?.useCouponInfo.costEffectiveness ? detailsData?.useCouponInfo.costEffectiveness : 0}}</span>
+                        <span
+                            class="unit">{{detailsData?.useCouponInfo.totalTurnover == 0 ? 0 : detailsData?.useCouponInfo.totalDiscountAmount / detailsData?.useCouponInfo.totalTurnover * 100}}%</span>
+                    </div>
+                </dd>
+                <dd>
+                    <div class="key">用券笔单价</div>
+                    <div class="val">
+                        <span class="number">{{detailsData?.useCouponInfo.customerPrice}}</span>
+                        <span class="unit">￥</span>
+                    </div>
+                </dd>
+                <!-- <dd>
+                    <div class="key">用券老客数</div>
+                    <div class="val">
+                        <span class="number">{{detailsData?.useCouponInfo.useCouponOldUsersNum}}</span>
+                        <span class="unit">00.00%</span>
+                    </div>
+                </dd>
+                <dd>
+                    <div class="key">用券新客数</div>
+                    <div class="val">
+                        <span class="number">{{detailsData?.useCouponInfo.useCouponNewUsersNum}}</span>
+                        <span class="unit">00.00%</span>
+                    </div>
+                </dd> -->
+                <dd>
+                    <div class="key">购买商品数</div>
+                    <div class="val">
+                        <span
+                            class="number">{{detailsData?.useCouponInfo.paidGoodsNum ? detailsData?.useCouponInfo.paidGoodsNum : 0}}</span>
+                        <span class="unit">个</span>
+                    </div>
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="panelgroup" *ngIf="detailsData?.couponUserRecordIPage.records.length != 0">
+        <div class="panel-hd">
+            <h3>用户优惠券</h3>
+        </div>
+        <div class="panel-bd">
+            <div class="bt-box">
+                <button nz-button nzType="primary" (click)="showCouponsModal()">手动发放优惠券</button>
+                <button nz-button nzType="primary" [disabled]="stopUserCoupon"
+                    (click)="showCloseModal()">撤回全部用户用券</button>
+            </div>
+            <nz-table #colSpanTable nzBordered [nzShowPagination]="false" [nzData]="[{}]">
+                <thead>
+                    <tr>
+                        <th nzAlign="center">id</th>
+                        <th nzAlign="center">券码</th>
+                        <th nzAlign="center">客户</th>
+                        <th nzAlign="center">联系方式</th>
+                        <th nzAlign="center">领取面值</th>
+                        <th nzAlign="center">实际抵扣</th>
+                        <th nzAlign="center">关联订单号</th>
+                        <th nzAlign="center">领取时间</th>
+                        <th nzAlign="center">使用时间</th>
+                        <th nzAlign="center">过期时间</th>
+                        <th nzAlign="center">状态</th>
+                        <th nzAlign="center">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of detailsData?.couponUserRecordIPage.records">
+                        <td nzAlign="center">{{data.id}}</td>
+                        <td nzAlign="center">{{data.couponNo}}</td>
+                        <td nzAlign="center">{{data.userName ? data.userName : '-'}}</td>
+                        <td nzAlign="center">{{data.userPhone ? data.userPhone : '-'}}</td>
+                        <td nzAlign="center">{{data.couponLimitSmall}}</td>
+                        <td nzAlign="center">{{data.discountsAmount ? '￥' + data.discountsAmount : '-'}}</td>
+                        <td nzAlign="center">{{data.orderNum ? data.orderNum : '-'}}</td>
+                        <td nzAlign="center">{{data.getTime}}</td>
+                        <td nzAlign="center">{{data.useTime}}</td>
+                        <td nzAlign="center">{{data.useEndTime ?data.useEndTime : '-'}}</td>
+                        <td nzAlign="center">
+                            {{status_to_Text(data.status)}}
+                            <i nz-icon nz-tooltip nzType="exclamation-circle" nzTheme="outline"
+                                nzTooltipTitle="{{data.remark}}" nzTooltipPlacement="right"
+                                *ngIf="data.status == 5"></i>
+                        </td>
+                        <td nzAlign="center">
+                            <a nz-button nz-button-tdlink nzType="link" [disabled]="data.status != 1"
+                                (click)="showCloseModal(data.id)">撤回用户用券</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+
+            <div class="pagination-box">
+                <div class="pagination-template">
+                    <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+                    <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]" nzShowSizeChanger nzShowQuickJumper
+                        [nzPageIndex]="1" [nzTotal]="detailsData?.couponUserRecordIPage?.total"
+                        [nzShowTotal]="totalTemplate" [nzPageSize]="detailsData?.couponUserRecordIPage?.size"
+                        (nzPageIndexChange)="user_onPageIndexChange($event)"
+                        (nzPageSizeChange)="user_onPageSizeChange($event)">
+                    </nz-pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<nz-modal [(nzVisible)]="sendCouponsModal" nzTitle="手动发放优惠券" (nzOnCancel)="handleCancel()" [nzFooter]="null" [nzWidth]="550">
+    <nz-form-item>
+        <nz-form-label [nzSpan]="5">请选择用户id</nz-form-label>
+        <nz-form-control [nzSpan]="18">
+            
+            <nz-select nzMode="multiple" (nzScrollToBottom)="loadMore()" nzPlaceHolder="请选择用户id"  
+            nzAllowClear
+            nzShowSearch
+            nzServerSearch
+                [nzDropdownRender]="renderTemplate" [(ngModel)]="userSelectedValue" (nzOnSearch)="onSearch($event)">
+                <ng-container *ngIf="!selectSearchLoading">
+                    <nz-option nzCustomContent *ngFor="let o of userListOption.userList" [nzValue]="o.label"
+                        [nzLabel]="o.label">
+                        <span>{{o.label}}</span>
+                    </nz-option>
+                </ng-container>
+
+                <nz-option *ngIf="selectSearchLoading" nzDisabled nzCustomContent>
+                    <i nz-icon nzType="loading" class="loading-icon"></i> Loading Data...
+                </nz-option>
+            </nz-select>
+
+            <ng-template #renderTemplate>
+                <nz-spin *ngIf="userListOption.isLoading"></nz-spin>
+            </ng-template>
+
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control [nzOffset]="5">
+            <button nz-button nzType="primary" (click)="sendCoupons()">确定</button>
+            <button nz-button nzType="primary" (click)="handleCancel()">取消</button>
+        </nz-form-control>
+    </nz-form-item>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="stopVisible" nzTitle="停止用户用券" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+    <nz-form-item>
+        <nz-form-label [nzSpan]="4">停止原因</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+            <textarea rows="6" nz-input [(ngModel)]="stopContent"></textarea>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control [nzSpan]="12" [nzOffset]="4">
+            <button nz-button nzType="primary" (click)="stopFun()">停止</button>
+            <button nz-button nzType="primary" (click)="handleCancel()">取消</button>
+        </nz-form-control>
+    </nz-form-item>
+</nz-modal>
+
+
+
+<nz-modal [(nzVisible)]="showGoods" nzTitle="查看已选商品" (nzOnCancel)="handleCancel()" [nzFooter]="null" [nzWidth]="1050">
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="selectGoodsTable?.records" [nzShowPagination]="false"
+        [nzPageSize]="selectGoodsTable?.size" nzBordered>
+        <thead>
+            <tr>
+                <th>id</th>
+                <th class="goodsName">商品</th>
+                <th>销量</th>
+                <th>销售库存</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of selectGoodsTable?.records">
+                <td nzAlign="center">{{data.id}}</td>
+                <td nzAlign="left">{{data.name}}</td>
+                <td nzAlign="center">{{data.salesVolume}}</td>
+                <td nzAlign="center">{{data.stockNum}}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <p>&nbsp;</p>
+    <ng-template #totalTemplate let-total> 共有 {{ total }} 条 </ng-template>
+    <nz-pagination [nzPageSizeOptions]="[10, 20, 50, 100]" nzShowSizeChanger nzShowQuickJumper
+        [nzPageIndex]="selectGoodsTable?.current" [nzTotal]="selectGoodsTable?.total" [nzShowTotal]="totalTemplate"
+        [nzPageSize]="selectGoodsTable?.size" (nzPageIndexChange)="onPageIndexChange_Select($event)"
+        (nzPageSizeChange)="onPageSizeChange_Select($event)">
+    </nz-pagination>
+</nz-modal>

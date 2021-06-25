@@ -1,80 +1,65 @@
 i {
-  margin-top: 9px;
-  // margin-left: 10px;
+    margin-top: 9px;
+    // margin-left: 10px;
 }
 
 main {
-  margin: auto;
-  background: #fff;
-  form {
-    padding-top: 30px;
-    nz-form-item {
-      margin-bottom: 10px;
-      &:nth-child(8) {
-        margin-top: 40px;
-      }
-    }
-    nz-form-control {
-      padding-left: 10px;
-    }
-    nz-date-picker {
-      &:nth-child(2) {
-        margin-left: 10px;
-      }
+    margin: auto;
+    background: #fff;
+    form {
+        padding-top: 30px;
+        nz-form-item {
+            margin-bottom: 10px;
+            &:nth-child(8) {
+                margin-top: 40px;
+            }
+        }
+        nz-form-control {
+            padding-left: 10px;
+        }
+        nz-date-picker {
+            &:nth-child(2) {
+                margin-left: 10px;
+            }
+        }
+
+        nz-upload {
+            margin-top: 8px;
+            margin-left: 10px;
+        }
+
+        .icon {
+            display: flex;
+            nz-form-label {
+                margin-left: 10px;
+            }
+        }
+        p {
+            margin-top: 50px;
+            color: #999;
+        }
+
+        .checkbox-box {
+            width: 160px;
+            height: 100px;
+            display: block;
+        }
     }
 
-    .checkbox-box {
-      width: 160px;
-      height: 100px;
-      display: block;
+    .submit-box {
+        height: 120px;
+        position: relative;
+        left: 120px;
+        .bt-box {
+            position: absolute;
+            left: 25px;
+            bottom: 40px;
+            button {
+                width: 100px;
+            }
+        }
     }
-  }
-
-  .submit-box {
-    width: 100%;
-    height: 70px;
-    padding: 0 40px;
-    position: relative;
-    .bt-box {
-      position: absolute;
-      left: 170px;
-      bottom: 15px;
-      top: 18px;
-    }
-  }
 }
-
-.upFile {
-  width: 130px;
-  height: 130px;
-  line-height: initial;
-  padding: 44px 12px;
-  position: relative;
-  display: inline-block;
-  text-align: center;
-  border: 1px dashed #bfbfbf;
-  cursor: pointer;
-  span {
-    display: block;
-  }
-  input {
-    display: none;
-  }
-}
-.videoImg {
-  width: 132px;
-  height: 132px;
-  padding: 10px;
-  line-height: initial;
-  float: left;
-  text-align: center;
-  border: 1px solid #eee;
-  img {
-    width: 84px;
-    height: auto;
-    margin-bottom: 6px;
-  }
-  a {
-    display: block;
-  }
+:host ::ng-deep .ant-checkbox-wrapper {
+    margin-left: 8px;
 }
