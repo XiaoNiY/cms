@@ -17,7 +17,7 @@
     },
     "/loca": {  
       "remark": "后端主机ip",
-      "target": "http://192.168.1.133:8810",
+      "target": "",
       "secure": false,
       "logLevel": "debug",
       "changeOrigin": true,
